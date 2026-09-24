@@ -130,18 +130,39 @@
       </div>
     </section>
 
-    <!-- View 3: Route Map -->
-    <section id="view-map" class="hidden h-full flex flex-col p-2 max-w-5xl mx-auto">
-      <div class="glass-card p-3 rounded-2xl mb-2 flex justify-between items-center">
-        <div>
-          <h2 class="text-sm font-bold text-white">冰島精華路線圖</h2>
-          <p class="text-xs text-slate-400">包含每日景點、酒店與機場位置</p>
+    <!-- View 3: Route Map & Google Maps List Integration -->
+    <section id="view-map" class="hidden h-full flex flex-col p-2 max-w-5xl mx-auto space-y-2">
+      <!-- Friend's Shared Google Maps List Banner Card -->
+      <div class="glass-card p-3 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/10 via-slate-900/90 to-slate-900/90 flex items-center justify-between gap-3 shadow-lg shrink-0">
+        <div class="flex items-center space-x-3 overflow-hidden">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xl border border-amber-500/30">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <div class="truncate">
+            <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span>ICELAND · Ching 的 Google Maps 清單</span>
+              <span class="px-1.5 py-0.5 text-[9px] rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">已連結</span>
+            </h3>
+            <p class="text-[11px] text-slate-400 truncate">包含朋友分享的冰島行程景點 Pin 列表</p>
+          </div>
         </div>
-        <button onclick="resetMapView()" class="px-2.5 py-1 rounded-lg bg-slate-800 text-xs text-ice-400 border border-slate-700">
+        <a href="https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw" target="_blank" rel="noopener noreferrer" class="shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-amber-500/20 transition active:scale-95">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <span>開啟 Google 清單</span>
+        </a>
+      </div>
+
+      <div class="glass-card p-3 rounded-2xl flex justify-between items-center shrink-0">
+        <div>
+          <h2 class="text-xs sm:text-sm font-bold text-white">冰島精華環島路線圖</h2>
+          <p class="text-[11px] text-slate-400">點擊地標可開啟個別景點導航</p>
+        </div>
+        <button onclick="resetMapView()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-ice-400 border border-slate-700 transition">
           重置視角
         </button>
       </div>
-      <div id="map" class="w-full h-[calc(100vh-220px)] rounded-2xl overflow-hidden shadow-2xl border border-slate-800 z-10"></div>
+
+      <div id="map" class="w-full flex-1 min-h-[350px] rounded-2xl overflow-hidden shadow-2xl border border-slate-800 z-10"></div>
     </section>
 
     <!-- View 4: Food & Restaurants -->
@@ -186,7 +207,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
             <label class="text-xs text-slate-400 block mb-1">冰島克朗 (ISK)</label>
-            <input type="number" id="isk-input" value="10000" oninput="convertFX('isk')" class="w-full bg-transparent text-lg font-bold text-ice-400 focus:outline-none" placeholder="輸入 ISK 展">
+            <input type="number" id="isk-input" value="10000" oninput="convertFX('isk')" class="w-full bg-transparent text-lg font-bold text-ice-400 focus:outline-none" placeholder="輸入 ISK">
           </div>
           <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
             <label class="text-xs text-slate-400 block mb-1">港幣 (HKD)</label>
@@ -292,7 +313,7 @@
         </div>
       </div>
 
-      <!-- Optional API Key Settings Area -->
+      <!-- Key Config Box -->
       <div id="ai-key-box" class="hidden glass-card p-3 rounded-2xl text-xs space-y-2 shrink-0 border border-amber-500/30">
         <div class="flex justify-between items-center text-amber-300 font-bold">
           <span><i class="fa-solid fa-key me-1"></i> 設定 Google Gemini API Key</span>
@@ -311,8 +332,7 @@
           <div class="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0 text-xs">AI</div>
           <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-200 leading-relaxed">
             Hæ! 我是你們的冰島旅遊問答小助手 🧊。<br>
-            我可以解答任何關於：黃金圈順序、冰川健行穿著、熱狗店營業時間、風暴因應，或是幫忙翻譯冰島語地名！<br><br>
-            💡 <em>提示：若要修改 App 畫面或行程資料，請直接在 Gemini 對話視窗對我提出指令唷！</em>
+            我可以解答任何關於：黃金圈順序、冰川健行穿著、熱狗店營業時間、風暴因應，或是幫忙翻譯冰島語地名！
           </div>
         </div>
       </div>
@@ -692,7 +712,7 @@
             if (val.restaurantsData) restaurantsData = val.restaurantsData;
             if (val.packingData) packingData = val.packingData;
             
-            saveLocalData(false); // Save locally without echoing back
+            saveLocalData(false);
             renderDaySelector();
             renderDayDetail(currentSelectedDay);
             renderVouchers();
@@ -709,7 +729,6 @@
       }
     }
 
-    // Save Data locally & Push to Cloud
     function saveLocalData(triggerCloud = true) {
       const payload = {
         itineraryData,
@@ -725,7 +744,6 @@
       }
     }
 
-    // Load Data on Startup
     function loadLocalData() {
       const saved = localStorage.getItem('SC_ICELAND_DATA');
       if (saved) {
@@ -758,7 +776,6 @@
       initFirebaseSync(currentRoomCode);
     };
 
-    // Tab Switching Logic
     function switchTab(tab) {
       const tabs = ['itinerary', 'vouchers', 'map', 'restaurants', 'toolbox', 'ai'];
       tabs.forEach(t => {
@@ -799,7 +816,6 @@
       const container = document.getElementById('day-detail-card');
 
       container.innerHTML = `
-        <!-- Day Overview Header -->
         <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
           <div class="flex justify-between items-start">
             <div>
@@ -813,7 +829,6 @@
             </a>
           </div>
 
-          <!-- Hotel Info Card -->
           <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 text-xs space-y-1">
             <div class="flex items-center justify-between font-bold text-slate-200">
               <span class="flex items-center gap-1.5 text-amber-300">
@@ -824,7 +839,6 @@
           </div>
         </div>
 
-        <!-- Schedule Timeline -->
         <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
           <h3 class="font-bold text-xs text-slate-400 uppercase tracking-wider flex items-center justify-between">
             <span><i class="fa-solid fa-clock text-ice-400 me-1"></i> 時間行程表</span>
@@ -939,7 +953,14 @@
         if (d.lat && d.lng) {
           points.push([d.lat, d.lng]);
           const marker = L.marker([d.lat, d.lng]).addTo(leafletMap);
-          marker.bindPopup(`<b>Day ${d.day}: ${d.theme}</b><br>${d.hotel}`);
+          const gmapNavUrl = `https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}`;
+          marker.bindPopup(`
+            <div style="font-family: sans-serif; padding: 2px;">
+              <b style="font-size: 13px;">Day ${d.day}: ${d.theme}</b><br>
+              <span style="font-size: 11px; color: #64748b;">${d.hotel}</span><br>
+              <a href="${gmapNavUrl}" target="_blank" style="display: inline-block; margin-top: 6px; padding: 4px 8px; background: #0284c7; color: white; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">Google Maps 導航 ➔</a>
+            </div>
+          `);
           mapMarkers.push(marker);
         }
       });
@@ -972,7 +993,7 @@
     }
 
     function convertFX(type) {
-      const iskRate = 0.0571; // 1 ISK = 0.0571 HKD
+      const iskRate = 0.0571;
       if (type === 'isk') {
         const isk = parseFloat(document.getElementById('isk-input').value) || 0;
         document.getElementById('hkd-input').value = Math.round(isk * iskRate);
@@ -1041,7 +1062,6 @@
 
       const chatBox = document.getElementById('ai-chat-box');
       
-      // User message element
       chatBox.innerHTML += `
         <div class="flex items-start justify-end space-x-2">
           <div class="bg-ice-600 p-3 rounded-2xl rounded-tr-none max-w-[85%] text-white leading-relaxed">
@@ -1059,8 +1079,7 @@
             <div class="w-7 h-7 rounded-full bg-amber-600 flex items-center justify-center text-white shrink-0 text-xs">!</div>
             <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-amber-300 leading-relaxed border border-amber-500/30">
               💡 <strong>提示：</strong> 目前尚未設定 Google Gemini API Key。<br>
-              請點選右上角的 <strong>「Key 設定」</strong> 按鈕填入 Key 後即可開始問答。<br><br>
-              <em>如果是想修改 App 頁面標題或行程內容，請直接在 Gemini 聊天室內對我說即可！</em>
+              請點選右上角的 <strong>「Key 設定」</strong> 按鈕填入 Key 後即可開始問答。
             </div>
           </div>
         `;
@@ -1068,7 +1087,6 @@
         return;
       }
 
-      // Loading indicator
       const loadingId = 'ai-loading-' + Date.now();
       chatBox.innerHTML += `
         <div id="${loadingId}" class="flex items-start space-x-2">
@@ -1123,7 +1141,6 @@
       document.getElementById('ai-chat-box').innerHTML = '';
     }
 
-    // Modal Helpers
     function showPwaModal() { document.getElementById('modal-pwa').classList.remove('hidden'); }
     function openSyncModal() { document.getElementById('modal-sync').classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
