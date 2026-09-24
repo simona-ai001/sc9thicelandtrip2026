@@ -75,6 +75,1087 @@
       <div>
         <h1 class="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
           SC 9th Anniversary Trip
+          <span class="text-xs font-normal px-2 py-0.5 rounded-full bg-ice-500/20 text-ice-400 border border-ice-500/30">冰島深度遊</span>
+        </h1>
+        <p class="text-xs text-slate-400 flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-aurora-400 animate-pulse"></span>
+          2026/10/05 - 10/20 • 14天西南深度行
+        </p>
+      </div>
+    </div>
+
+    <!-- Header Actions -->
+    <div class="flex items-center space-x-2">
+      <button onclick="openSyncModal()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/50 text-xs flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-arrows-rotate text-ice-400"></i>
+        <span class="hidden sm:inline">同步</span>
+      </button>
+      <button onclick="showPwaModal()" class="p-2 rounded-xl bg-aurora-500/10 hover:bg-aurora-500/20 text-aurora-400 border border-aurora-500/30 text-xs flex items-center gap-1 transition">
+        <i class="fa-solid fa-mobile-screen-button"></i>
+        <span class="hidden sm:inline">加到主畫面</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="app-content" class="flex-1 overflow-y-auto relative pb-20">
+    <!-- View 1: Itinerary Tab -->
+    <section id="view-itinerary" class="p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+      <!-- Days Selector Horizontal Carousel -->
+      <div class="flex space-x-2 overflow-x-auto pb-2 scrollbar-none snap-x" id="day-selector-container">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Selected Day Details Card Container -->
+      <div id="day-detail-card" class="space-y-4">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- View 2: Booking Vouchers -->
+    <section id="view-vouchers" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-ticket text-ice-400"></i> 預約憑證 & 訂單資訊
+        </h2>
+        <button onclick="openAddVoucherModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700 shadow">
+          <i class="fa-solid fa-plus me-1"></i> 新增憑證
+        </button>
+      </div>
+      <div id="vouchers-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- View 3: Shared Google Maps List Integration -->
+    <section id="view-map" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+      <!-- Primary Shared Google Maps List Banner Card -->
+      <div class="glass-card p-5 rounded-3xl border border-amber-500/50 bg-gradient-to-br from-amber-500/15 via-slate-900/90 to-slate-900/95 space-y-4 shadow-xl">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-2xl border border-amber-500/40 shadow-inner">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                <span>Ching 的 Google Maps 冰島清單</span>
+                <span class="px-2 py-0.5 text-[10px] rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">已連結</span>
+              </h3>
+              <p class="text-xs text-slate-300 mt-0.5">朋友分享的 14 天冰島重點景點 Pin 清單</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-2xl border border-slate-800/80">
+          📍 點擊下方按鈕即可直接開啟 Google Maps 查看完整地點標籤與清單細節，手機可同步導航與離線儲存。
+        </p>
+
+        <a href="https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition active:scale-98">
+          <i class="fa-solid fa-arrow-up-right-from-square text-base"></i>
+          <span>開啟 Ching 的 Google Maps 清單</span>
+        </a>
+      </div>
+
+      <!-- Quick Daily Route Navigation Links -->
+      <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
+        <h3 class="font-bold text-xs text-slate-300 uppercase tracking-wider flex items-center justify-between">
+          <span><i class="fa-solid fa-route text-ice-400 me-1.5"></i> 每日行程 Google Maps 一鍵導航</span>
+          <span class="text-[10px] text-slate-400">14 天每日路線</span>
+        </h3>
+
+        <div id="google-route-links" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <!-- Rendered dynamically by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- View 4: Food & Restaurants -->
+    <section id="view-restaurants" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-utensils text-rose-400"></i> 心水餐廳 & 美食導覽
+        </h2>
+        <button onclick="openAddRestoModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700">
+          <i class="fa-solid fa-plus"></i> 新增餐廳
+        </button>
+      </div>
+      <div id="restaurants-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- View 5: Toolbox (FX, Aurora, Checklist, Emergency) -->
+    <section id="view-toolbox" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-5">
+      <!-- Toolbox Tabs -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <button onclick="switchToolTab('fx')" id="tool-btn-fx" class="p-2.5 rounded-xl bg-ice-600 text-white text-xs font-semibold flex flex-col items-center gap-1 shadow">
+          <i class="fa-solid fa-calculator text-base"></i> 即時匯率 (ISK)
+        </button>
+        <button onclick="switchToolTab('aurora')" id="tool-btn-aurora" class="p-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold flex flex-col items-center gap-1 border border-slate-700">
+          <i class="fa-solid fa-wand-magic-sparkles text-base text-aurora-400"></i> 極光指數預報
+        </button>
+        <button onclick="switchToolTab('packing')" id="tool-btn-packing" class="p-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold flex flex-col items-center gap-1 border border-slate-700">
+          <i class="fa-solid fa-list-check text-base text-amber-400"></i> 行李&行前清單
+        </button>
+        <button onclick="switchToolTab('emergency')" id="tool-btn-emergency" class="p-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold flex flex-col items-center gap-1 border border-slate-700">
+          <i class="fa-solid fa-kit-medical text-base text-rose-400"></i> 緊急&交通官網
+        </button>
+      </div>
+
+      <!-- Tool Panel: FX -->
+      <div id="tool-panel-fx" class="glass-card p-4 rounded-2xl space-y-4">
+        <h3 class="font-bold text-white text-sm flex items-center justify-between">
+          <span><i class="fa-solid fa-coins text-amber-400 me-1"></i> 冰島克朗 (ISK) ⇄ 港幣 (HKD) 計算器</span>
+          <span class="text-xs text-slate-400 font-normal">約 1 HKD ≈ 17.5 ISK</span>
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+            <label class="text-xs text-slate-400 block mb-1">冰島克朗 (ISK)</label>
+            <input type="number" id="isk-input" value="10000" oninput="convertFX('isk')" class="w-full bg-transparent text-lg font-bold text-ice-400 focus:outline-none" placeholder="輸入 ISK">
+          </div>
+          <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+            <label class="text-xs text-slate-400 block mb-1">港幣 (HKD)</label>
+            <input type="number" id="hkd-input" value="571" oninput="convertFX('hkd')" class="w-full bg-transparent text-lg font-bold text-aurora-400 focus:outline-none" placeholder="輸入 HKD">
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button onclick="quickISK(1000)" class="px-2.5 py-1 rounded-lg bg-slate-800 text-xs text-slate-300">1,000 ISK (約$57)</button>
+          <button onclick="quickISK(5000)" class="px-2.5 py-1 rounded-lg bg-slate-800 text-xs text-slate-300">5,000 ISK (約$285)</button>
+          <button onclick="quickISK(15000)" class="px-2.5 py-1 rounded-lg bg-slate-800 text-xs text-slate-300">15,000 ISK (約$857)</button>
+        </div>
+      </div>
+
+      <!-- Tool Panel: Aurora Forecast -->
+      <div id="tool-panel-aurora" class="hidden glass-card p-4 rounded-2xl space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-atom text-aurora-400 me-1"></i> 極光活動指數 & 觀察指南</h3>
+          <span id="aurora-kp-badge" class="px-2 py-0.5 rounded bg-aurora-500/20 text-aurora-400 border border-aurora-500/30 text-xs font-bold">Kp Index: 4 (Active)</span>
+        </div>
+        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed space-y-2">
+          <p class="font-semibold text-aurora-400">🌌 10月冰島極光獵觀要素：</p>
+          <ul class="list-disc list-inside space-y-1 text-slate-400">
+            <li><strong>Kp 指數 ≥ 3</strong>：代表太陽粒子活動強烈，肉眼清晰可見。</li>
+            <li><strong>雲層涵蓋率 (Cloud Cover)</strong>：Vedur.is 上綠色代表有雲，白色區域代表晴朗無雲！</li>
+            <li><strong>最佳觀察時間</strong>：21:00 - 02:00，離城市燈光區至少 15 分鐘車程。</li>
+          </ul>
+        </div>
+        <a href="https://en.vedur.is/weather/forecasts/aurora/" target="_blank" class="block w-full text-center py-2.5 rounded-xl bg-aurora-600 hover:bg-aurora-500 text-white font-semibold text-xs transition">
+          <i class="fa-solid fa-external-link me-1"></i> 查看冰島官方天文台 Vedur 極光即時雲層圖
+        </a>
+      </div>
+
+      <!-- Tool Panel: Packing Checklist -->
+      <div id="tool-panel-packing" class="hidden glass-card p-4 rounded-2xl space-y-3">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-clipboard-check text-amber-400 me-1"></i> 10月冰島深度遊必備清單</h3>
+          <span id="packing-progress" class="text-xs text-slate-400">0/0 完成</span>
+        </div>
+        <div id="packing-items-container" class="space-y-2 max-h-80 overflow-y-auto pr-1">
+          <!-- Rendered by JS -->
+        </div>
+        <div class="flex gap-2 pt-2">
+          <input type="text" id="new-packing-input" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white" placeholder="新增清單項目...">
+          <button onclick="addPackingItem()" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs">新增</button>
+        </div>
+      </div>
+
+      <!-- Tool Panel: Emergency & Links -->
+      <div id="tool-panel-emergency" class="hidden glass-card p-4 rounded-2xl space-y-3">
+        <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-phone-volume text-rose-400 me-1"></i> 冰島自駕緊急與交通官網</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <a href="tel:112" class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-between text-rose-300">
+            <div>
+              <p class="font-bold text-xs">112 冰島國家緊急救難</p>
+              <p class="text-[10px] text-rose-400/80">電話直撥 112</p>
+            </div>
+            <i class="fa-solid fa-phone-flip"></i>
+          </a>
+          <a href="https://safetravel.is/" target="_blank" class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-ice-400">
+            <div>
+              <p class="font-bold text-xs">SafeTravel.is</p>
+              <p class="text-[10px] text-slate-400">即時景點警報與登山備案</p>
+            </div>
+            <i class="fa-solid fa-shield-halved"></i>
+          </a>
+          <a href="https://www.road.is/" target="_blank" class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-amber-400">
+            <div>
+              <p class="font-bold text-xs">Road.is (路況查詢)</p>
+              <p class="text-[10px] text-slate-400">自駕必看積雪與封路地圖</p>
+            </div>
+            <i class="fa-solid fa-road"></i>
+          </a>
+          <a href="https://en.vedur.is/" target="_blank" class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-sky-400">
+            <div>
+              <p class="font-bold text-xs">Vedur.is (天氣預報)</p>
+              <p class="text-[10px] text-slate-400">黃色警報與強風預警</p>
+            </div>
+            <i class="fa-solid fa-cloud-bolt"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- View 6: AI Travel Assistant -->
+    <section id="view-ai" class="hidden p-3 sm:p-4 max-w-4xl mx-auto h-[calc(100vh-160px)] flex flex-col space-y-2">
+      <div class="glass-card p-3 rounded-2xl flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div>
+            <h2 class="text-xs font-bold text-white">冰島旅遊問答 AI 小幫手</h2>
+            <p class="text-[10px] text-slate-400">解答冰島景點、天氣、穿著與旅遊問題</p>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="toggleKeyConfig()" class="text-xs text-ice-400 hover:text-white px-2 py-1 bg-slate-800 rounded-lg border border-slate-700">
+            <i class="fa-solid fa-key"></i> Key 設定
+          </button>
+          <button onclick="clearAIChat()" class="text-xs text-slate-400 hover:text-white px-2 py-1">
+            <i class="fa-solid fa-trash-can"></i> 清除
+          </button>
+        </div>
+      </div>
+
+      <!-- Key Config Box -->
+      <div id="ai-key-box" class="hidden glass-card p-3 rounded-2xl text-xs space-y-2 shrink-0 border border-amber-500/30">
+        <div class="flex justify-between items-center text-amber-300 font-bold">
+          <span><i class="fa-solid fa-key me-1"></i> 設定 Google Gemini API Key</span>
+          <button onclick="toggleKeyConfig()" class="text-slate-400 hover:text-white">&times;</button>
+        </div>
+        <p class="text-[11px] text-slate-400">貼上你的免費 Gemini API Key，即可在 App 內向 AI 詢問冰島行程問題：</p>
+        <div class="flex gap-2">
+          <input type="password" id="custom-api-key" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white" placeholder="AIzaSy...">
+          <button onclick="saveApiKey()" class="px-3 py-1.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">儲存</button>
+        </div>
+      </div>
+
+      <!-- Chat Stream -->
+      <div id="ai-chat-box" class="flex-1 overflow-y-auto space-y-3 p-3 bg-slate-900/50 rounded-2xl border border-slate-800/80 text-xs">
+        <div class="flex items-start space-x-2">
+          <div class="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0 text-xs">AI</div>
+          <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-200 leading-relaxed">
+            Hæ! 我是你們的冰島旅遊問答小助手 🧊。<br>
+            我可以解答任何關於：黃金圈順序、冰川健行穿著、熱狗店營業時間、風暴因應，或是幫忙翻譯冰島語地名！
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Box -->
+      <div class="flex space-x-2 shrink-0">
+        <input type="text" id="ai-user-input" onkeydown="if(event.key==='Enter') sendAIMessage()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-ice-500" placeholder="詢問關於冰島行程或景點問題...">
+        <button onclick="sendAIMessage()" class="px-4 py-2 bg-gradient-to-r from-ice-600 to-indigo-600 text-white font-semibold rounded-xl text-xs hover:opacity-90">
+          <i class="fa-solid fa-paper-plane me-1"></i> 發送
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="fixed bottom-0 left-0 right-0 glass border-t border-slate-800 z-40 pb-safe">
+    <div class="max-w-md mx-auto grid grid-cols-6 h-12">
+      <button onclick="switchTab('itinerary')" id="nav-itinerary" class="flex flex-col items-center justify-center text-ice-400 transition">
+        <i class="fa-solid fa-calendar-days text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">行程</span>
+      </button>
+      <button onclick="switchTab('vouchers')" id="nav-vouchers" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
+        <i class="fa-solid fa-ticket text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">憑證</span>
+      </button>
+      <button onclick="switchTab('map')" id="nav-map" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
+        <i class="fa-solid fa-map-location-dot text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">地圖</span>
+      </button>
+      <button onclick="switchTab('restaurants')" id="nav-restaurants" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
+        <i class="fa-solid fa-utensils text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">美食</span>
+      </button>
+      <button onclick="switchTab('toolbox')" id="nav-toolbox" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
+        <i class="fa-solid fa-toolbox text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">工具</span>
+      </button>
+      <button onclick="switchTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
+        <i class="fa-solid fa-robot text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">AI 助手</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 1. PWA Add to Home Screen Instructions Modal -->
+  <div id="modal-pwa" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-5 rounded-3xl space-y-4 border border-ice-500/30 text-center">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-ice-500 to-aurora-400 flex items-center justify-center text-white text-2xl shadow-lg">
+        <i class="fa-solid fa-mobile-screen"></i>
+      </div>
+      <h3 class="font-bold text-lg text-white">將 SC 冰島行 加到手機主畫面</h3>
+      <p class="text-xs text-slate-300 leading-relaxed text-left bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+        <strong>iPhone / Safari 用戶：</strong><br>
+        1. 點擊瀏覽器底部的 <strong>「分享」按鈕 <i class="fa-solid fa-share-from-square text-ice-400"></i></strong><br>
+        2. 向下滾動並點選 <strong>「加入至主畫面」<i class="fa-solid fa-square-plus text-aurora-400"></i></strong><br><br>
+        <strong>Android / Chrome 用戶：</strong><br>
+        點擊右上角選單，選擇「安裝應用程式」或「新增至主畫面」。
+      </p>
+      <button onclick="closeModal('modal-pwa')" class="w-full py-2.5 rounded-xl bg-ice-600 text-white text-xs font-bold">我明白了</button>
+    </div>
+  </div>
+
+  <!-- 2. Share & Firebase Sync Modal -->
+  <div id="modal-sync" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-5 rounded-3xl space-y-4 text-center border border-slate-700">
+      <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-arrows-rotate text-ice-400 me-1"></i> 同行夥伴即時同步</h3>
+      <p class="text-xs text-slate-400">分享你的行程房間號碼，夥伴輸入後即可同步編輯！</p>
+      
+      <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+        <span class="text-xs text-slate-400">當前房間 Code:</span>
+        <span id="sync-room-code" class="font-mono font-bold text-ice-400 text-sm">SC-ICELAND-2026</span>
+      </div>
+
+      <div id="sync-status-msg" class="text-[11px] text-aurora-400 flex items-center justify-center gap-1">
+        <i class="fa-solid fa-circle-check"></i> 本地儲存已啟用（可離線使用）
+      </div>
+
+      <div class="space-y-2">
+        <input type="text" id="join-room-input" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white text-center uppercase" placeholder="輸入夥伴的 Room Code">
+        <button onclick="joinSyncRoom()" class="w-full py-2 rounded-xl bg-aurora-600 hover:bg-aurora-500 text-white font-bold text-xs transition">連接雲端並即時同步</button>
+      </div>
+      <button onclick="closeModal('modal-sync')" class="text-xs text-slate-400 underline">關閉</button>
+    </div>
+  </div>
+
+  <!-- 3. Edit Activity Modal -->
+  <div id="modal-edit-activity" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-5 rounded-3xl space-y-3">
+      <h3 class="font-bold text-white text-sm" id="edit-activity-title">編輯行程項目</h3>
+      <input type="hidden" id="edit-day-idx">
+      <input type="hidden" id="edit-act-idx">
+      
+      <div class="space-y-2 text-xs">
+        <label class="text-slate-400">時間 / 標題</label>
+        <input type="text" id="edit-act-time" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        
+        <label class="text-slate-400">活動內容</label>
+        <textarea id="edit-act-desc" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white"></textarea>
+      </div>
+
+      <div class="flex justify-end space-x-2 pt-2">
+        <button onclick="closeModal('modal-edit-activity')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-xs text-slate-300">取消</button>
+        <button onclick="saveActivityEdit()" class="px-4 py-1.5 rounded-xl bg-ice-600 text-xs text-white font-bold">儲存更新</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Updated Itinerary Master Data according to strict Date Alignment
+    // Day 0: 10/05 Flight | Day 1: 10/06 Arrival Reykjavík ... Day 14: 10/19 Return Flight
+    let itineraryData = [
+      {
+        day: 1,
+        date: "10/06 (二)",
+        theme: "抵達雷克雅維克 ⛪️ City Walk",
+        hotel: "Skuggi Hotel by Keahotels",
+        hotelInfo: "Check-in 15:00; Check-out 11:00 | 有早餐 ✖️煮食",
+        activities: [
+          { time: "10/05 20:55", desc: "香港國際機場 20:55 起飛 (AY 100)" },
+          { time: "10/06 07:10", desc: "芬蘭赫爾辛基機場轉機 (FI 345)" },
+          { time: "07:50", desc: "抵達冰島凱夫拉維克機場 (KEF)" },
+          { time: "07:50-08:30", desc: "機場兌換少量冰島幣 + 免稅店/10-11便利店買電話卡" },
+          { time: "09:30-10:30", desc: "🔑 Lotus Car Rental 取車 (10/6 08:00 - 10/19 06:30 Jeep Renegade 4x4 自動波)", tag: "BOOKED" },
+          { time: "10:30-11:30", desc: "機場開車前往市區 (車程約 45 分鐘)" },
+          { time: "11:30-15:00", desc: "Reykjavik Must Do: Bravo&Co 肉桂卷, Roasters 咖啡, Baejarins Beztu 熱狗, Valdis 雪糕店, 彩虹街, 哈爾格林姆教堂 (Hallgrímskirkja)" },
+          { time: "15:00", desc: "Check-in 酒店 Sleep & Rest 休息" },
+          { time: "18:30", desc: "Dinner 晚餐時間" },
+          { time: "20:00", desc: "Bónus 超市採買食物 (22:00 關門)" },
+          { time: "21:00", desc: "🌃 夜生活: Hús máls og 書店+Live Band / Kiki Queer Bar" }
+        ],
+        lat: 64.142, lng: -21.925
+      },
+      {
+        day: 2,
+        date: "10/07 (三)",
+        theme: "辛格韋德利國家公園 ⛰️ ➔ 藍色秘境瀑布 ➔ 斯托克間歇泉 ➔ 溫泉 ♨️",
+        hotel: "Litli Geysir Hotel",
+        hotelInfo: "Check-in 15:00; Check-out 11:00 | 有早餐 ✖️煮食",
+        activities: [
+          { time: "08:30", desc: "酒店 Check-out 享用早餐 / 麵包" },
+          { time: "08:30-09:15", desc: "開車前往 Þingvellir 國家公園 (車程 35 分鐘)" },
+          { time: "09:30-12:00", desc: "經典精華遊路線 (1.5-2小時): P1 觀景台 ➔ Almannagjá 大裂谷 ➔ Lögberg 法律石 ➔ Öxarárfoss 瀑布 ➔ 原路折返或經教堂圈返回 P1" },
+          { time: "12:00-12:30", desc: "Lunch: 公園內自製野餐" },
+          { time: "12:30-13:30", desc: "前往藍色秘境瀑布 Brúarfoss (車程 1 小時)" },
+          { time: "13:30-14:40", desc: "遠觀瀑布最佳拍攝點在橋上邊" },
+          { time: "14:40-15:00", desc: "前往斯托克間歇泉 Strokkur (車程 20 分鐘)" },
+          { time: "15:00-16:30", desc: "觀賞 Strokkur 噴發 (捕捉螢光藍水泡 Blue Bubble，建議 1/1000s 高速連拍或 120/240fps 慢動作影片)" },
+          { time: "17:00-18:30", desc: "+- Secret Lagoon 秘密溫泉浸溫泉放鬆 ♨️" }
+        ],
+        lat: 64.310, lng: -20.301
+      },
+      {
+        day: 3,
+        date: "10/08 (四)",
+        theme: "黃金瀑布 ➔ 朗格冰原雪地摩托車 🏍️ ➔ 前往 Hella 🏠",
+        hotel: "Hótel Kanslarinn",
+        hotelInfo: "Check-in 15:00; Check-out 11:00 | 有早餐 ✖️煮食",
+        activities: [
+          { time: "08:30", desc: "酒店 Check-out + 早餐" },
+          { time: "08:30-09:30", desc: "前往黃金瀑布 Gullfoss" },
+          { time: "09:30-10:30", desc: "Gullfoss 觀景台: 上層崖頂俯瞰點全景 + 下層懸崖岩石平台近距離衝擊感" },
+          { time: "11:00-11:45", desc: "前往 Geysir Centre 集合 Join Tour (共 4 小時)" },
+          { time: "12:15-16:15", desc: "🏔️ 朗格冰原雪地摩托車 Tour (已預約 12:15)", tag: "BOOKED" },
+          { time: "16:30-18:00", desc: "開車前往 Hella 入住酒店 (車程約 1 小時)" }
+        ],
+        lat: 63.834, lng: -20.400
+      },
+      {
+        day: 4,
+        date: "10/09 (五)",
+        theme: "水簾洞瀑布 ➔ 權力遊戲瀑布 ➔ 索爾黑馬冰川前緣觀景 ➔ 前往 Vík 🏠",
+        hotel: "Kvíhólmi Premium Apartments",
+        hotelInfo: "Check-in 15:00; Check-out 11:00 | ✖️早餐 ⭕️可煮食",
+        activities: [
+          { time: "08:30", desc: "酒店 Check-out + 早餐" },
+          { time: "09:00-10:00", desc: "前往塞里雅蘭瀑布 Seljalandsfoss (車程 30 分鐘)" },
+          { time: "10:00-12:00", desc: "順遊隱藏版秘境: Gljúfrabúi (峽谷洞穴瀑布，踩溪石進入狹縫洞穴拍攝)" },
+          { time: "12:00-13:00", desc: "前往權力遊戲瀑布 Skógafoss (車程 30 分鐘)" },
+          { time: "13:00-14:30", desc: "Skógafoss 平地近距離仰視彩虹瀑布 + 登 520 級鋼梯崖頂觀景台 (Fimmvörðuháls Trail 起點)" },
+          { time: "15:00-17:00", desc: "Sólheimajökull 索爾黑馬冰川前緣攻略: 沿冰河湖步道徒步 + 冰川舌前緣近距離觀景" },
+          { time: "18:00", desc: "入住 Vík 區酒店 Check-in" }
+        ],
+        lat: 63.532, lng: -19.600
+      },
+      {
+        day: 5,
+        date: "10/10 (六)",
+        theme: "晨曦黑沙灘 ➔ 美軍飛機殘骸 ✈️ ➔ Vík 泳池放鬆 ♨️ ➔ Hótel Smyrlabjörg",
+        hotel: "Hótel Smyrlabjörg",
+        hotelInfo: "Check-in 16:00; Check-out 11:00 | 有早餐 ✖️煮食",
+        activities: [
+          { time: "08:00-10:00", desc: "Reynisfjara 黑沙灘晨曦玄武岩海蝕柱拍攝 (注意瘋狗浪警報)" },
+          { time: "10:30-13:00", desc: "DC-3 美軍飛機殘骸 (Solheimasandur Plane Wreck)" },
+          { time: "14:00-16:00", desc: "Vík 鎮溫水泳池熱水風呂放鬆 ♨️" },
+          { time: "16:00+", desc: "前往 Hótel Smyrlabjörg Check-in" }
+        ],
+        lat: 64.225, lng: -15.820
+      },
+      {
+        day: 6,
+        date: "10/11 (日)",
+        theme: "傑古沙龍冰河湖快艇 🚤 ➔ 鑽石沙灘觀日落 ➔ Hótel Smyrlabjörg",
+        hotel: "Hótel Smyrlabjörg",
+        hotelInfo: "連住第二晚 | 有早餐 ✖️煮食",
+        activities: [
+          { time: "09:00", desc: "出發前往 Jökulsárlón 冰河湖" },
+          { time: "09:50-11:00", desc: "🚤 傑古沙龍冰河湖快艇/水陸兩棲船 (已預約 09:50)", tag: "BOOKED" },
+          { time: "11:30-13:30", desc: "Diamond Beach 鑽石黑沙灘漫步與冰塊拍攝" },
+          { time: "15:00-18:00", desc: "沿途東南岸海岸線攝影與靜心放鬆" }
+        ],
+        lat: 64.048, lng: -16.179
+      },
+      {
+        day: 7,
+        date: "10/12 (一)",
+        theme: "瓦特納冰川健行與藍冰洞探險 🧗 ➔ 赫本溫泉放鬆 ♨️",
+        hotel: "Hótel Smyrlabjörg",
+        hotelInfo: "Check-out 11:00 | 有早餐 ✖️煮食",
+        activities: [
+          { time: "09:30", desc: "抵達 Vatnajökull 健行集合點" },
+          { time: "10:00-15:00", desc: "🧊 藍冰洞探險 & 瓦特納冰川健行 Day Tour (Troll.is 已預約 10:00)", tag: "BOOKED" },
+          { time: "16:00-18:00", desc: "前往 赫本 Höfn 鎮享用龍蝦大餐 (Pakkhús Restaurant) & 溫泉放鬆" }
+        ],
+        lat: 64.253, lng: -15.208
+      },
+      {
+        day: 8,
+        date: "10/13 (二)",
+        theme: "蝙蝠山 🦇 天空之鏡倒影 ➔ 羽毛峽谷行山 ⛰️ ➔ Brú Guesthouse",
+        hotel: "Brú Guesthouse",
+        hotelInfo: "Check-in 16:00; Check-out 11:00 | ✖️早餐 ⭕️可煮食",
+        activities: [
+          { time: "08:30-11:00", desc: "Vestrahorn 蝙蝠山天空之鏡倒影拍攝 (Stokksnes 景點)" },
+          { time: "12:00-15:00", desc: "開車前往 Fjaðrárgljúfur 羽毛峽谷徒步" },
+          { time: "16:00", desc: "Check-in Brú Guesthouse 小木屋" }
+        ],
+        lat: 63.666, lng: -19.980
+      },
+      {
+        day: 9,
+        date: "10/14 (三)",
+        theme: "乘坐渡輪前往西人島 🌋 一日遊 (Vestmannaeyjar)",
+        hotel: "Brú Guesthouse",
+        hotelInfo: "連住第二晚 | Check-out 明早 11:00",
+        activities: [
+          { time: "09:00-10:00", desc: "前往 Landeyjahöfn 渡輪碼頭" },
+          { time: "10:00-10:40", desc: "🚢 乘坐渡輪前往西人島 (Vestmannaeyjar Ferry)" },
+          { time: "11:00-16:00", desc: "西人島火山景觀、Eldheimar 火山博物館、尋找海豚/海鳥" },
+          { time: "17:00-17:40", desc: "搭乘渡輪返回冰島本島" }
+        ],
+        lat: 63.439, lng: -20.269
+      },
+      {
+        day: 10,
+        date: "10/15 (四)",
+        theme: "Kerið 火口湖 ➔ 惠拉蓋爾濟騎馬 🐴 ➔ 附近🏠",
+        hotel: "Bella Apartments & Rooms",
+        hotelInfo: "Check-in 16:00; Check-out 11:00 | ✖️早餐 ✖️煮食",
+        activities: [
+          { time: "09:30-11:30", desc: "參觀 Kerið 火口湖 (色彩鮮艷的火山湖)" },
+          { time: "12:30-15:30", desc: "🐴 Hveragerði 冰島馬騎乘體驗 (Icelandic Horse Riding)" },
+          { time: "16:00", desc: "Check-in Bella Apartments" }
+        ],
+        lat: 63.935, lng: -21.000
+      },
+      {
+        day: 11,
+        date: "10/16 (五)",
+        theme: "黑教堂 ⛪️ ➔ 驗眼教堂 ➔ 教會山 ⛰️ ➔ 極光小屋 🏠",
+        hotel: "Airbnb - Home in Grundarfjörður",
+        hotelInfo: "Check-in 15:00; Check-out 11:00 | ✖️早餐 ⭕️可煮食",
+        activities: [
+          { time: "08:30-11:00", desc: "開車前往斯奈山半島 (Snæfellsnes Peninsula)" },
+          { time: "11:00-12:30", desc: "Búðakirkja 著名黑教堂 & Arnarstapi 海蝕柱" },
+          { time: "14:00-16:30", desc: "Kirkjufell 教會山 & 教會山瀑布拍攝" },
+          { time: "17:00", desc: "Check-in 教會山極光小鎮 Airbnb" },
+          { time: "21:00+", desc: "🌌 屋外守候斯奈山半島夜間極光" }
+        ],
+        lat: 64.924, lng: -23.256
+      },
+      {
+        day: 12,
+        date: "10/17 (六)",
+        theme: "雷克雅維克登船睇鯨魚 🐳 ➔ 市中心購買手信",
+        hotel: "Downtown Reykjavík Apartments",
+        hotelInfo: "Check-in 15:00; Check-out 11:00 | ✖️早餐 ⭕️可煮食",
+        activities: [
+          { time: "09:00-11:30", desc: "開車返回雷克雅維克市區" },
+          { time: "13:00-16:00", desc: "🐳 Elding Whale Watching 登船賞鯨 (已預約 13:00)", tag: "BOOKED" },
+          { time: "16:30-19:00", desc: "Laugavegur 購物街購買羊毛衫、魚油、冰島鹽與手信" }
+        ],
+        lat: 64.145, lng: -21.930
+      },
+      {
+        day: 13,
+        date: "10/18 (日)",
+        theme: "藍湖 Blue Lagoon ♨️ ➔ 火山健行 🌋 ➔ 機場附近🏠",
+        hotel: "Konvin Hotel by Reykjavik Keflavik Airport",
+        hotelInfo: "Check-in 14:00; Check-out 11:00 | ✖️早餐 ✖️煮食",
+        activities: [
+          { time: "10:00-13:00", desc: "♨️ Blue Lagoon 藍湖地熱溫泉放鬆 & 敷矽泥面膜" },
+          { time: "14:00-17:00", desc: "Fagradalsfjall 泥火山與地熱泉遠足探險" },
+          { time: "18:00", desc: "Check-in Konvin Hotel (收拾行李準備明日早機)" }
+        ],
+        lat: 63.978, lng: -22.530
+      },
+      {
+        day: 14,
+        date: "10/19 (一)",
+        theme: "冰島 ✈️ 芬蘭 ✈️ 香港 (返程)",
+        hotel: "平安歸家 ✈️",
+        hotelInfo: "還車時間: 10/19 06:30 前",
+        activities: [
+          { time: "06:30", desc: "🔑 Lotus Car Rental 還車 (KEF 機場門市)" },
+          { time: "08:35", desc: "KEF 機場起飛 AY992 飛往赫爾辛基 (15:00 抵達)" },
+          { time: "10/20 00:35", desc: "赫爾辛基轉機 AY099 飛往香港" },
+          { time: "10/20 17:40", desc: "🛬 順利抵達香港國際機場" }
+        ],
+        lat: 63.985, lng: -22.605
+      }
+    ];
+
+    // Pre-loaded Vouchers
+    let vouchersData = [
+      { id: 'v1', title: 'Lotus Car Rental 租車憑證', date: '10/06 - 10/19', desc: 'Jeep Renegade 4x4 (Automatic) | 取車: 10/06 08:00, 還車: 10/19 06:30', status: 'CONFIRMED' },
+      { id: 'v2', title: '朗格冰原雪地摩托車 Tour', date: '10/08 12:15', desc: 'Geysir Centre 集合 | 4小時行程', status: 'CONFIRMED' },
+      { id: 'v3', title: '傑古沙龍冰河湖快艇/水陸兩棲船', date: '10/11 09:50', desc: 'Jökulsárlón Glacier Lagoon 現場憑號登船', status: 'CONFIRMED' },
+      { id: 'v4', title: '瓦特納冰川健行 & 藍冰洞', date: '10/12 10:00', desc: 'Troll.is | 含冰爪、安全帽專業裝備', status: 'CONFIRMED' },
+      { id: 'v5', title: 'Elding 市區賞鯨船票', date: '10/17 13:00', desc: 'Reykjavik Old Harbor 登船', status: 'CONFIRMED' }
+    ];
+
+    // Pre-loaded Restaurants
+    let restaurantsData = [
+      { name: "Braud & Co (Bravo&Co)", loc: "Reykjavik", type: "麵包店", note: "必食熱辣辣肉桂卷 Cinnamon Roll" },
+      { name: "Reykjavik Roasters", loc: "Reykjavik", type: "咖啡廳", note: "冰島最知名精品手沖咖啡" },
+      { name: "Bæjarins Beztu Pylsur", loc: "Reykjavik", type: "熱狗堡", note: "美國前總統柯林頓推薦，羊肉熱狗加炸洋葱" },
+      { name: "Valdís", loc: "Reykjavik", type: "雪糕店", note: "手工冰淇淋，海鹽焦糖味超熱門" },
+      { name: "Pakkhús Restaurant", loc: "Höfn 赫本", type: "海鮮餐廳", note: "必食冰島小龍蝦 Langoustine" }
+    ];
+
+    // Pre-loaded Packing Checklist
+    let packingData = [
+      { id: 'p1', text: '護照 & 國際駕照 + 香港駕照正本', checked: true },
+      { id: 'p2', text: '信用卡 (需先向銀行申請 4 位數預設 PIN 碼以供加油站使用)', checked: true },
+      { id: 'p3', text: '防水防風 Gore-Tex 外套 & 保暖羽絨', checked: false },
+      { id: 'p4', text: '防水登山鞋 (冰川健行必備硬底鞋)', checked: false },
+      { id: 'p5', text: '泳衣/泳褲 & 快乾毛巾 (藍湖與溫泉用)', checked: false },
+      { id: 'p6', text: '保暖內衣發熱衣 (羊毛底層) & 厚襪子', checked: false },
+      { id: 'p7', text: '相機/手機高腳架 & 極光攝影遙控器', checked: false },
+      { id: 'p8', text: '歐洲/冰島三腳轉接插頭 & 行動電源', checked: false },
+      { id: 'p9', text: '車用手機架 & 雙孔車充轉換頭', checked: false }
+    ];
+
+    let currentSelectedDay = 0;
+    let leafletMap = null;
+    let mapMarkers = [];
+
+    let currentRoomCode = localStorage.getItem('SC_ICELAND_ROOM') || 'SC-ICELAND-2026';
+    let dbRef = null;
+    let isCloudSyncing = false;
+
+    // Initialize Firebase Realtime Sync with User's Firebase URL
+    function initFirebaseSync(roomCode) {
+      try {
+        if (!firebase.apps.length) {
+          firebase.initializeApp({
+            databaseURL: "https://iceland-trip-2026-a8980-default-rtdb.asia-southeast1.firebasedatabase.app"
+          });
+        }
+        dbRef = firebase.database().ref('trips/' + roomCode);
+        
+        // Listen to cloud updates from other devices
+        dbRef.on('value', (snapshot) => {
+          const val = snapshot.val();
+          if (val) {
+            isCloudSyncing = true;
+            if (val.itineraryData) itineraryData = val.itineraryData;
+            if (val.vouchersData) vouchersData = val.vouchersData;
+            if (val.restaurantsData) restaurantsData = val.restaurantsData;
+            if (val.packingData) packingData = val.packingData;
+            
+            saveLocalData(false);
+            renderDaySelector();
+            renderDayDetail(currentSelectedDay);
+            renderVouchers();
+            renderRestaurants();
+            renderPackingList();
+            
+            const statusEl = document.getElementById('sync-status-msg');
+            if (statusEl) statusEl.innerHTML = `<i class="fa-solid fa-wifi text-aurora-400"></i> 雲端已即時同步（房間：${roomCode}）`;
+            isCloudSyncing = false;
+          }
+        });
+      } catch (err) {
+        console.warn("Firebase Sync fallback to LocalStorage", err);
+      }
+    }
+
+    function saveLocalData(triggerCloud = true) {
+      const payload = {
+        itineraryData,
+        vouchersData,
+        restaurantsData,
+        packingData,
+        lastUpdated: Date.now()
+      };
+      localStorage.setItem('SC_ICELAND_DATA', JSON.stringify(payload));
+      
+      if (triggerCloud && dbRef && !isCloudSyncing) {
+        dbRef.set(payload).catch(e => console.log("Cloud sync queued:", e));
+      }
+    }
+
+    function loadLocalData() {
+      const saved = localStorage.getItem('SC_ICELAND_DATA');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.itineraryData) itineraryData = parsed.itineraryData;
+          if (parsed.vouchersData) vouchersData = parsed.vouchersData;
+          if (parsed.restaurantsData) restaurantsData = parsed.restaurantsData;
+          if (parsed.packingData) packingData = parsed.packingData;
+        } catch (e) {
+          console.error("Error loading local storage", e);
+        }
+      }
+      
+      const userKey = localStorage.getItem('SC_GEMINI_API_KEY');
+      if (userKey) {
+        document.getElementById('custom-api-key').value = userKey;
+      }
+    }
+
+    window.onload = function() {
+      loadLocalData();
+      renderDaySelector();
+      renderDayDetail(0);
+      renderVouchers();
+      renderRestaurants();
+      renderPackingList();
+      renderGoogleRouteLinks();
+
+      document.getElementById('sync-room-code').innerText = currentRoomCode;
+      initFirebaseSync(currentRoomCode);
+    };
+
+    function switchTab(tab) {
+      const tabs = ['itinerary', 'vouchers', 'map', 'restaurants', 'toolbox', 'ai'];
+      tabs.forEach(t => {
+        const viewEl = document.getElementById(`view-${t}`);
+        const navEl = document.getElementById(`nav-${t}`);
+        if (t === tab) {
+          viewEl.classList.remove('hidden');
+          navEl.className = "flex flex-col items-center justify-center text-ice-400 font-bold transition";
+        } else {
+          viewEl.classList.add('hidden');
+          navEl.className = "flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition";
+        }
+      });
+    }
+
+    function renderGoogleRouteLinks() {
+      const container = document.getElementById('google-route-links');
+      if (!container) return;
+      container.innerHTML = itineraryData.map(d => {
+        const query = encodeURIComponent(`Iceland ${d.theme.replace(/[\u{1F300}-\u{1F9FF}]/gu, '')}`);
+        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+        return `
+          <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="p-3 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 flex items-center justify-between transition group">
+            <div class="space-y-0.5 truncate pr-2">
+              <span class="text-[10px] font-bold text-ice-400 uppercase">Day ${d.day} • ${d.date}</span>
+              <p class="text-xs font-semibold text-white truncate">${d.theme}</p>
+            </div>
+            <div class="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xs border border-amber-500/30 group-hover:bg-amber-500 group-hover:text-slate-950 transition">
+              <i class="fa-solid fa-location-arrow"></i>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    function renderDaySelector() {
+      const container = document.getElementById('day-selector-container');
+      container.innerHTML = itineraryData.map((d, idx) => `
+        <button onclick="selectDay(${idx})" class="snap-start shrink-0 px-3 py-2 rounded-2xl border ${idx === currentSelectedDay ? 'bg-gradient-to-br from-ice-600 to-ice-800 border-ice-400 text-white shadow-lg shadow-ice-600/30' : 'glass-card border-slate-800 text-slate-300 hover:border-slate-700'} flex flex-col items-center min-w-[70px] transition">
+          <span class="text-[10px] uppercase font-semibold opacity-80">DAY ${d.day}</span>
+          <span class="text-xs font-bold mt-0.5">${d.date.split(' ')[0]}</span>
+        </button>
+      `).join('');
+    }
+
+    function selectDay(idx) {
+      currentSelectedDay = idx;
+      renderDaySelector();
+      renderDayDetail(idx);
+    }
+
+    function renderDayDetail(idx) {
+      const d = itineraryData[idx];
+      const container = document.getElementById('day-detail-card');
+
+      container.innerHTML = `
+        <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="px-2.5 py-1 rounded-full bg-ice-500/10 text-ice-400 text-xs font-bold border border-ice-500/20">
+                Day ${d.day} • ${d.date}
+              </span>
+              <h2 class="text-base sm:text-lg font-bold text-white mt-2">${d.theme}</h2>
+            </div>
+            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.theme)}" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-ice-400 text-xs font-semibold flex items-center gap-1 border border-slate-700 shadow">
+              <i class="fa-solid fa-compass"></i> 地圖導航
+            </a>
+          </div>
+
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 text-xs space-y-1">
+            <div class="flex items-center justify-between font-bold text-slate-200">
+              <span class="flex items-center gap-1.5 text-amber-300">
+                <i class="fa-solid fa-bed"></i> ${d.hotel}
+              </span>
+              <span class="text-[10px] font-normal text-slate-400">${d.hotelInfo}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-xs text-slate-400 uppercase tracking-wider flex items-center justify-between">
+            <span><i class="fa-solid fa-clock text-ice-400 me-1"></i> 時間行程表</span>
+            <span class="text-[10px] text-slate-500">點擊可微調內容</span>
+          </h3>
+
+          <div class="relative border-l-2 border-slate-800 ml-3 space-y-4 pl-4 my-2">
+            ${d.activities.map((act, actIdx) => `
+              <div class="relative group">
+                <div class="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-ice-500 ring-4 ring-slate-950"></div>
+                <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition flex justify-between items-start">
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                      <span class="font-mono text-xs font-bold text-ice-400">${act.time}</span>
+                      ${act.tag ? `<span class="px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold border border-rose-500/30">${act.tag}</span>` : ''}
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed">${act.desc}</p>
+                  </div>
+                  <button onclick="openEditActivityModal(${idx}, ${actIdx})" class="text-slate-500 hover:text-ice-400 text-xs p-1">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function openEditActivityModal(dayIdx, actIdx) {
+      const act = itineraryData[dayIdx].activities[actIdx];
+      document.getElementById('edit-day-idx').value = dayIdx;
+      document.getElementById('edit-act-idx').value = actIdx;
+      document.getElementById('edit-act-time').value = act.time;
+      document.getElementById('edit-act-desc').value = act.desc;
+      document.getElementById('modal-edit-activity').classList.remove('hidden');
+    }
+
+    function saveActivityEdit() {
+      const dayIdx = document.getElementById('edit-day-idx').value;
+      const actIdx = document.getElementById('edit-act-idx').value;
+      itineraryData[dayIdx].activities[actIdx].time = document.getElementById('edit-act-time').value;
+      itineraryData[dayIdx].activities[actIdx].desc = document.getElementById('edit-act-desc').value;
+      closeModal('modal-edit-activity');
+      renderDayDetail(dayIdx);
+      saveLocalData();
+    }
+
+    function renderVouchers() {
+      const container = document.getElementById('vouchers-list');
+      if (!container) return;
+      container.innerHTML = vouchersData.map(v => `
+        <div class="glass-card p-4 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex justify-between items-start">
+            <h3 class="font-bold text-xs text-white">${v.title}</h3>
+            <span class="px-2 py-0.5 rounded-full bg-aurora-500/10 text-aurora-400 text-[10px] font-bold border border-aurora-500/30">${v.status}</span>
+          </div>
+          <p class="text-[11px] text-ice-400 font-mono"><i class="fa-regular fa-calendar me-1"></i>${v.date}</p>
+          <p class="text-xs text-slate-300">${v.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function openAddVoucherModal() {
+      const title = prompt("請輸入憑證名稱 (例如: 藍湖溫泉門票):");
+      if (!title) return;
+      const date = prompt("請輸入時間/日期:");
+      const desc = prompt("請輸入確認號碼或備註:");
+      vouchersData.push({ id: 'v_' + Date.now(), title, date: date || '', desc: desc || '', status: 'SAVED' });
+      renderVouchers();
+      saveLocalData();
+    }
+
+    function renderRestaurants() {
+      const container = document.getElementById('restaurants-list');
+      container.innerHTML = restaurantsData.map(r => `
+        <div class="glass-card p-3 rounded-2xl border border-slate-800 flex justify-between items-center">
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-xs text-white">${r.name}</h3>
+              <span class="px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 text-[10px]">${r.type}</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5"><i class="fa-solid fa-location-dot text-slate-500 me-1"></i>${r.loc}</p>
+            <p class="text-xs text-slate-300 mt-1">${r.note}</p>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name + ' ' + r.loc)}" target="_blank" class="p-2 rounded-xl bg-slate-800 text-ice-400 hover:bg-slate-700 text-xs">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+      `).join('');
+    }
+
+    function openAddRestoModal() {
+      const name = prompt("餐廳名稱:");
+      if (!name) return;
+      const loc = prompt("地點 (例如 Reykjavik):");
+      const note = prompt("推薦美食/備註:");
+      restaurantsData.push({ name, loc: loc || '', type: '心水餐廳', note: note || '' });
+      renderRestaurants();
+      saveLocalData();
+    }
+
+    function switchToolTab(tabKey) {
+      ['fx', 'aurora', 'packing', 'emergency'].forEach(k => {
+        const panel = document.getElementById(`tool-panel-${k}`);
+        const btn = document.getElementById(`tool-btn-${k}`);
+        if (k === tabKey) {
+          panel.classList.remove('hidden');
+          btn.className = "p-2.5 rounded-xl bg-ice-600 text-white text-xs font-semibold flex flex-col items-center gap-1 shadow";
+        } else {
+          panel.classList.add('hidden');
+          btn.className = "p-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold flex flex-col items-center gap-1 border border-slate-700";
+        }
+      });
+    }
+
+    function convertFX(type) {
+      const iskRate = 0.0571;
+      if (type === 'isk') {
+        const isk = parseFloat(document.getElementById('isk-input').value) || 0;
+        document.getElementById('hkd-input').value = Math.round(isk * iskRate);
+      } else {
+        const hkd = parseFloat(document.getElementById('hkd-input').value) || 0;
+        document.getElementById('isk-input').value = Math.round(hkd / iskRate);
+      }
+    }
+
+    function quickISK(val) {
+      document.getElementById('isk-input').value = val;
+      convertFX('isk');
+    }
+
+    function renderPackingList() {
+      const container = document.getElementById('packing-items-container');
+      const progress = document.getElementById('packing-progress');
+      const checkedCount = packingData.filter(p => p.checked).length;
+
+      progress.innerText = `${checkedCount}/${packingData.length} 完成`;
+      container.innerHTML = packingData.map((p, idx) => `
+        <div onclick="togglePacking(${idx})" class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between cursor-pointer">
+          <span class="text-xs ${p.checked ? 'line-through text-slate-500' : 'text-slate-200'}">${p.text}</span>
+          <i class="fa-solid ${p.checked ? 'fa-square-check text-aurora-400' : 'fa-square text-slate-600'} text-sm"></i>
+        </div>
+      `).join('');
+    }
+
+    function togglePacking(idx) {
+      packingData[idx].checked = !packingData[idx].checked;
+      renderPackingList();
+      saveLocalData();
+    }
+
+    function addPackingItem() {
+      const input = document.getElementById('new-packing-input');
+      if (input.value.trim()) {
+        packingData.push({ id: 'p_' + Date.now(), text: input.value.trim(), checked: false });
+        input.value = '';
+        renderPackingList();
+        saveLocalData();
+      }
+    }
+
+    function toggleKeyConfig() {
+      const box = document.getElementById('ai-key-box');
+      box.classList.toggle('hidden');
+    }
+
+    function saveApiKey() {
+      const keyVal = document.getElementById('custom-api-key').value.trim();
+      if (keyVal) {
+        localStorage.setItem('SC_GEMINI_API_KEY', keyVal);
+        alert('Gemini API Key 已儲存！');
+        toggleKeyConfig();
+      } else {
+        localStorage.removeItem('SC_GEMINI_API_KEY');
+        alert('已清除儲存的 API Key。');
+      }
+    }
+
+    async function sendAIMessage() {
+      const input = document.getElementById('ai-user-input');
+      const query = input.value.trim();
+      if (!query) return;
+
+      const chatBox = document.getElementById('ai-chat-box');
+      
+      chatBox.innerHTML += `
+        <div class="flex items-start justify-end space-x-2">
+          <div class="bg-ice-600 p-3 rounded-2xl rounded-tr-none max-w-[85%] text-white leading-relaxed">
+            ${query}
+          </div>
+        </div>
+      `;
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      const userApiKey = localStorage.getItem('SC_GEMINI_API_KEY');
+      if (!userApiKey) {
+        chatBox.innerHTML += `
+          <div class="flex items-start space-x-2">
+            <div class="w-7 h-7 rounded-full bg-amber-600 flex items-center justify-center text-white shrink-0 text-xs">!</div>
+            <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-amber-300 leading-relaxed border border-amber-500/30">
+              💡 <strong>提示：</strong> 目前尚未設定 Google Gemini API Key。<br>
+              請點選右上角的 <strong>「Key 設定」</strong> 按鈕填入 Key 後即可開始問答。
+            </div>
+          </div>
+        `;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return;
+      }
+
+      const loadingId = 'ai-loading-' + Date.now();
+      chatBox.innerHTML += `
+        <div id="${loadingId}" class="flex items-start space-x-2">
+          <div class="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0 text-xs">AI</div>
+          <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none text-slate-400 text-xs animate-pulse">
+            思考中，正在為您查詢冰島旅遊資訊...
+          </div>
+        </div>
+      `;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${userApiKey}`;
+        const systemPrompt = `你是一位專業的冰島自駕旅遊助手，熟悉冰島 10 月天氣狀況、自駕安全規範與行程安排。請簡短精確地回答問題，並配合溫馨的表情符號。`;
+        
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: query }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] }
+          })
+        });
+
+        const data = await response.json();
+        const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "連線或 API Key 無效，請檢查 Key 設定。";
+
+        document.getElementById(loadingId).remove();
+        chatBox.innerHTML += `
+          <div class="flex items-start space-x-2">
+            <div class="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0 text-xs">AI</div>
+            <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-200 leading-relaxed whitespace-pre-line">
+              ${replyText}
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        document.getElementById(loadingId).remove();
+        chatBox.innerHTML += `
+          <div class="flex items-start space-x-2">
+            <div class="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0 text-xs">AI</div>
+            <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none text-rose-400">
+              連線發生錯誤，請檢查 API Key 是否正確。
+            </div>
+          </div>
+        `;
+      }
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function clearAIChat() {
+      document.getElementById('ai-chat-box').innerHTML = '';
+    }
+
+    function showPwaModal() { document.getElementById('modal-pwa').classList.remove('hidden'); }
+    function openSyncModal() { document.getElementById('modal-sync').classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function joinSyncRoom() {
+      const codeInput = document.getElementById('join-room-input').value.trim();
+      if (codeInput) {
+        currentRoomCode = codeInput.toUpperCase();
+        localStorage.setItem('SC_ICELAND_ROOM', currentRoomCode);
+        document.getElementById('sync-room-code').innerText = currentRoomCode;
+        initFirebaseSync(currentRoomCode);
+        saveLocalData(true);
+        closeModal('modal-sync');
+        alert("已成功連接並開啟同步房間：" + currentRoomCode + "\n同伴手機輸入相同的 Room Code 即可即時同步！");
+      }
+    }
+  </script>
+</body>
+</html>      link.rel = 'manifest';
+      link.href = manifestURL;
+      document.head.appendChild(link);
+    })();
+  </script>
+
+  <header class="glass pt-safe px-4 py-3 border-b border-slate-800 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center shadow-lg shadow-ice-500/20 text-2xl select-none">
+        🇮🇸
+      </div>
+      <div>
+        <h1 class="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
+          SC 9th Anniversary Trip
           <span class="text-xs font-normal px-2 py-0.5 rounded-full bg-ice-500/20 text-ice-400 border border-ice-500/30">冰島遊</span>
         </h1>
         <p class="text-xs text-slate-400 flex items-center gap-1">
