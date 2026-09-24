@@ -29,10 +29,6 @@
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Leaflet CSS & JS for Map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Firebase JS SDK for Realtime Multi-Device Sync -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -42,9 +38,9 @@
     /* Custom Scrollbar & Safe Area Adjustments */
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
-    .pb-safe { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
-    .pt-safe { padding-top: max(0.75rem, env(safe-area-inset-top)); }
-    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .pb-safe { padding-bottom: max(0.25rem, env(safe-area-inset-bottom)); }
+    .pt-safe { padding-top: max(2.5rem, env(safe-area-inset-top)); }
+    .glass { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
     .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.08); }
   </style>
 </head>
@@ -101,7 +97,7 @@
     </div>
   </header>
 
-  <main id="app-content" class="flex-1 overflow-y-auto relative pb-24">
+  <main id="app-content" class="flex-1 overflow-y-auto relative pb-20">
     <!-- View 1: Itinerary Tab -->
     <section id="view-itinerary" class="p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
       <!-- Days Selector Horizontal Carousel -->
@@ -117,52 +113,46 @@
 
     <!-- View 2: Booking Vouchers -->
     <section id="view-vouchers" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
-      <div class="flex justify-between items-center mb-2">
-        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-ticket text-ice-400"></i> 預訂憑證 & 確認單
-        </h2>
-        <button onclick="openAddVoucherModal()" class="px-3 py-1.5 rounded-xl bg-ice-600 hover:bg-ice-500 text-white text-xs font-medium flex items-center gap-1 shadow">
-          <i class="fa-solid fa-plus"></i> 新增憑證
-        </button>
-      </div>
-      <div id="vouchers-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <!-- Rendered by JS -->
-      </div>
-    </section>
-
-    <!-- View 3: Route Map & Google Maps List Integration -->
-    <section id="view-map" class="hidden h-full flex flex-col p-2 max-w-5xl mx-auto space-y-2">
-      <!-- Friend's Shared Google Maps List Banner Card -->
-      <div class="glass-card p-3 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/10 via-slate-900/90 to-slate-900/90 flex items-center justify-between gap-3 shadow-lg shrink-0">
-        <div class="flex items-center space-x-3 overflow-hidden">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xl border border-amber-500/30">
-            <i class="fa-solid fa-map-location-dot"></i>
-          </div>
-          <div class="truncate">
-            <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
-              <span>ICELAND · Ching 的 Google Maps 清單</span>
-              <span class="px-1.5 py-0.5 text-[9px] rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">已連結</span>
-            </h3>
-            <p class="text-[11px] text-slate-400 truncate">包含朋友分享的冰島行程景點 Pin 列表</p>
+    <!-- View 3: Shared Google Maps List Integration -->
+    <section id="view-map" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+      <!-- Primary Shared Google Maps List Banner Card -->
+      <div class="glass-card p-5 rounded-3xl border border-amber-500/50 bg-gradient-to-br from-amber-500/15 via-slate-900/90 to-slate-900/95 space-y-4 shadow-xl">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-2xl border border-amber-500/40 shadow-inner">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                <span>Ching 的 Google Maps 冰島清單</span>
+                <span class="px-2 py-0.5 text-[10px] rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">已連結</span>
+              </h3>
+              <p class="text-xs text-slate-300 mt-0.5">朋友分享的 14 天冰島重點景點 Pin 清單</p>
+            </div>
           </div>
         </div>
-        <a href="https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw" target="_blank" rel="noopener noreferrer" class="shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-amber-500/20 transition active:scale-95">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          <span>開啟 Google 清單</span>
+
+        <p class="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-2xl border border-slate-800/80">
+          📍 點擊下方按鈕即可直接開啟 Google Maps 查看完整地點標籤與清單細節，手機可同步導航與離線儲存。
+        </p>
+
+        <a href="https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition active:scale-98">
+          <i class="fa-solid fa-arrow-up-right-from-square text-base"></i>
+          <span>開啟 Ching 的 Google Maps 清單</span>
         </a>
       </div>
 
-      <div class="glass-card p-3 rounded-2xl flex justify-between items-center shrink-0">
-        <div>
-          <h2 class="text-xs sm:text-sm font-bold text-white">冰島精華環島路線圖</h2>
-          <p class="text-[11px] text-slate-400">點擊地標可開啟個別景點導航</p>
-        </div>
-        <button onclick="resetMapView()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-ice-400 border border-slate-700 transition">
-          重置視角
-        </button>
-      </div>
+      <!-- Quick Daily Route Navigation Links -->
+      <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
+        <h3 class="font-bold text-xs text-slate-300 uppercase tracking-wider flex items-center justify-between">
+          <span><i class="fa-solid fa-route text-ice-400 me-1.5"></i> 每日行程 Google Maps 一鍵導航</span>
+          <span class="text-[10px] text-slate-400">14 天每日路線</span>
+        </h3>
 
-      <div id="map" class="w-full flex-1 min-h-[350px] rounded-2xl overflow-hidden shadow-2xl border border-slate-800 z-10"></div>
+        <div id="google-route-links" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <!-- Rendered dynamically by JS -->
+        </div>
+      </div>
     </section>
 
     <!-- View 4: Food & Restaurants -->
@@ -348,30 +338,30 @@
   </main>
 
   <nav class="fixed bottom-0 left-0 right-0 glass border-t border-slate-800 z-40 pb-safe">
-    <div class="max-w-md mx-auto grid grid-cols-6 h-14">
+    <div class="max-w-md mx-auto grid grid-cols-6 h-12">
       <button onclick="switchTab('itinerary')" id="nav-itinerary" class="flex flex-col items-center justify-center text-ice-400 transition">
-        <i class="fa-solid fa-calendar-days text-base"></i>
-        <span class="text-[10px] mt-1 font-medium">行程</span>
+        <i class="fa-solid fa-calendar-days text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">行程</span>
       </button>
       <button onclick="switchTab('vouchers')" id="nav-vouchers" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
-        <i class="fa-solid fa-ticket text-base"></i>
-        <span class="text-[10px] mt-1 font-medium">憑證</span>
+        <i class="fa-solid fa-ticket text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">憑證</span>
       </button>
       <button onclick="switchTab('map')" id="nav-map" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
-        <i class="fa-solid fa-map-location-dot text-base"></i>
-        <span class="text-[10px] mt-1 font-medium">地圖</span>
+        <i class="fa-solid fa-map-location-dot text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">地圖</span>
       </button>
       <button onclick="switchTab('restaurants')" id="nav-restaurants" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
-        <i class="fa-solid fa-utensils text-base"></i>
-        <span class="text-[10px] mt-1 font-medium">美食</span>
+        <i class="fa-solid fa-utensils text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">美食</span>
       </button>
       <button onclick="switchTab('toolbox')" id="nav-toolbox" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
-        <i class="fa-solid fa-toolbox text-base"></i>
-        <span class="text-[10px] mt-1 font-medium">工具</span>
+        <i class="fa-solid fa-toolbox text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">工具</span>
       </button>
       <button onclick="switchTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
-        <i class="fa-solid fa-robot text-base"></i>
-        <span class="text-[10px] mt-1 font-medium">AI 助手</span>
+        <i class="fa-solid fa-robot text-sm"></i>
+        <span class="text-[9px] mt-0.5 font-medium">AI 助手</span>
       </button>
     </div>
   </nav>
@@ -771,6 +761,7 @@
       renderVouchers();
       renderRestaurants();
       renderPackingList();
+      renderGoogleRouteLinks();
 
       document.getElementById('sync-room-code').innerText = currentRoomCode;
       initFirebaseSync(currentRoomCode);
@@ -789,10 +780,26 @@
           navEl.className = "flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition";
         }
       });
+    }
 
-      if (tab === 'map') {
-        setTimeout(initLeafletMap, 200);
-      }
+    function renderGoogleRouteLinks() {
+      const container = document.getElementById('google-route-links');
+      if (!container) return;
+      container.innerHTML = itineraryData.map(d => {
+        const query = encodeURIComponent(`Iceland ${d.theme.replace(/[\u{1F300}-\u{1F9FF}]/gu, '')}`);
+        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+        return `
+          <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="p-3 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 flex items-center justify-between transition group">
+            <div class="space-y-0.5 truncate pr-2">
+              <span class="text-[10px] font-bold text-ice-400 uppercase">Day ${d.day} • ${d.date}</span>
+              <p class="text-xs font-semibold text-white truncate">${d.theme}</p>
+            </div>
+            <div class="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xs border border-amber-500/30 group-hover:bg-amber-500 group-hover:text-slate-950 transition">
+              <i class="fa-solid fa-location-arrow"></i>
+            </div>
+          </a>
+        `;
+      }).join('');
     }
 
     function renderDaySelector() {
