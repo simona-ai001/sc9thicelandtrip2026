@@ -33,6 +33,9 @@
   <style>
     /* Strict CSS safeguards */
     .hidden { display: none !important; }
+    .tab-view:not(.active-tab) { display: none !important; }
+    .tab-view.active-tab { display: block; }
+    #view-ai.tab-view.active-tab { display: flex !important; }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 4px; }
     .glass { background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
@@ -50,7 +53,7 @@
     /* PWA Standalone Mode adjustments for iOS & Android */
     @media all and (display-mode: standalone) {
       .pt-safe {
-        padding-top: max(env(safe-area-inset-top, 44px), 48px) !important;
+        padding-top: max(env(safe-area-inset-top, 50px), 54px) !important;
       }
       .pb-safe {
         padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px) !important;
@@ -61,7 +64,7 @@
     }
 
     .is-pwa .pt-safe {
-      padding-top: max(env(safe-area-inset-top, 44px), 48px) !important;
+      padding-top: max(env(safe-area-inset-top, 50px), 54px) !important;
     }
     .is-pwa .pb-safe {
       padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px) !important;
@@ -117,7 +120,7 @@
   <main id="app-content" class="flex-1 overflow-y-auto relative pb-20">
 
     <!-- View 1: 預約憑證 (Vouchers) -->
-    <section id="view-vouchers" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
+    <section id="view-vouchers" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4">
       <div class="flex justify-between items-center">
         <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-ticket text-ice-400"></i> 預約憑證 & 附件管理
@@ -126,53 +129,52 @@
           <i class="fa-solid fa-plus"></i> 新增憑證
         </button>
       </div>
+
+      <!-- Voucher Category Filter Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none" id="voucher-category-filter">
+        <!-- Rendered by JS: 全部 / 住宿 / 活動體驗 / 交通租車 / 機票航班 -->
+      </div>
+
       <div id="vouchers-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
     </section>
 
     <!-- View 2: 地圖 (Map) -->
-    <section id="view-map" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
+    <section id="view-map" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4">
+      <!-- Ching's Google Maps Master List Banner -->
       <div class="glass-card p-4 rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-slate-900/90 to-slate-900/95 space-y-3 shadow-xl">
-        <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xl border border-amber-500/40">
-            <i class="fa-solid fa-map-location-dot"></i>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xl border border-amber-500/40">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>Ching 的 Google Maps 冰島清單</span>
+                <span class="px-2 py-0.5 text-[10px] rounded-full bg-amber-400/20 text-amber-300 font-semibold">已連結</span>
+              </h3>
+              <p class="text-xs text-slate-300 mt-0.5">點擊直接開啟好友分享的 14 天冰島景點清單</p>
+            </div>
           </div>
-          <div>
-            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-              <span>Ching 的 Google Maps 冰島清單</span>
-              <span class="px-2 py-0.5 text-[10px] rounded-full bg-amber-400/20 text-amber-300 font-semibold">已連結</span>
-            </h3>
-            <p class="text-xs text-slate-300 mt-0.5">點擊直接開啟好友分享的 14 天景點清單</p>
-          </div>
+          <a href="https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 shadow transition shrink-0">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> 開啟 Ching 清單
+          </a>
         </div>
-        <a href="https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 shadow transition">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> 開啟 Ching 的 Google Maps 清單
-        </a>
       </div>
 
-      <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
-        <div class="flex justify-between items-center">
+      <!-- Daily Route & Pinpoint Listings Container (Includes Hand-drawn map per Day & custom Icon) -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
           <h3 class="font-bold text-xs text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-image text-emerald-400"></i> 自訂相片地圖 (手繪/地圖圖檔)
+            <i class="fa-solid fa-route text-ice-400"></i> 每日行程路線與多點 Pinpoint 導航
           </h3>
-          <label class="px-2.5 py-1 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/30 text-xs font-bold cursor-pointer flex items-center gap-1">
-            <i class="fa-solid fa-cloud-arrow-up"></i> 上傳地圖
-            <input type="file" accept="image/*" class="hidden" onchange="handleHandDrawnMapUpload(event)">
-          </label>
+          <span class="text-[10px] text-slate-400">與行程頁面 100% 同步</span>
         </div>
-        <div id="hand-drawn-maps-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
-      </div>
-
-      <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
-        <h3 class="font-bold text-xs text-slate-300 uppercase tracking-wider flex items-center justify-between">
-          <span><i class="fa-solid fa-route text-ice-400 me-1.5"></i> 每日行程導航路線</span>
-          <span class="text-[10px] text-slate-400">依行程景點智慧串聯</span>
-        </h3>
-        <div id="google-route-links" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        <div id="google-route-links" class="space-y-4"></div>
       </div>
     </section>
 
     <!-- View 3: 自駕 (Drive) -->
-    <section id="view-drive" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
+    <section id="view-drive" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4">
       <div class="glass-card p-4 rounded-3xl border border-sky-500/30 bg-gradient-to-br from-sky-950/40 via-slate-900/90 to-slate-900/95 space-y-3">
         <h2 class="text-base font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-car text-sky-400"></i> 冰島自駕指南 & 實況路況
@@ -184,61 +186,67 @@
 
       <!-- Drive Subtabs -->
       <div class="grid grid-cols-4 gap-1.5">
-        <button onclick="switchDriveSubtab('rules')" id="dtab-rules" class="p-2 rounded-xl bg-sky-600 text-white text-xs font-bold text-center">自駕法規</button>
-        <button onclick="switchDriveSubtab('gas')" id="dtab-gas" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">加油須知</button>
-        <button onclick="switchDriveSubtab('wc')" id="dtab-wc" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">公廁指南</button>
-        <button onclick="switchDriveSubtab('road')" id="dtab-road" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">路況實況</button>
+        <button onclick="switchDriveSubtab('rules')" id="dtab-rules" class="p-2 rounded-xl bg-sky-600 text-white text-xs font-bold text-center">
+          自駕法規
+        </button>
+        <button onclick="switchDriveSubtab('gas')" id="dtab-gas" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">
+          加油須知
+        </button>
+        <button onclick="switchDriveSubtab('wc')" id="dtab-wc" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">
+          公廁指南
+        </button>
+        <button onclick="switchDriveSubtab('road')" id="dtab-road" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">
+          路況實況
+        </button>
       </div>
 
+      <!-- Subtab 1: Rules -->
       <div id="dpanel-rules" class="glass-card p-4 rounded-2xl space-y-3 text-xs leading-relaxed text-slate-300">
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
             <i class="fa-solid fa-circle-exclamation"></i> 迴旋處 (Roundabout) 內圈絕對先行！
           </h4>
-          <p>雙線迴旋處規定：<strong>內圈車輛擁有絕對優先切出權</strong>。外圈車輛欲繼續直行，必須減速禮讓內圈出彎車輛。</p>
+          <p>冰島雙線迴旋處規定：<strong>內圈車輛擁有絕對優先權</strong>。若外圈車輛欲直行，必須在內圈車輛欲切出時讓行減速。</p>
         </div>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-sky-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-bridge"></i> 單線橋樑 (Single-Lane Bridge) 路權
+            <i class="fa-solid fa-wind"></i> 開車門雙手死握抗強風
           </h4>
-          <p>距離橋頭較近、先抵達的一方優先通行。進橋前務必減速確認對向有無來車；遇長橋請利用中間避車彎 (Passing place, 標誌 M) 讓行。</p>
-        </div>
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
-          <h4 class="font-bold text-rose-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-wind"></i> 開車門雙手抓緊防折斷
-          </h4>
-          <p>冰島陣風風力極強，租車保險不理賠被強風吹折之車門。停車請盡量順風停泊，開門時必須雙手握緊門把。</p>
+          <p>冰島陣風風力極強，租車保險不保被風吹折之車門。上下車請雙手拉緊車門，並儘量順風停車。</p>
         </div>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-emerald-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-gauge-high"></i> 公路法定速限與野生動物
+            <i class="fa-solid fa-lightbulb"></i> 24 小時全天候開近光大燈
           </h4>
-          <p>市區速限 50 km/h；柏油公路 90 km/h；碎石砂石路 80 km/h。若路肩遇見綿羊，切記綿羊受驚會往回跑橫越馬路，請務必減速。</p>
+          <p>不分白晝或晴陰天，冰島法例強制全程開啟近光車頭燈。</p>
         </div>
       </div>
 
+      <!-- Subtab 2: Gas -->
       <div id="dpanel-gas" class="hidden glass-card p-4 rounded-2xl space-y-3 text-xs text-slate-300">
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-amber-300 text-xs">⛽️ 自助加油與 4 位數 PIN 碼</h4>
-          <p>冰島均為無人自助加油機。刷卡時<strong>必須輸入預設 4 位數晶片 PIN 碼</strong>（出發前請向香港發卡銀行索取）。</p>
-          <p class="text-rose-400 font-semibold">⚠️ 切勿在油機點選「Fill Up (加滿)」！系統可能預扣 25,000~30,000 ISK 押金，建議依油量手動點選 5,000 或 10,000 ISK。</p>
+          <p>冰島全境為無人自助加油機。使用信用卡時，<strong>必須輸入預設 4 位數 PIN 碼</strong>（出發前向發卡銀行開通）。</p>
+          <p class="text-rose-400 font-semibold">⚠️ 切勿在油機點選「Fill Up (加滿)」！可能被預扣 20,000~30,000 ISK 押金，建議依油量手動點選 5,000 或 10,000 ISK。</p>
         </div>
         <a href="https://maps.google.com/?q=Gas+Station+Iceland" target="_blank" class="block text-center py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition">
-          <i class="fa-solid fa-gas-pump me-1"></i> Google Maps 搜尋沿途加油站
+          <i class="fa-solid fa-gas-pump me-1"></i> Google Maps 一鍵搜尋沿途加油站
         </a>
       </div>
 
+      <!-- Subtab 3: WC -->
       <div id="dpanel-wc" class="hidden glass-card p-4 rounded-2xl space-y-3 text-xs text-slate-300">
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-sky-300 text-xs">🚻 公廁位置與付款方式</h4>
-          <p>1. <strong>加油站附設商店 (N1, Olís, Orkan)</strong>：大多提供免費或憑消費使用洗手間。</p>
-          <p>2. <strong>各景區與瀑布公廁</strong>：大多設有感應刷卡機，直接拍 Apple Pay / 信用卡即可進入 (約 200~400 ISK)。</p>
+          <p>1. <strong>加油站附設商店 (N1, Olís)</strong>：大多提供免費洗手間，補油時可順道使用。</p>
+          <p>2. <strong>重點國家公園與瀑布</strong>：公廁入口設有感應式刷卡機，直接拍 Apple Pay / 信用卡即可進入 (約 200~400 ISK)。</p>
         </div>
         <a href="https://maps.google.com/?q=Public+Toilet+Iceland" target="_blank" class="block text-center py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition">
           <i class="fa-solid fa-restroom me-1"></i> Google Maps 搜尋周邊公廁
         </a>
       </div>
 
+      <!-- Subtab 4: Road -->
       <div id="dpanel-road" class="hidden glass-card p-4 rounded-2xl space-y-3 text-xs text-slate-300">
         <div class="grid grid-cols-2 gap-2 text-center text-xs">
           <div class="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold">🟢 通行良好 (Easily Passable)</div>
@@ -258,7 +266,7 @@
     </section>
 
     <!-- View 4: 行程 (Itinerary) - Central Tab -->
-    <section id="view-itinerary" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-3" style="display: block;">
+    <section id="view-itinerary" class="tab-view active-tab max-w-4xl mx-auto p-3 sm:p-4 space-y-3">
       <!-- Days Selector Horizontal Carousel -->
       <div class="flex space-x-2 overflow-x-auto pb-1 scrollbar-none snap-x" id="day-selector-container"></div>
       <!-- Selected Day Details Container -->
@@ -266,7 +274,7 @@
     </section>
 
     <!-- View 5: 美食 (Restaurants) -->
-    <section id="view-restaurants" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
+    <section id="view-restaurants" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4">
       <div class="flex justify-between items-center">
         <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-utensils text-rose-400"></i> 心水餐廳 & 美食導覽
@@ -282,12 +290,17 @@
       </div>
 
       <!-- Day Filter Pills -->
-      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none" id="resto-day-filter"></div>
-      <div id="restaurants-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none" id="resto-day-filter">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div id="restaurants-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Rendered by JS -->
+      </div>
     </section>
 
     <!-- View 6: 工具 (Toolbox) -->
-    <section id="view-toolbox" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
+    <section id="view-toolbox" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4">
       <!-- World Clocks -->
       <div class="glass-card p-3 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/40 via-slate-900/90 to-slate-900/95 space-y-2">
         <h3 class="font-bold text-xs text-indigo-300 uppercase tracking-wider flex items-center justify-between">
@@ -367,13 +380,16 @@
         <div id="trans-output-box" class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs space-y-1.5 min-h-[60px]">
           <p class="text-[10px] text-slate-500">翻譯結果：</p>
           <div id="trans-output-text" class="text-sm font-semibold text-ice-300 leading-relaxed">請輸入文字或按麥克風開始</div>
+          <div id="trans-phonetic-text" class="text-[11px] text-amber-400 font-mono hidden"></div>
         </div>
       </div>
 
       <!-- Tool Panel: Phrases -->
       <div id="tool-panel-phrases" class="hidden glass-card p-4 rounded-2xl space-y-3">
         <h3 class="font-bold text-white text-xs"><i class="fa-solid fa-book text-amber-400 me-1"></i> 精選常用冰島語速查手冊</h3>
-        <div id="phrases-container" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+        <div id="phrases-container" class="space-y-2 max-h-80 overflow-y-auto pr-1">
+          <!-- Rendered by JS -->
+        </div>
       </div>
 
       <!-- Tool Panel: Culture -->
@@ -381,23 +397,15 @@
         <h3 class="font-bold text-white text-xs"><i class="fa-solid fa-landmark text-emerald-400 me-1"></i> 冰島當地文化與禮儀</h3>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
           <p class="font-bold text-amber-300">♨️ 溫泉潔淨禮儀（全裸沐浴）</p>
-          <p>進入任何冰島溫泉前，<strong>必須在更衣室全裸徹底沐浴洗頭</strong>，再穿上泳衣進入池中，這是冰島最重視的公共衛生傳統。</p>
+          <p>進入任何冰島溫泉（如藍湖、秘密溫泉）前，<strong>必須在更衣室全裸徹底沐浴洗頭</strong>，再穿上泳衣進入泳池，這是冰島最重視的公共衛生傳統。</p>
         </div>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
-          <p class="font-bold text-sky-300">💧 水喉冷水是頂級天然泉水</p>
-          <p>冰島冷水來自冰川融水過濾，水龍頭打開即可直接生飲。但<strong>熱水來自地熱且帶天然硫磺味，請勿飲用熱水</strong>。</p>
+          <p class="font-bold text-sky-300">💧 水喉冷水是頂級泉水</p>
+          <p>冰島冷水來自冰川融水過濾，水喉打開即可生飲，水質世界第一。但<strong>熱水來自地熱帶有天然硫磺味</strong>，請勿飲用熱水。</p>
         </div>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
           <p class="font-bold text-emerald-300">🌱 苔原（Moss）極度脆弱</p>
-          <p>厚綠苔原需數百年才能形成，<strong>嚴禁踩踏或在其上行走</strong>，車輛越野壓毀苔原將面臨巨額罰款。</p>
-        </div>
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
-          <p class="font-bold text-indigo-300">👟 入屋脫鞋傳統</p>
-          <p>進入冰島當地民宿或住宅時，進門玄關處請自覺脫下戶外靴，換穿拖鞋或穿襪子入內。</p>
-        </div>
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
-          <p class="font-bold text-rose-300">🙅‍♂️ 冰島無需給小費 (No Tipping)</p>
-          <p>所有餐廳與計程車費用均已包含服務費及增值稅，給予一句真誠的「Takk fyrir」便是最好的禮貌。</p>
+          <p>冰島厚厚綠苔需數百年才能形成，<strong>嚴禁踩踏或在其上行走</strong>，車輛越野壓毀苔原將面臨巨額罰款。</p>
         </div>
       </div>
 
@@ -423,7 +431,7 @@
       <div id="tool-panel-aurora" class="hidden glass-card p-4 rounded-2xl space-y-3 text-xs text-slate-300">
         <h3 class="font-bold text-white text-xs"><i class="fa-solid fa-wand-magic-sparkles text-aurora-400 me-1"></i> 極光獵觀指南</h3>
         <p>1. <strong>Kp 指數 ≥ 3</strong> 代表極光活動強烈，肉眼即可清晰見到綠色與紫光。</p>
-        <p>2. <strong>雲層圖 (Cloud Cover)</strong>：白色代表無雲晴朗，綠色代表雲層覆蓋。</p>
+        <p>2. <strong>雲層圖 (Cloud Cover)</strong>：Vedur 天文台地圖上，白色代表無雲晴朗，綠色代表雲層覆蓋。</p>
         <a href="https://en.vedur.is/weather/forecasts/aurora/" target="_blank" class="block text-center py-2 rounded-xl bg-aurora-600 text-white font-bold text-xs">
           開啟 Vedur 官方極光雲層圖
         </a>
@@ -435,12 +443,14 @@
           <h3 class="font-bold text-white"><i class="fa-solid fa-clipboard-check text-amber-400 me-1"></i> 行李與必備裝備清單</h3>
           <span id="packing-progress" class="text-slate-400 text-[11px]">0/0 完成</span>
         </div>
-        <div id="packing-items-container" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
+        <div id="packing-items-container" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+          <!-- Rendered by JS -->
+        </div>
       </div>
     </section>
 
     <!-- View 7: AI 助手 (AI) -->
-    <section id="view-ai" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 h-[calc(100vh-140px)] flex flex-col space-y-2" style="display: none;">
+    <section id="view-ai" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 h-[calc(100vh-140px)] flex flex-col space-y-2">
       <div class="glass-card p-3 rounded-2xl flex items-center justify-between shrink-0">
         <div class="flex items-center space-x-2">
           <div class="w-8 h-8 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-sm">
@@ -461,7 +471,7 @@
         <div class="flex items-start space-x-2">
           <div class="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0 text-[10px]">AI</div>
           <div class="bg-slate-800 p-2.5 rounded-2xl rounded-tl-none max-w-[85%] text-slate-200 leading-relaxed">
-            Hæ! 我是你們的冰島旅遊 AI 助理 🇮🇸。隨時可以詢問行程安排、冰川裝備、熱狗店推薦或緊急路況！
+            Hæ! 我是你們的冰島旅遊 AI 助理 🇮🇸。已為你們載入專屬金鑰，隨時可以詢問行程安排、冰川裝備、熱狗店推薦或緊急路況！
           </div>
         </div>
       </div>
@@ -521,6 +531,48 @@
   </nav>
 
   <!-- Modals -->
+  <!-- HD Map Preview Modal -->
+  <div id="modal-hd-map" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex flex-col items-center justify-center p-3 sm:p-5">
+    <div class="w-full max-w-2xl flex justify-between items-center mb-2 px-1">
+      <h3 class="font-bold text-white text-xs sm:text-sm flex items-center gap-1.5" id="hd-map-modal-title">
+        <i class="fa-solid fa-map-location-dot text-emerald-400"></i>
+        <span>專屬手繪地圖</span>
+      </h3>
+      <button onclick="closeModal('modal-hd-map')" class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="relative w-full max-w-2xl max-h-[82vh] overflow-auto rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-center p-1">
+      <img id="hd-map-modal-img" src="" alt="手繪地圖高清檢視" class="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl">
+    </div>
+  </div>
+
+  <!-- Icon Picker Modal -->
+  <div id="modal-edit-icon" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-5 rounded-3xl space-y-4 border border-ice-500/40 text-left">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <h3 class="font-bold text-white text-sm" id="edit-icon-modal-title">自訂當日代表圖標</h3>
+        <button onclick="closeModal('modal-edit-icon')" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+      <input type="hidden" id="edit-icon-day-idx">
+      
+      <div>
+        <label class="text-[11px] text-slate-400 block mb-1.5">點擊選擇推薦圖標：</label>
+        <div class="grid grid-cols-6 gap-2 text-xl" id="preset-icons-container">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-800">
+        <label class="text-[11px] text-slate-400 block mb-1">或自行輸入任何 Emoji / 符號：</label>
+        <div class="flex gap-2">
+          <input type="text" id="edit-custom-icon-input" maxlength="4" class="w-20 text-center text-xl bg-slate-900 border border-slate-700 rounded-xl py-1 text-white">
+          <button onclick="saveCustomDayIcon()" class="flex-1 py-2 rounded-xl bg-ice-600 hover:bg-ice-500 text-white font-bold text-xs">儲存圖標</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal: Sync Status -->
   <div id="modal-sync" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="glass-card max-w-md w-full p-5 rounded-3xl space-y-4 border border-emerald-500/30 text-left max-h-[90vh] overflow-y-auto">
@@ -708,15 +760,35 @@
       <div class="space-y-2 text-xs">
         <div>
           <label class="text-slate-400 block mb-1">憑證名稱</label>
-          <input type="text" id="voucher-title" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+          <input type="text" id="voucher-title" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white" placeholder="如: 藍湖溫泉 Comfort 門票">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-slate-400 block mb-1">分類類別</label>
+            <select id="voucher-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              <option value="住宿">🏨 住宿 (Hotels)</option>
+              <option value="活動體驗">🎯 活動體驗 (Tours)</option>
+              <option value="交通租車">🚗 交通租車 (Transport)</option>
+              <option value="機票航班">✈️ 機票航班 (Flights)</option>
+              <option value="其他">📄 其他 (Others)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">預約時間 / 日期</label>
+            <input type="text" id="voucher-date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-ice-400" placeholder="如: 10/18 10:00">
+          </div>
         </div>
         <div>
-          <label class="text-slate-400 block mb-1">預約時間</label>
-          <input type="text" id="voucher-date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-ice-400">
+          <label class="text-slate-400 block mb-1">預約編號 / 代碼 (Ref No.)</label>
+          <input type="text" id="voucher-ref" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-amber-300 font-mono" placeholder="如: BK-982314">
         </div>
         <div>
-          <label class="text-slate-400 block mb-1">細節說明與代碼</label>
-          <textarea id="voucher-desc" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white"></textarea>
+          <label class="text-slate-400 block mb-1">細節說明與備註</label>
+          <textarea id="voucher-desc" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white" placeholder="填寫集合地點、注意事項或聯絡電話"></textarea>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">地圖或官網導航連結 (選填)</label>
+          <input type="url" id="voucher-map" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-ice-400" placeholder="https://maps.google.com/...">
         </div>
       </div>
 
@@ -1012,12 +1084,35 @@
 
     /* Default Vouchers */
     const DEFAULT_VOUCHERS = [
-      { id: 'v1', title: 'Lotus Car Rental 租車憑證', date: '10/06 - 10/19', desc: 'Jeep Renegade 4x4 (Automatic) | 取車: 10/06 08:00, 還車: 10/19 06:30', status: 'CONFIRMED' },
-      { id: 'v2', title: '朗格冰原雪地摩托車 Tour', date: '10/08 12:15', desc: 'Geysir Centre 集合 | 4小時行程', status: 'CONFIRMED' },
-      { id: 'v3', title: '傑古沙龍冰河湖快艇/水陸兩棲船', date: '10/11 09:50', desc: 'Jökulsárlón Glacier Lagoon 現場憑號登船', status: 'CONFIRMED' },
-      { id: 'v4', title: '瓦特納冰川健行 & 藍冰洞', date: '10/12 10:00', desc: 'Troll.is | 含冰爪、安全帽專業裝備', status: 'CONFIRMED' },
-      { id: 'v5', title: 'Elding 市區賞鯨船票', date: '10/17 13:00', desc: 'Reykjavik Old Harbor 舊港口登船', status: 'CONFIRMED' },
-      { id: 'v6', title: 'Blue Lagoon 藍湖溫泉 Comfort 門票', date: '10/18 10:00', desc: '包含矽泥面膜、毛巾與特調飲料一杯', status: 'CONFIRMED' }
+      // ✈️ 航班
+      { id: 'v_f1', category: '機票航班', title: '去程航班: 香港 ✈️ 芬蘭赫爾辛基 (AY 100)', date: '10/05 20:55', ref: 'AY100-HKG', desc: '香港機場 T1 起飛 (20:55) ➔ 10/06 05:35 抵達芬蘭 HEL。飛行 13h40m，行李直掛。', map: 'https://maps.google.com/?q=Hong+Kong+International+Airport', status: 'CONFIRMED' },
+      { id: 'v_f2', category: '機票航班', title: '轉機航班: 芬蘭赫爾辛基 ✈️ 冰島 KEF (FI 345)', date: '10/06 07:10', ref: 'FI345-HEL', desc: '赫爾辛基機場 (07:10) 起飛 ➔ 10/06 07:50 著陸凱夫拉維克 KEF。轉機時間 1h35m。', map: 'https://maps.google.com/?q=Keflavik+Airport', status: 'CONFIRMED' },
+      { id: 'v_f3', category: '機票航班', title: '回程航班: 冰島 KEF ✈️ 赫爾辛基 ✈️ 香港 (AY992 / AY099)', date: '10/19 08:35', ref: 'AY992-KEF', desc: '08:35 KEF 起飛 ➔ 15:00 抵達 HEL；10/20 00:35 HEL 轉機 ➔ 17:40 抵達香港 HKG T1。', map: 'https://maps.google.com/?q=Keflavik+Airport', status: 'CONFIRMED' },
+
+      // 🚗 交通租車
+      { id: 'v1', category: '交通租車', title: 'Lotus Car Rental 冰島租車憑證', date: '10/06 09:30 - 10/19 06:30', ref: 'LOTUS-77821', desc: 'Jeep Renegade 4x4 (Automatic) | 取車: 10/06 09:30 KEF 機場門市，還車: 10/19 06:30。含鉑金全險無自負額。', map: 'https://maps.google.com/?q=Lotus+Car+Rental+Iceland', status: 'CONFIRMED' },
+      { id: 'v_ferry', category: '交通租車', title: '西人島來回渡輪 (Herjólfur Ferry)', date: '10/14 10:00 / 17:00', ref: 'HERJ-4410', desc: 'Landeyjahöfn 碼頭往返 Vestmannaeyjar 西人島。航程約 40 分鐘，請於開船前 30 分鐘報到。', map: 'https://maps.google.com/?q=Landeyjahofn', status: 'CONFIRMED' },
+
+      // 🎯 活動體驗
+      { id: 'v_secret', category: '活動體驗', title: 'Secret Lagoon 秘密溫泉門票 ♨️', date: '10/07 17:00', ref: 'SEC-3392', desc: '冰島最古老百年天然溫泉泳池，現場憑預約出示確認信。請備妥泳衣與毛巾。', map: 'https://maps.google.com/?q=Secret+Lagoon+Iceland', status: 'CONFIRMED' },
+      { id: 'v2', category: '活動體驗', title: '朗格冰原雪地摩托車 Tour 🏍️', date: '10/08 12:15', ref: 'SNOW-8921', desc: '集合地點: Geysir Centre。行程約 4 小時，提供保暖連身衣、頭盔與手套（需備國際駕照）。', map: 'https://maps.google.com/?q=Geysir+Centre', status: 'CONFIRMED' },
+      { id: 'v3', category: '活動體驗', title: 'Jökulsárlón 傑古沙龍冰河湖快艇/水陸船 🚤', date: '10/11 09:50', ref: 'JOK-5521', desc: '預約 09:50 班次，近距離觀賞千年浮冰與海豹，請提前 20 分鐘於湖畔咖啡廳票務處報到。', map: 'https://maps.google.com/?q=Jokulsarlon', status: 'CONFIRMED' },
+      { id: 'v4', category: '活動體驗', title: '瓦特納冰川健行 & 藍冰洞探險 🧊', date: '10/12 10:00', ref: 'TRL-99381', desc: 'Troll Expeditions 帶領。含冰爪、安全吊帶與頭盔裝備，請務必穿著高筒硬底登山鞋。', map: 'https://maps.google.com/?q=Skaftafell+Visitor+Centre', status: 'CONFIRMED' },
+      { id: 'v_horse', category: '活動體驗', title: 'Hveragerði 溫泉小鎮冰島馬體驗 🐴', date: '10/15 12:30', ref: 'HRS-2026', desc: '感受冰島純種馬獨特 Tölt 步伐，體驗穿梭火山熔岩地貌，提供安全頭盔。', map: 'https://maps.google.com/?q=Hveragerdi', status: 'CONFIRMED' },
+      { id: 'v5', category: '活動體驗', title: 'Elding 雷克雅維克市區出海賞鯨 🐳', date: '10/17 13:00', ref: 'ELD-8823', desc: 'Reykjavik Old Harbor (舊港口) 登船。航程約 3 小時，若當日風浪過大停航可免費改期。', map: 'https://maps.google.com/?q=Elding+Whale+Watching', status: 'CONFIRMED' },
+      { id: 'v6', category: '活動體驗', title: 'Blue Lagoon 藍湖地熱溫泉 Comfort 門票 ♨️', date: '10/18 10:00', ref: 'BL-66291', desc: '含矽泥面膜、毛巾與特調迎賓飲料一杯。入場前請在更衣室全裸徹底淋浴。', map: 'https://maps.google.com/?q=Blue+Lagoon+Iceland', status: 'CONFIRMED' },
+
+      // 🏨 住宿
+      { id: 'v_h1', category: '住宿', title: 'Day 1: Skuggi Hotel by Keahotels', date: '10/06 - 10/07 (1晚)', ref: 'SKU-8819', desc: '雷克雅維克市中心，check-in 15:00 / check-out 11:00。含早餐，無煮食。地下有收費停車場。', map: 'https://maps.google.com/?q=Skuggi+Hotel+by+Keahotels', status: 'CONFIRMED' },
+      { id: 'v_h2', category: '住宿', title: 'Day 2: Litli Geysir Hotel', date: '10/07 - 10/08 (1晚)', ref: 'LIT-4491', desc: '座落於間歇泉對面，步行 3 分鐘看噴泉。check-in 15:00 / check-out 11:00。含豐富早餐。', map: 'https://maps.google.com/?q=Litli+Geysir+Hotel', status: 'CONFIRMED' },
+      { id: 'v_h3', category: '住宿', title: 'Day 3: Hótel Kanslarinn (Hella)', date: '10/08 - 10/09 (1晚)', ref: 'KAN-1102', desc: 'Hella 鎮中心便利位置。check-in 15:00 / check-out 11:00。附設餐廳與免費戶外停車場。', map: 'https://maps.google.com/?q=Hotel+Kanslarinn+Hella', status: 'CONFIRMED' },
+      { id: 'v_h4', category: '住宿', title: 'Day 4: Kvíhólmi Premium Apartments', date: '10/09 - 10/10 (1晚)', ref: 'KVI-9920', desc: '南岸獨立公寓。check-in 15:00 / check-out 11:00。配備私人廚房可自煮料理，無光害極光視野。', map: 'https://maps.google.com/?q=Kviholmi+Premium+Apartments', status: 'CONFIRMED' },
+      { id: 'v_h5', category: '住宿', title: 'Day 5-7: Hótel Smyrlabjörg (連住3晚)', date: '10/10 - 10/13 (3晚)', ref: 'SMY-7714', desc: '近冰河湖與赫本。check-in 16:00 / check-out 11:00。含每日現做早餐，農場景觀寧靜優美。', map: 'https://maps.google.com/?q=Hotel+Smyrlabjorg', status: 'CONFIRMED' },
+      { id: 'v_h6', category: '住宿', title: 'Day 8-9: Brú Guesthouse 草頂小木屋 (連住2晚)', date: '10/13 - 10/15 (2晚)', ref: 'BRU-3321', desc: '草頂傳統景觀小屋。check-in 16:00 / check-out 11:00。設備齊全廚房可自煮，夜間極佳極光觀賞點。', map: 'https://maps.google.com/?q=Bru+Guesthouse', status: 'CONFIRMED' },
+      { id: 'v_h7', category: '住宿', title: 'Day 10: Bella Apartments & Rooms', date: '10/15 - 10/16 (1晚)', ref: 'BEL-5582', desc: 'Selfoss 鎮，check-in 16:00 / check-out 11:00。周邊有超市與烘焙坊，生活機能便利。', map: 'https://maps.google.com/?q=Bella+Apartments+Selfoss', status: 'CONFIRMED' },
+      { id: 'v_h8', category: '住宿', title: 'Day 11: Airbnb - Grundarfjörður 教會山小屋', date: '10/16 - 10/17 (1晚)', ref: 'ABB-GRUN7', desc: '斯奈山半島教會山正對面！check-in 15:00 / check-out 11:00。配備廚房自煮，陽台直望草帽山。', map: 'https://maps.google.com/?q=Grundarfjordur', status: 'CONFIRMED' },
+      { id: 'v_h9', category: '住宿', title: 'Day 12: Downtown Reykjavík Apartments', date: '10/17 - 10/18 (1晚)', ref: 'DRA-6621', desc: '雷克雅維克市區，鄰近購物主街 Laugavegur。check-in 15:00 / check-out 11:00。附帶小廚房。', map: 'https://maps.google.com/?q=Downtown+Reykjavik+Apartments', status: 'CONFIRMED' },
+      { id: 'v_h10', category: '住宿', title: 'Day 13: Konvin Hotel by Keflavik Airport', date: '10/18 - 10/19 (1晚)', ref: 'KON-1082', desc: '近 KEF 機場（車程約 5 分鐘）。check-in 14:00 / check-out 11:00。方便隔日清晨還車與搭機。', map: 'https://maps.google.com/?q=Konvin+Hotel+Keflavik', status: 'CONFIRMED' }
     ];
 
     /* Default Restaurants */
@@ -1052,6 +1147,7 @@
     let handDrawnMapsData = [];
     let currentSelectedDay = 0;
     let selectedRestoDayFilter = 'All';
+    let selectedVoucherCategory = '全部';
     let isRemoteUpdating = false;
     let cloudRelayInterval = null;
 
@@ -1212,9 +1308,9 @@
     function renderAllViews() {
       renderDaySelector();
       renderDayDetail(currentSelectedDay);
+      renderVoucherCategoryFilter();
       renderVouchers();
       renderGoogleRouteLinks();
-      renderHandDrawnMaps();
       renderRestoDayFilter();
       renderRestaurants();
       renderPackingList();
@@ -1228,32 +1324,43 @@
         if (!viewEl || !navEl) return;
 
         if (t === tab) {
-          viewEl.style.setProperty('display', t === 'ai' ? 'flex' : 'block', 'important');
+          viewEl.classList.add('active-tab');
           viewEl.classList.remove('hidden');
 
           if (t === 'itinerary') {
             const box = document.getElementById('nav-itinerary-box');
-            if (box) box.className = "w-8 h-8 rounded-xl bg-ice-500/20 border border-ice-400/50 text-ice-300 flex items-center justify-center shadow-md";
+            if (box) box.className = "w-7 h-7 rounded-xl bg-ice-500/20 border border-ice-400/50 text-ice-300 flex items-center justify-center shadow-md";
+            const text = navEl.querySelector('span');
+            if (text) text.className = "text-[9px] mt-0.5 font-bold text-ice-400 leading-none";
           } else {
-            navEl.className = "flex flex-col items-center justify-center text-ice-400 font-bold transition py-1";
+            navEl.className = "flex flex-col items-center justify-center text-ice-400 font-bold transition py-0.5";
+            const text = navEl.querySelector('span');
+            if (text) text.className = "text-[9px] mt-0.5 leading-none font-bold text-ice-400";
           }
         } else {
-          viewEl.style.setProperty('display', 'none', 'important');
-          viewEl.classList.add('hidden');
+          viewEl.classList.remove('active-tab');
 
           if (t === 'itinerary') {
             const box = document.getElementById('nav-itinerary-box');
-            if (box) box.className = "w-8 h-8 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-400 flex items-center justify-center";
+            if (box) box.className = "w-7 h-7 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-400 flex items-center justify-center";
+            const text = navEl.querySelector('span');
+            if (text) text.className = "text-[9px] mt-0.5 text-slate-400 leading-none";
           } else {
-            navEl.className = "flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-1";
+            navEl.className = "flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-0.5";
+            const text = navEl.querySelector('span');
+            if (text) text.className = "text-[9px] mt-0.5 leading-none";
           }
         }
       });
 
-      // Lazy render tab content
-      if (tab === 'vouchers') renderVouchers();
+      // Lazy render tab content strictly inside its tab
+      if (tab === 'vouchers') { renderVoucherCategoryFilter(); renderVouchers(); }
       if (tab === 'restaurants') renderRestaurants();
-      if (tab === 'map') { renderGoogleRouteLinks(); renderHandDrawnMaps(); }
+      if (tab === 'map') { renderGoogleRouteLinks(); }
+    }
+
+    function renderHandDrawnMaps() {
+      // Per-day hand drawn maps are integrated directly into renderGoogleRouteLinks()
     }
 
     function renderDaySelector() {
@@ -1320,11 +1427,15 @@
                 </button>
               </div>
             </div>
-            <p class="text-[11px] text-slate-300 font-mono"><i class="fa-regular fa-clock me-1 text-slate-400"></i>${d.hotelInfo}</p>
-            <div class="flex items-center gap-2 pt-1 border-t border-slate-800/80">
-              ${breakfastTag}
-              <span class="text-slate-600">｜</span>
-              ${kitchenTag}
+            <!-- Check-in/out 與 早餐煮食資訊放在同一行 -->
+            <div class="flex flex-wrap items-center justify-between gap-1.5 pt-1.5 border-t border-slate-800/80 text-[11px]">
+              <span class="text-slate-300 font-mono flex items-center gap-1">
+                <i class="fa-regular fa-clock text-slate-400"></i>${d.hotelInfo}
+              </span>
+              <div class="flex items-center gap-1.5 shrink-0">
+                ${breakfastTag}
+                ${kitchenTag}
+              </div>
             </div>
           </div>
         </div>
@@ -1394,6 +1505,7 @@
 
       closeModal('modal-edit-theme');
       renderDayDetail(idx);
+      renderGoogleRouteLinks();
       pushToCloud(true);
     }
 
@@ -1455,24 +1567,100 @@
       pushToCloud(true);
     }
 
+    function renderVoucherCategoryFilter() {
+      const container = document.getElementById('voucher-category-filter');
+      if (!container) return;
+      const categories = ['全部', '住宿', '活動體驗', '交通租車', '機票航班'];
+      const icons = {
+        '全部': 'fa-solid fa-layer-group',
+        '住宿': 'fa-solid fa-bed',
+        '活動體驗': 'fa-solid fa-wand-magic-sparkles',
+        '交通租車': 'fa-solid fa-car',
+        '機票航班': 'fa-solid fa-plane'
+      };
+      container.innerHTML = categories.map(cat => `
+        <button onclick="filterVoucherCategory('${cat}')" class="px-2.5 py-1 rounded-xl shrink-0 text-xs font-semibold border flex items-center gap-1 transition ${selectedVoucherCategory === cat ? 'bg-ice-600 text-white border-ice-400 shadow-sm' : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'}">
+          <i class="${icons[cat] || 'fa-solid fa-tag'} text-[10px]"></i>
+          <span>${cat}</span>
+        </button>
+      `).join('');
+    }
+
+    function filterVoucherCategory(cat) {
+      selectedVoucherCategory = cat;
+      renderVoucherCategoryFilter();
+      renderVouchers();
+    }
+
     function renderVouchers() {
       const container = document.getElementById('vouchers-list');
       if (!container) return;
-      container.innerHTML = vouchersData.map((v, idx) => `
-        <div class="glass-card p-4 rounded-2xl border border-slate-800 space-y-2">
-          <div class="flex justify-between items-start gap-2">
-            <h3 class="font-bold text-xs text-white">${v.title}</h3>
-            <div class="flex items-center gap-1.5">
-              <span class="px-2 py-0.5 rounded-full bg-aurora-500/10 text-aurora-400 text-[10px] font-bold border border-aurora-500/30">${v.status}</span>
-              <button onclick="openVoucherModal(${idx})" class="text-slate-500 hover:text-ice-400 text-xs p-1">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
+      
+      const filtered = selectedVoucherCategory === '全部'
+        ? vouchersData
+        : vouchersData.filter(v => (v.category || '其他') === selectedVoucherCategory);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-500">該分類暫無預約憑證，點擊右上角新增！</div>`;
+        return;
+      }
+
+      const categoryBadgeColors = {
+        '住宿': 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+        '活動體驗': 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+        '交通租車': 'bg-sky-500/20 text-sky-300 border-sky-500/30',
+        '機票航班': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+        '其他': 'bg-slate-700/50 text-slate-300 border-slate-600'
+      };
+
+      container.innerHTML = filtered.map((v) => {
+        const globalIdx = vouchersData.indexOf(v);
+        const catBadge = categoryBadgeColors[v.category] || categoryBadgeColors['其他'];
+
+        return `
+          <div class="glass-card p-3.5 rounded-2xl border border-slate-800 space-y-2 flex flex-col justify-between hover:border-slate-700 transition">
+            <div class="space-y-1.5">
+              <div class="flex justify-between items-start gap-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold border ${catBadge}">
+                    ${v.category || '憑證'}
+                  </span>
+                  <span class="px-2 py-0.5 rounded-full bg-aurora-500/10 text-aurora-400 text-[10px] font-bold border border-aurora-500/30">
+                    ${v.status || 'CONFIRMED'}
+                  </span>
+                </div>
+                <div class="flex items-center gap-1">
+                  ${v.map ? `
+                    <a href="${v.map}" target="_blank" class="p-1 px-2 rounded-lg bg-slate-800 text-ice-400 hover:text-white text-[10px] border border-slate-700 flex items-center gap-1" title="地圖/導航">
+                      <i class="fa-solid fa-location-dot"></i>
+                    </a>
+                  ` : ''}
+                  <button onclick="openVoucherModal(${globalIdx})" class="p-1 text-slate-500 hover:text-ice-400 text-xs">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </div>
+              </div>
+
+              <h3 class="font-bold text-xs sm:text-sm text-white leading-snug">${v.title}</h3>
+
+              <div class="flex items-center justify-between text-[11px] pt-0.5">
+                <span class="text-ice-400 font-mono flex items-center gap-1">
+                  <i class="fa-regular fa-calendar-days text-[10px]"></i> ${v.date}
+                </span>
+                ${v.ref ? `
+                  <span class="text-amber-300 font-mono bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-[10px]">
+                    #${v.ref}
+                  </span>
+                ` : ''}
+              </div>
+
+              <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-2 rounded-xl border border-slate-800/80">
+                ${v.desc}
+              </p>
             </div>
           </div>
-          <p class="text-[11px] text-ice-400 font-mono"><i class="fa-regular fa-calendar me-1"></i>${v.date}</p>
-          <p class="text-xs text-slate-300 leading-relaxed">${v.desc}</p>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function openVoucherModal(idx = -1) {
@@ -1480,16 +1668,22 @@
         document.getElementById('voucher-modal-title').innerText = "新增預約憑證";
         document.getElementById('voucher-idx').value = -1;
         document.getElementById('voucher-title').value = '';
+        document.getElementById('voucher-category').value = '活動體驗';
         document.getElementById('voucher-date').value = '';
+        document.getElementById('voucher-ref').value = '';
         document.getElementById('voucher-desc').value = '';
+        document.getElementById('voucher-map').value = '';
         document.getElementById('btn-delete-voucher').classList.add('hidden');
       } else {
         const v = vouchersData[idx];
         document.getElementById('voucher-modal-title').innerText = "編輯預約憑證";
         document.getElementById('voucher-idx').value = idx;
         document.getElementById('voucher-title').value = v.title || '';
+        document.getElementById('voucher-category').value = v.category || '活動體驗';
         document.getElementById('voucher-date').value = v.date || '';
+        document.getElementById('voucher-ref').value = v.ref || '';
         document.getElementById('voucher-desc').value = v.desc || '';
+        document.getElementById('voucher-map').value = v.map || '';
         document.getElementById('btn-delete-voucher').classList.remove('hidden');
       }
       document.getElementById('modal-voucher').classList.remove('hidden');
@@ -1498,13 +1692,25 @@
     function saveVoucherModal() {
       const idx = parseInt(document.getElementById('voucher-idx').value);
       const title = document.getElementById('voucher-title').value.trim();
+      const category = document.getElementById('voucher-category').value;
       const date = document.getElementById('voucher-date').value.trim();
+      const ref = document.getElementById('voucher-ref').value.trim();
       const desc = document.getElementById('voucher-desc').value.trim();
+      const map = document.getElementById('voucher-map').value.trim();
 
       if (!title) { showToast("請輸入憑證名稱！", "fa-exclamation"); return; }
-      const item = { id: idx === -1 ? 'v_' + Date.now() : vouchersData[idx].id, title, date, desc, status: 'CONFIRMED' };
+      const item = {
+        id: idx === -1 ? 'v_' + Date.now() : vouchersData[idx].id,
+        category,
+        title,
+        date,
+        ref,
+        desc,
+        map,
+        status: 'CONFIRMED'
+      };
 
-      if (idx === -1) vouchersData.push(item);
+      if (idx === -1) vouchersData.unshift(item);
       else vouchersData[idx] = item;
 
       closeModal('modal-voucher');
@@ -1520,70 +1726,259 @@
       pushToCloud(true);
     }
 
+    /* Helper: Extract clean attraction place name for pinpoint (only place name, no actions) */
+    function extractPlaceName(desc) {
+      if (!desc) return '';
+      let clean = desc.trim();
+      // Remove common prefix verbs and flight numbers
+      clean = clean.replace(/^(開車前往|前往|搭乘渡輪前往|搭乘渡輪返回|驅車前往|開車返回|乘坐渡輪前往|Check-in\s*|入住\s*|返市區\s*)/i, '');
+      // Strip flight code / departure notes
+      clean = clean.replace(/\s*T1\s*\d{2}:\d{2}\s*起飛.*$/i, '');
+      clean = clean.replace(/\s*\d{2}:\d{2}\s*(起飛|著陸).*$/i, '');
+      // Remove activity / action suffixes
+      clean = clean.replace(/\s*(巡禮|採買物資|休息補眠|放鬆浸湯\s*♨️?|噴發捕捉|雙層觀景台|漫步拍攝|沿崖步道健行|倒影攝影|拍攝|享用龍蝦大餐|遠足|敷矽泥面膜|取車手續|歸還租車|體驗|一日遊|登船賞鯨|買羊毛衫手信.*|放鬆\s*♨️?|前緣冰河湖步道|\+\s*登.*)$/i, '');
+      // Take first part before delimiters if combined
+      const parts = clean.split(/[+➔&,，;；|]/);
+      let res = parts[0].trim();
+      // Remove generic trailing words
+      res = res.replace(/(步道|體驗|探險|Tour)$/i, '');
+      return res.trim() || clean;
+    }
+
+    /* Helper: Construct multi-stop Google Maps Direction URL in 1, 2, 3... sequence */
+    function buildMultiStopGoogleMapUrl(d) {
+      const validPoints = [];
+      d.activities.forEach(a => {
+        let q = '';
+        if (a.mapLink && a.mapLink.includes('?q=')) {
+          try {
+            const urlObj = new URL(a.mapLink);
+            q = decodeURIComponent(urlObj.searchParams.get('q') || '');
+          } catch(e) {}
+        }
+        if (!q) q = extractPlaceName(a.desc);
+        // Exclude return-home flights or empty points
+        if (q && !q.includes('起飛') && !q.includes('著陸') && !q.includes('抵達香港') && !validPoints.includes(q)) {
+          validPoints.push(q);
+        }
+      });
+
+      if (d.hotel && !d.hotel.includes('平安歸家') && !validPoints.includes(d.hotel)) {
+        validPoints.push(d.hotel);
+      }
+
+      if (validPoints.length === 0) {
+        return "https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw";
+      }
+      if (validPoints.length === 1) {
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(validPoints[0])}`;
+      }
+
+      // Format sequence: Origin (Point 1) -> Waypoints (Point 2, 3...) -> Destination (Last point / Hotel)
+      const origin = encodeURIComponent(validPoints[0]);
+      const destination = encodeURIComponent(validPoints[validPoints.length - 1]);
+      const waypoints = validPoints.slice(1, validPoints.length - 1).map(p => encodeURIComponent(p)).join('|');
+      return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}${waypoints ? '&waypoints=' + waypoints : ''}&travelmode=driving`;
+    }
+
     function renderGoogleRouteLinks() {
       const container = document.getElementById('google-route-links');
       if (!container) return;
 
-      container.innerHTML = itineraryData.map(d => {
-        const validAttractions = d.activities.filter(a => a.mapLink && a.mapLink.trim() !== "");
-        const waypoints = validAttractions.map(a => encodeURIComponent(a.desc.split(' ')[0])).join('|');
-        const mapUrl = validAttractions.length > 0
-          ? `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(validAttractions[0].desc.split(' ')[0])}&destination=${encodeURIComponent(d.hotel)}&waypoints=${waypoints}`
-          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.theme)}`;
+      container.innerHTML = itineraryData.map((d, dayIdx) => {
+        const multiMapUrl = buildMultiStopGoogleMapUrl(d);
+        const dayMapImage = d.handDrawnMap || null;
+
+        // Construct attractions listing: pure text, small gray font, NO boxes per row
+        const pinItemsHtml = d.activities.map((act, actIdx) => {
+          const pinNumber = actIdx + 1;
+          const placeTitle = extractPlaceName(act.desc);
+
+          return `
+            <div class="flex items-start gap-1.5 text-[10px] leading-tight">
+              <span class="text-rose-400 font-mono font-bold shrink-0">${pinNumber}.</span>
+              <span class="text-slate-300 truncate">${placeTitle}</span>
+            </div>
+          `;
+        }).join('');
+
+        // Hotel Item in pure text
+        const hotelPinHtml = d.hotel && !d.hotel.includes('平安歸家') ? `
+          <div class="flex items-start gap-1.5 text-[10px] leading-tight pt-0.5">
+            <span class="text-amber-400 font-mono shrink-0">🛏️</span>
+            <span class="text-amber-300/90 truncate">${d.hotel}</span>
+          </div>
+        ` : '';
 
         return `
-          <div class="glass-card p-3 rounded-2xl border border-slate-800 space-y-2 flex flex-col justify-between">
-            <div class="flex items-start justify-between gap-2">
-              <div>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-ice-500/20 text-ice-400 border border-ice-500/30">Day ${d.day} • ${d.date}</span>
-                <h4 class="text-xs font-bold text-white mt-1 leading-tight">${d.theme}</h4>
-              </div>
-              <div class="w-8 h-8 rounded-xl cartoon-map-bg border border-ice-400/30 flex items-center justify-center text-base shrink-0">
-                ${d.cartoonIcon || '🇮🇸'}
+          <div class="glass-card p-3.5 rounded-3xl border border-slate-800 space-y-2.5">
+            <!-- Day Header (Synchronized with Itinerary Page) -->
+            <div class="flex items-start justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+              <div class="flex items-center space-x-2.5 min-w-0 flex-1">
+                <!-- Clickable Custom Icon Button -->
+                <button onclick="openIconPickerModal(${dayIdx})" class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-ice-600/30 to-indigo-600/30 border border-ice-400/40 text-lg flex items-center justify-center shrink-0 shadow hover:scale-105 transition" title="點擊自訂當日代表圖標">
+                  ${d.cartoonIcon || '🇮🇸'}
+                </button>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-ice-500/20 text-ice-400 border border-ice-500/30">
+                      Day ${d.day} • ${d.date}
+                    </span>
+                    <button onclick="openThemeEditModal(${dayIdx})" class="text-slate-500 hover:text-ice-400 text-xs" title="編輯當日主題">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                  </div>
+                  <h4 class="text-xs sm:text-sm font-bold text-white mt-0.5 leading-snug truncate">${d.theme}</h4>
+                </div>
               </div>
             </div>
-            <a href="${mapUrl}" target="_blank" class="w-full py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-ice-400 text-xs font-bold flex items-center justify-center gap-1.5 border border-slate-700">
-              <i class="fa-solid fa-diamond-turn-right text-amber-400"></i>
-              <span>開啟 Day ${d.day} 一鍵導航路線</span>
+
+            <!-- Two Columns Layout: Left (Place sequence) | Right (Hand-drawn Map Thumbnail) -->
+            <div class="grid grid-cols-12 gap-2.5 items-start pt-0.5">
+              <!-- Left: Pure text sequential listing -->
+              <div class="col-span-7 sm:col-span-8 space-y-1">
+                <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1 mb-1">
+                  <i class="fa-solid fa-list-ol text-rose-400 text-[9px]"></i>
+                  <span>行程地點順序</span>
+                </div>
+                <div class="space-y-1 pr-1">
+                  ${pinItemsHtml}
+                  ${hotelPinHtml}
+                </div>
+              </div>
+
+              <!-- Right: Small hand-drawn map thumbnail -->
+              <div class="col-span-5 sm:col-span-4 flex flex-col items-center">
+                ${dayMapImage ? `
+                  <div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-slate-700 bg-slate-900 group cursor-pointer shadow-md" onclick="openHdMapModal('${dayMapImage}', 'Day ${d.day} 手繪地圖')">
+                    <img src="${dayMapImage}" class="w-full h-full object-cover group-hover:scale-105 transition duration-200">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                      <i class="fa-solid fa-magnifying-glass-plus text-white text-xs"></i>
+                    </div>
+                    <span class="absolute bottom-1 right-1 bg-black/70 text-[8px] px-1 py-0.5 rounded text-slate-300 font-mono">高清圖</span>
+                  </div>
+                  <div class="flex items-center justify-between w-full mt-1 px-0.5">
+                    <label class="text-[9px] text-emerald-400 hover:text-emerald-300 cursor-pointer flex items-center gap-0.5">
+                      <i class="fa-solid fa-arrows-rotate"></i>更換
+                      <input type="file" accept="image/*" class="hidden" onchange="handlePerDayMapUpload(event, ${dayIdx})">
+                    </label>
+                    <button onclick="deletePerDayMap(${dayIdx})" class="text-[9px] text-rose-400 hover:text-rose-300" title="刪除">
+                      <i class="fa-solid fa-trash"></i>刪除
+                    </button>
+                  </div>
+                ` : `
+                  <label class="w-full aspect-[4/3] rounded-xl border border-dashed border-slate-700 hover:border-emerald-500/60 bg-slate-900/60 hover:bg-slate-900 flex flex-col items-center justify-center cursor-pointer p-1.5 transition text-center group">
+                    <div class="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 flex items-center justify-center mb-0.5 text-xs transition">
+                      <i class="fa-solid fa-plus"></i>
+                    </div>
+                    <span class="text-[9px] text-slate-300 font-medium leading-none">手繪地圖</span>
+                    <span class="text-[8px] text-slate-400 mt-0.5">點擊上傳</span>
+                    <input type="file" accept="image/*" class="hidden" onchange="handlePerDayMapUpload(event, ${dayIdx})">
+                  </label>
+                `}
+              </div>
+            </div>
+
+            <!-- One-Click Sequential Google Maps Navigation Button -->
+            <a href="${multiMapUrl}" target="_blank" class="w-full py-2 px-3 rounded-2xl bg-gradient-to-r from-ice-600 to-indigo-600 hover:opacity-90 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow transition mt-1">
+              <i class="fa-solid fa-diamond-turn-right text-amber-300 text-xs"></i>
+              <span>開啟 Day ${d.day} Google Maps 順序導航 (1 ➔ 2 ➔ 3...)</span>
             </a>
           </div>
         `;
       }).join('');
     }
 
-    function handleHandDrawnMapUpload(event) {
+    /* Open High-Definition Map Modal */
+    function openHdMapModal(imgUrl, title) {
+      if (!imgUrl) return;
+      document.getElementById('hd-map-modal-title').innerHTML = `
+        <i class="fa-solid fa-map-location-dot text-emerald-400"></i>
+        <span>${title || '專屬手繪地圖'}</span>
+      `;
+      document.getElementById('hd-map-modal-img').src = imgUrl;
+      document.getElementById('modal-hd-map').classList.remove('hidden');
+    }
+
+    /* Handle uploading dedicated hand-drawn map per Day */
+    function handlePerDayMapUpload(event, dayIdx) {
       const file = event.target.files[0];
       if (!file) return;
+
       const reader = new FileReader();
       reader.onload = function(e) {
-        handDrawnMapsData.push({ id: 'm_' + Date.now(), dataUrl: e.target.result, name: file.name });
-        renderHandDrawnMaps();
-        pushToCloud(true);
+        // Compress image to ensure reliable Firebase Realtime Database storage
+        const img = new Image();
+        img.onload = function() {
+          const maxDim = 1200;
+          let width = img.width;
+          let height = img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+          itineraryData[dayIdx].handDrawnMap = compressedDataUrl;
+          renderGoogleRouteLinks();
+          pushToCloud(true);
+          showToast(`已儲存 Day ${itineraryData[dayIdx].day} 手繪地圖！`, "fa-image");
+        };
+        img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    function renderHandDrawnMaps() {
-      const container = document.getElementById('hand-drawn-maps-container');
-      if (!container) return;
-      if (handDrawnMapsData.length === 0) {
-        container.innerHTML = `<p class="col-span-full text-slate-500 text-[11px] text-center py-2">尚未上傳自訂地圖照片，點擊右上角上傳！</p>`;
-        return;
-      }
-      container.innerHTML = handDrawnMapsData.map((m, idx) => `
-        <div class="relative group rounded-xl overflow-hidden border border-slate-700">
-          <img src="${m.dataUrl}" class="w-full h-24 object-cover cursor-pointer" onclick="window.open('${m.dataUrl}')">
-          <button onclick="deleteHandDrawnMap(${idx})" class="absolute top-1 right-1 bg-black/70 text-rose-400 p-1 rounded-lg text-xs">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        </div>
-      `).join('');
+    /* Delete per-day hand-drawn map */
+    function deletePerDayMap(dayIdx) {
+      itineraryData[dayIdx].handDrawnMap = null;
+      renderGoogleRouteLinks();
+      pushToCloud(true);
+      showToast(`已移除 Day ${itineraryData[dayIdx].day} 手繪地圖`, "fa-trash");
     }
 
-    function deleteHandDrawnMap(idx) {
-      handDrawnMapsData.splice(idx, 1);
-      renderHandDrawnMaps();
+    /* Open Day Icon Picker Modal */
+    function openIconPickerModal(dayIdx) {
+      const d = itineraryData[dayIdx];
+      document.getElementById('edit-icon-modal-title').innerText = `自訂 Day ${d.day} 代表圖標`;
+      document.getElementById('edit-icon-day-idx').value = dayIdx;
+      document.getElementById('edit-custom-icon-input').value = d.cartoonIcon || '🇮🇸';
+
+      const presetIcons = ['⛪️', '🌋', '🏍️', '🌈', '✈️', '💎', '🧊', '⛰️', '🐴', '🐳', '♨️', '🚗', '🏖️', '🏕️', '📸', '🛒', '🌊', '🚢', '🌅', '🌌', '🦭', '🦞', '🍔', '☕️'];
+      const container = document.getElementById('preset-icons-container');
+      container.innerHTML = presetIcons.map(icon => `
+        <button onclick="selectPresetIcon('${icon}')" class="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border ${d.cartoonIcon === icon ? 'border-ice-400 bg-ice-500/20' : 'border-slate-800'} text-center transition">
+          ${icon}
+        </button>
+      `).join('');
+
+      document.getElementById('modal-edit-icon').classList.remove('hidden');
+    }
+
+    function selectPresetIcon(icon) {
+      document.getElementById('edit-custom-icon-input').value = icon;
+      saveCustomDayIcon();
+    }
+
+    function saveCustomDayIcon() {
+      const dayIdx = parseInt(document.getElementById('edit-icon-day-idx').value);
+      const icon = document.getElementById('edit-custom-icon-input').value.trim() || '🇮🇸';
+      itineraryData[dayIdx].cartoonIcon = icon;
+      closeModal('modal-edit-icon');
+      renderGoogleRouteLinks();
+      renderDayDetail(currentSelectedDay);
       pushToCloud(true);
+      showToast(`已更新 Day ${itineraryData[dayIdx].day} 代表圖標為 ${icon}`, "fa-check");
     }
 
     function renderRestoDayFilter() {
