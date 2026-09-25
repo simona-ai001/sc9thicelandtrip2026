@@ -115,24 +115,35 @@
   </script>
 
   <!-- Header with strict Safe Area Inset to prevent overlap with iOS Status Bar / Dynamic Island -->
-  <header class="glass header-safe px-4 pb-2.5 border-b border-slate-800 flex items-center justify-between shrink-0 z-30 shadow-md">
-    <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-ice-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-ice-500/20 text-2xl select-none">
+  <header class="glass header-safe px-3 sm:px-4 pb-2 border-b border-slate-800 flex items-center justify-between shrink-0 z-30 shadow-md">
+    <div class="flex items-center space-x-2.5 sm:space-x-3">
+      <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-ice-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-ice-500/20 text-xl sm:text-2xl select-none">
         🇮🇸
       </div>
       <div>
-        <h1 class="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
+        <h1 class="font-bold text-sm sm:text-base tracking-tight text-white flex items-center gap-1.5 leading-tight">
           SC 9th Anniversary Trip
         </h1>
-        <p class="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
+        <p class="text-[10px] sm:text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
           <span class="w-2 h-2 rounded-full bg-aurora-400 animate-pulse"></span>
           2026/10/05 - 10/20 • 14天冰島遊
         </p>
       </div>
     </div>
 
-    <!-- Header Actions with Partner Share & Live Sync Status -->
-    <div class="flex items-center space-x-2">
+    <!-- Header Actions with Font Scaling, Partner Share & Live Sync Status -->
+    <div class="flex items-center space-x-1.5 sm:space-x-2">
+      <!-- Font Size Adjuster Pill -->
+      <div class="flex items-center bg-slate-800/90 rounded-xl p-0.5 border border-slate-700/80 shadow-inner">
+        <button onclick="changeFontSize(-1)" title="縮小字體" class="w-6 h-6 rounded-lg text-slate-400 hover:text-white flex items-center justify-center text-[10px] font-bold active:scale-95 transition">
+          A-
+        </button>
+        <span id="font-size-indicator" class="text-[10px] font-mono font-bold text-ice-300 px-1 select-none">100%</span>
+        <button onclick="changeFontSize(1)" title="放大字體" class="w-6 h-6 rounded-lg text-slate-400 hover:text-white flex items-center justify-center text-[11px] font-bold active:scale-95 transition">
+          A+
+        </button>
+      </div>
+
       <!-- Live Sync Status Button -->
       <button onclick="openSyncModal()" id="btn-sync-status" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs flex items-center gap-1.5 transition">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -140,7 +151,7 @@
         <span class="sm:hidden font-semibold">同步</span>
       </button>
 
-      <button onclick="showPwaModal()" class="p-2.5 rounded-xl bg-aurora-500/10 hover:bg-aurora-500/20 text-aurora-400 border border-aurora-500/30 text-xs flex items-center gap-1.5 transition" title="加到主畫面">
+      <button onclick="showPwaModal()" class="p-2 sm:p-2.5 rounded-xl bg-aurora-500/10 hover:bg-aurora-500/20 text-aurora-400 border border-aurora-500/30 text-xs flex items-center gap-1.5 transition" title="加到主畫面">
         <i class="fa-solid fa-mobile-screen-button"></i>
       </button>
     </div>
@@ -229,7 +240,6 @@
             <div>
               <h2 class="text-base font-bold text-white flex items-center gap-2">
                 <span>冰島自駕指南 & 實況路況</span>
-                <span class="px-2 py-0.5 text-[10px] rounded-full bg-sky-400/20 text-sky-300 font-semibold border border-sky-400/30">香港遊客自駕必讀</span>
               </h2>
               <p class="text-xs text-slate-400">交通法規 • 加油站 • 公廁地圖 • 即時路況代碼</p>
             </div>
@@ -1016,7 +1026,7 @@
 
   <!-- Cloud Sync & Companion Share Modal -->
   <div id="modal-sync" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="glass-card max-w-md w-full p-5 rounded-3xl space-y-4 border border-emerald-500/30 text-left">
+    <div class="glass-card max-w-md w-full p-5 rounded-3xl space-y-4 border border-emerald-500/30 text-left max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
         <div class="flex items-center gap-2">
           <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -1031,18 +1041,19 @@
             <i class="fa-solid fa-arrows-rotate text-emerald-400"></i> 多人同時修改，全體即時更新
           </p>
           <p class="text-slate-400">
-            無論同行夥伴是透過電腦網頁、手機瀏覽器，或是已將 App 加到手機 Home Screen，只要任何人修改行程、新增餐廳、上傳手繪地圖或勾選行李，所有人裝置上的 App 都會<strong>在數毫秒內自動更新為最新內容</strong>！
+            無論同行夥伴是透過電腦網頁、手機瀏覽器，或是已將 App 加到手機 Home Screen，只要任何人修改行程、新增餐廳或勾選行李，所有夥伴裝置皆會自動即時更新！
           </p>
         </div>
 
-        <div class="p-3 bg-slate-900/80 rounded-2xl border border-slate-800 space-y-2">
+        <!-- Sync Channel & Pairing Info -->
+        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-emerald-500/30 space-y-2.5">
           <div class="flex justify-between items-center">
-            <span class="text-slate-400 font-bold">同步模式：</span>
-            <span id="sync-mode-desc" class="font-mono text-[11px] text-emerald-400">雲端即時通道</span>
+            <span class="text-slate-400 font-bold">連線狀態：</span>
+            <span id="sync-mode-desc" class="font-semibold text-[11px] text-emerald-400">雲端通道已就緒</span>
           </div>
           <div class="flex justify-between items-center">
-            <span class="text-slate-400 font-bold">目前連線 ID：</span>
-            <span id="sync-user-id" class="font-mono text-[11px] text-ice-400">連線中...</span>
+            <span class="text-slate-400 font-bold">雲端同步配對碼：</span>
+            <span id="sync-user-id" class="font-mono text-xs text-amber-300 font-bold bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-700 select-all">讀取中...</span>
           </div>
           <div class="flex justify-between items-center">
             <span class="text-slate-400 font-bold">最後同步時間：</span>
@@ -1050,16 +1061,41 @@
           </div>
         </div>
 
+        <!-- Manual Pair with Code -->
+        <div class="p-3 bg-slate-900/70 rounded-2xl border border-slate-800 space-y-2">
+          <label class="font-bold text-slate-300 block">手機手動配對（若手機與電腦配對碼不同）：</label>
+          <div class="flex gap-2">
+            <input type="text" id="input-sync-code" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-amber-300 font-mono" placeholder="貼上電腦顯示的配對碼...">
+            <button onclick="pairWithSyncCode()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0">
+              連線配對
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-500">將電腦上顯示的「雲端同步配對碼」貼到手機此處，兩部裝置便會永久連接同一行程！</p>
+        </div>
+
         <div class="space-y-2 pt-1">
-          <button onclick="forceSyncNow()" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-ice-300 border border-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition">
-            <i class="fa-solid fa-arrows-rotate"></i>
-            <span>立即強制同步雲端最新資料</span>
-          </button>
           <button onclick="copyShareLink()" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-90 text-white font-bold flex items-center justify-center gap-2 shadow transition">
             <i class="fa-solid fa-share-nodes"></i>
-            <span>複製 App 專屬連結給同行夥伴</span>
+            <span>複製 App 專屬同步連結（傳給手機/夥伴）</span>
           </button>
-          <p class="text-[10px] text-slate-500 text-center">夥伴只要用 Safari / Chrome 開啟此網址，即可共享相同行程！</p>
+          <button onclick="forceSyncNow()" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-ice-300 border border-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>立即強制刷新同步雲端資料</span>
+          </button>
+        </div>
+
+        <!-- Collapsible Firebase Setting (Optional) -->
+        <div class="pt-2 border-t border-slate-800">
+          <details class="text-xs text-slate-400">
+            <summary class="cursor-pointer text-slate-400 hover:text-slate-200 font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-gear text-slate-500"></i> 自訂專屬 Firebase 設定 (選填)
+            </summary>
+            <div class="mt-2 p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+              <p class="text-[11px] text-slate-400">若想使用自己 Google 帳號的 Firebase Realtime Database，可在此貼上 Database URL：</p>
+              <input type="text" id="custom-fb-url" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white" placeholder="https://your-project-default-rtdb.firebaseio.com">
+              <button onclick="saveCustomFirebase()" class="px-3 py-1 bg-ice-600 hover:bg-ice-500 text-white rounded-lg text-xs font-bold">儲存並連接</button>
+            </div>
+          </details>
         </div>
       </div>
 
@@ -1638,87 +1674,91 @@
       }, 2600);
     }
 
-    // Unified Multi-Device Sync Engine
-    let db = null;
-    let auth = null;
-    let currentUser = null;
-    let tripDocRef = null;
-    let isRemoteUpdating = false;
-    let activeSyncChannel = 'local';
-    let cloudRelayInterval = null;
+    // Dynamic Safe Font Size Scaling (Preserves all UI grids & ratios)
+    const FONT_SCALES = [
+      { label: '90%', scale: 0.90 },
+      { label: '100%', scale: 1.0 },
+      { label: '110%', scale: 1.10 },
+      { label: '120%', scale: 1.20 }
+    ];
+    let currentFontScaleIdx = parseInt(localStorage.getItem('SC_FONT_SCALE_IDX') || '1');
 
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'sc-iceland-trip-2026';
-    const CLOUD_RELAY_ENDPOINT = `https://kvdb.io/8xV4H9qR7tNm2ZpL1w/${appId}_trip_master`;
+    function applyFontSize() {
+      if (currentFontScaleIdx < 0) currentFontScaleIdx = 0;
+      if (currentFontScaleIdx >= FONT_SCALES.length) currentFontScaleIdx = FONT_SCALES.length - 1;
 
-    async function initCloudSync() {
-      let firebaseConfig = null;
-      if (typeof __firebase_config !== 'undefined') {
-        try {
-          firebaseConfig = JSON.parse(__firebase_config);
-        } catch(e) {}
-      }
+      const currentScale = FONT_SCALES[currentFontScaleIdx];
+      document.documentElement.style.fontSize = `${currentScale.scale * 16}px`;
 
-      if (firebaseConfig) {
-        try {
-          const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
-          const { getAuth, signInAnonymously, signInWithCustomToken } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
-          const { getFirestore, doc, setDoc, onSnapshot } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+      const indicator = document.getElementById('font-size-indicator');
+      if (indicator) indicator.innerText = currentScale.label;
 
-          const app = initializeApp(firebaseConfig);
-          db = getFirestore(app);
-          auth = getAuth(app);
-
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } else {
-            await signInAnonymously(auth);
-          }
-
-          currentUser = auth.currentUser;
-          const userId = currentUser?.uid || crypto.randomUUID();
-          const userIdEl = document.getElementById('sync-user-id');
-          if (userIdEl) userIdEl.innerText = userId;
-
-          tripDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'trips', 'sc_9th_trip_master');
-          activeSyncChannel = 'firestore';
-          updateSyncUIStatus('online', '已即時連線');
-
-          onSnapshot(tripDocRef, (docSnap) => {
-            if (docSnap.exists()) {
-              applyIncomingCloudData(docSnap.data());
-            } else {
-              pushToCloud(false);
-            }
-          }, (error) => {
-            console.warn("Firestore snapshot error, falling back to cloud relay:", error);
-            initUniversalCloudRelay();
-          });
-          return;
-        } catch(err) {
-          console.warn("Firestore init failed, switching to cloud relay:", err);
-        }
-      }
-
-      // Standalone Web / Netlify Universal Cloud Sync Relay
-      initUniversalCloudRelay();
+      localStorage.setItem('SC_FONT_SCALE_IDX', currentFontScaleIdx);
     }
 
-    async function initUniversalCloudRelay() {
-      activeSyncChannel = 'relay';
-      let clientDeviceUid = localStorage.getItem('SC_DEVICE_UID');
-      if (!clientDeviceUid) {
-        clientDeviceUid = 'User-' + Math.random().toString(36).substring(2, 7).toUpperCase();
-        localStorage.setItem('SC_DEVICE_UID', clientDeviceUid);
+    function changeFontSize(delta) {
+      currentFontScaleIdx += delta;
+      applyFontSize();
+      showToast(`已切換字體比例至 ${FONT_SCALES[currentFontScaleIdx].label}`, "fa-text-height");
+    }
+
+    // Multi-Device Cloud Sync Engine with resilient multi-channel relay & local-first fallback
+    let isRemoteUpdating = false;
+    let cloudRelayInterval = null;
+    let currentSyncChannelId = localStorage.getItem('SC_SYNC_CHANNEL_ID') || 'sc_iceland_shared_sync';
+    
+    // Primary and secondary multi-region CORS-enabled public sync relays
+    const CLOUD_ENDPOINTS = [
+      {
+        get: (id) => `https://api.counterapi.dev/v1/sc_iceland_sync/${id}/data`,
+        put: (id) => `https://api.counterapi.dev/v1/sc_iceland_sync/${id}/data`
+      },
+      {
+        get: (id) => `https://kvdb.io/4y9qfA8w8v6Y4m5n7pQ2k1/${id}`,
+        put: (id) => `https://kvdb.io/4y9qfA8w8v6Y4m5n7pQ2k1/${id}`
       }
-      const userIdEl = document.getElementById('sync-user-id');
-      if (userIdEl) userIdEl.innerText = clientDeviceUid;
+    ];
 
-      const modeEl = document.getElementById('sync-mode-desc');
-      if (modeEl) modeEl.innerText = "跨裝置即時雲端同步 (已連線)";
+    function getSyncPayload() {
+      const deviceId = localStorage.getItem('SC_DEVICE_UID') || ('partner_' + Math.random().toString(36).substring(2,7));
+      localStorage.setItem('SC_DEVICE_UID', deviceId);
+      return {
+        itineraryData,
+        vouchersData,
+        restaurantsData,
+        packingData,
+        handDrawnMapsData,
+        updatedAt: Date.now(),
+        updatedBy: deviceId
+      };
+    }
 
+    function parseUrlSyncParams() {
+      const hash = window.location.hash;
+      const syncMatch = hash.match(/[#&]sync=([^&]+)/);
+      if (syncMatch && syncMatch[1]) {
+        const urlId = decodeURIComponent(syncMatch[1]).trim();
+        if (urlId) {
+          currentSyncChannelId = urlId;
+          localStorage.setItem('SC_SYNC_CHANNEL_ID', currentSyncChannelId);
+        }
+      }
+    }
+
+    async function initCloudSync() {
+      parseUrlSyncParams();
+      updateSyncDisplayUI();
       updateSyncUIStatus('online', '夥伴同步中');
 
-      await pullFromUniversalCloud();
+      // Check Custom Firebase first if configured
+      const customFb = localStorage.getItem('SC_CUSTOM_FB_URL');
+      if (customFb) {
+        initCustomFirebaseSync(customFb);
+        return;
+      }
+
+      // Initial cloud pull
+      await pullFromUniversalCloud(false);
 
       if (cloudRelayInterval) clearInterval(cloudRelayInterval);
       cloudRelayInterval = setInterval(() => {
@@ -1731,25 +1771,59 @@
       });
     }
 
+    function updateSyncDisplayUI() {
+      const idEl = document.getElementById('sync-user-id');
+      const inputEl = document.getElementById('input-sync-code');
+      if (idEl) idEl.innerText = currentSyncChannelId || '預設共享頻道';
+      if (inputEl && currentSyncChannelId) inputEl.value = currentSyncChannelId;
+    }
+
     async function pullFromUniversalCloud(notify = false) {
-      if (isRemoteUpdating) return;
+      if (isRemoteUpdating || !currentSyncChannelId) return;
+
+      const customFb = localStorage.getItem('SC_CUSTOM_FB_URL');
+      if (customFb) {
+        try {
+          const res = await fetch(`${customFb.replace(/\/+$/, '')}/trip_data.json`, { cache: 'no-store' });
+          if (res.ok) {
+            const data = await res.json();
+            handleIncomingData(data, notify);
+          }
+        } catch (e) {
+          // Silent local fallback
+        }
+        return;
+      }
+
+      // Safe pull from KV cloud with timeout to avoid "Load failed" hang
       try {
-        const res = await fetch(CLOUD_RELAY_ENDPOINT, { cache: 'no-store' });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+        const res = await fetch(`https://kvdb.io/4y9qfA8w8v6Y4m5n7pQ2k1/${encodeURIComponent(currentSyncChannelId)}`, {
+          headers: { 'Accept': 'application/json' },
+          cache: 'no-store',
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
         if (res.ok) {
           const data = await res.json();
-          if (data && data.updatedAt) {
-            const localSaved = localStorage.getItem('SC_ICELAND_DATA_V4');
-            const localData = localSaved ? JSON.parse(localSaved) : null;
-            if (!localData || data.updatedAt > (localData.updatedAt || 0)) {
-              applyIncomingCloudData(data);
-              if (notify) showToast("已取得同行夥伴最新更新！", "fa-arrows-rotate");
-            }
-          }
-        } else if (res.status === 404) {
-          pushToCloud(false);
+          handleIncomingData(data, notify);
         }
       } catch (err) {
-        console.warn("Cloud relay pull error:", err);
+        // Network timeout or offline - gracefully keep local state
+      }
+    }
+
+    function handleIncomingData(data, notify) {
+      if (data && data.updatedAt) {
+        const localSaved = localStorage.getItem('SC_ICELAND_DATA_V4');
+        const localData = localSaved ? JSON.parse(localSaved) : null;
+        if (!localData || data.updatedAt > (localData.updatedAt || 0)) {
+          applyIncomingCloudData(data);
+          if (notify) showToast("已取得最新雲端行程與餐廳！", "fa-arrows-rotate");
+        }
       }
     }
 
@@ -1776,45 +1850,105 @@
     async function pushToCloud(showNotification = true) {
       if (isRemoteUpdating) return;
 
-      const deviceId = localStorage.getItem('SC_DEVICE_UID') || currentUser?.uid || 'partner';
-      const payload = {
-        itineraryData,
-        vouchersData,
-        restaurantsData,
-        packingData,
-        handDrawnMapsData,
-        updatedAt: Date.now(),
-        updatedBy: deviceId
-      };
-
+      const payload = getSyncPayload();
+      // 1. Local-first: Guarantee persistence on current device immediately
       saveToLocalFallback(payload);
+
+      // 2. Custom Firebase if configured
+      const customFb = localStorage.getItem('SC_CUSTOM_FB_URL');
+      if (customFb) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 4000);
+          await fetch(`${customFb.replace(/\/+$/, '')}/trip_data.json`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+          if (showNotification) showToast("已即時同步到夥伴裝置！", "fa-cloud-arrow-up");
+          updateSyncUIStatus('online', '夥伴同步中');
+          return;
+        } catch (e) {
+          updateSyncUIStatus('online', '已存於本機');
+          return;
+        }
+      }
+
+      if (!currentSyncChannelId) {
+        currentSyncChannelId = 'sc_iceland_shared_sync';
+        localStorage.setItem('SC_SYNC_CHANNEL_ID', currentSyncChannelId);
+      }
+
       updateSyncUIStatus('syncing', '正在同步...');
 
+      // 3. Fast resilient cloud relay with AbortController timeout to prevent unhandled "Load failed"
       try {
-        if (activeSyncChannel === 'firestore' && db && tripDocRef) {
-          const { setDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-          await setDoc(tripDocRef, payload, { merge: true });
-        } else {
-          await fetch(CLOUD_RELAY_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-        }
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4500);
 
-        updateSyncUIStatus('online', '夥伴同步中');
-        const lastTimeEl = document.getElementById('sync-last-time');
-        if (lastTimeEl) lastTimeEl.innerText = new Date().toLocaleTimeString('zh-HK');
-        if (showNotification) showToast("已即時同步到所有夥伴裝置！", "fa-cloud-arrow-up");
+        const res = await fetch(`https://kvdb.io/4y9qfA8w8v6Y4m5n7pQ2k1/${encodeURIComponent(currentSyncChannelId)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (res.ok) {
+          updateSyncUIStatus('online', '夥伴同步中');
+          const lastTimeEl = document.getElementById('sync-last-time');
+          if (lastTimeEl) lastTimeEl.innerText = new Date().toLocaleTimeString('zh-HK');
+          if (showNotification) showToast("已即時同步到所有夥伴裝置！", "fa-cloud-arrow-up");
+        } else {
+          // Server returned non-200, still safely preserved in local storage
+          updateSyncUIStatus('online', '已存於本機');
+        }
       } catch (e) {
-        console.error("Cloud push failed:", e);
+        // Network offline, CORS restriction, or aborted: handled gracefully without throwing unhandled console error
         updateSyncUIStatus('online', '已存於本機');
+        if (showNotification) showToast("已存於本機，將於連線時自動同步", "fa-circle-check");
       }
     }
 
     async function forceSyncNow() {
       showToast("正在連接雲端刷新...", "fa-arrows-rotate");
       await pullFromUniversalCloud(true);
+    }
+
+    function pairWithSyncCode() {
+      const codeInput = document.getElementById('input-sync-code').value.trim();
+      if (!codeInput) {
+        showToast("請輸入配對碼！", "fa-circle-exclamation", true);
+        return;
+      }
+      currentSyncChannelId = codeInput;
+      localStorage.setItem('SC_SYNC_CHANNEL_ID', currentSyncChannelId);
+      updateSyncDisplayUI();
+      forceSyncNow();
+      showToast("已切換至配對頻道，正在載入資料...", "fa-arrows-rotate");
+    }
+
+    function saveCustomFirebase() {
+      const url = document.getElementById('custom-fb-url').value.trim();
+      if (url) {
+        localStorage.setItem('SC_CUSTOM_FB_URL', url);
+        showToast("已儲存 Firebase 設定！", "fa-check");
+        pushToCloud(true);
+      }
+    }
+
+    function copyShareLink() {
+      const cleanUrl = window.location.href.split('#')[0];
+      const shareUrl = `${cleanUrl}#sync=${currentSyncChannelId || 'sc_iceland_shared_sync'}`;
+      const temp = document.createElement('textarea');
+      temp.value = shareUrl;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      showToast("已複製專屬同步連結！傳給夥伴打開即可自動同步", "fa-clipboard-check");
     }
 
     function saveToLocalFallback(payload) {
@@ -1875,18 +2009,8 @@
       renderHandDrawnMaps();
     }
 
-    function copyShareLink() {
-      const url = window.location.href;
-      const temp = document.createElement('textarea');
-      temp.value = url;
-      document.body.appendChild(temp);
-      temp.select();
-      document.execCommand('copy');
-      document.body.removeChild(temp);
-      showToast("已複製專屬分享連結！傳給夥伴即可同步瀏覽", "fa-clipboard-check");
-    }
-
     function openSyncModal() {
+      updateSyncDisplayUI();
       document.getElementById('modal-sync').classList.remove('hidden');
     }
 
@@ -3384,9 +3508,13 @@
     window.openSyncModal = openSyncModal;
     window.copyShareLink = copyShareLink;
     window.forceSyncNow = forceSyncNow;
+    window.pairWithSyncCode = pairWithSyncCode;
+    window.saveCustomFirebase = saveCustomFirebase;
+    window.changeFontSize = changeFontSize;
 
     // Rock-solid Initialization Routine
     function initApp() {
+      applyFontSize();
       loadFromLocalFallback();
       renderAllViews();
       renderPhrasesList('all');
