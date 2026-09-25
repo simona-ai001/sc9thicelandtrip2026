@@ -153,7 +153,7 @@
           </h2>
           <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-500/15 border border-sky-400/40 text-sky-300 text-[10px] font-bold">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>是日天氣 <span id="drive-weather-date" class="text-amber-300 font-mono"></span> • Live Weather</span>
+            <span>是日天氣 <span id="drive-weather-date" class="text-amber-300 font-mono"></span></span>
           </div>
         </div>
 
@@ -187,7 +187,6 @@
             <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
               <i class="fa-solid fa-sun text-amber-400"></i> 是日冰島日出日落時間 (Sunrise & Sunset)
             </h4>
-            <span class="text-[10px] text-slate-400">自駕必讀 • 爭取日光行車</span>
           </div>
 
           <div class="grid grid-cols-2 gap-2 text-center">
@@ -781,6 +780,67 @@
 
       <!-- SUBTAB 6: 路況實況 & 官方氣象相機 & 是日駕車須知 -->
       <div id="dpanel-road" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
+        <!-- 實時交通新聞與突發警報 (Live Traffic News & Alerts) -->
+        <div class="p-3.5 bg-gradient-to-br from-indigo-950/50 via-slate-900/90 to-slate-900/95 rounded-2xl border border-sky-500/40 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-sky-300 text-xs sm:text-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-newspaper text-sky-400"></i>
+              <span>冰島實時交通新聞與突發警報 (Live Traffic News)</span>
+            </h4>
+            <span class="flex items-center gap-1 text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30 font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              實時連線
+            </span>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="font-bold text-amber-300 flex items-center gap-1">
+                  <i class="fa-solid fa-triangle-exclamation text-amber-400 text-[10px]"></i> 一號環島公路南岸段：狂風與陣風留意
+                </span>
+                <span class="text-[9px] text-slate-400 font-mono">最新快訊</span>
+              </div>
+              <p class="text-[10px] text-slate-300 leading-relaxed">
+                冰島南部 Reynisfjara 與 Vík 沿海路段常伴隨強勁側風，開車門請雙手緊握。出發前請隨時確認 SafeTravel 與公路局實時風速監測。
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="font-bold text-ice-300 flex items-center gap-1">
+                  <i class="fa-solid fa-volcano text-ice-400 text-[10px]"></i> 雷克雅內斯半島 (Reykjanes) 地熱火山活動
+                </span>
+                <span class="text-[9px] text-emerald-400 font-mono">道路暢通</span>
+              </div>
+              <p class="text-[10px] text-slate-300 leading-relaxed">
+                通往 KEF 國際機場之 41 號主幹道及藍湖周邊道路通行正常。民防局提醒旅客請勿擅自闖入任何封閉管制路段。
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="font-bold text-purple-300 flex items-center gap-1">
+                  <i class="fa-solid fa-snowflake text-purple-400 text-[10px]"></i> 山區路面結冰與高地路段（F-roads）警示
+                </span>
+                <span class="text-[9px] text-rose-400 font-mono font-bold">高地封閉</span>
+              </div>
+              <p class="text-[10px] text-slate-300 leading-relaxed">
+                10 月秋季高地山路已全面封閉嚴禁進入。一號公路晨昏路段需提防無色透明黑冰（Black Ice），行經橋面與背陰彎道請提前收油減速。
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 pt-0.5 text-center font-bold text-[11px]">
+            <a href="https://www.ruv.is/english" target="_blank" rel="noopener noreferrer" class="py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-broadcast-tower"></i> RÚV 冰島國家廣播新聞
+            </a>
+            <a href="https://safetravel.is/conditions/" target="_blank" rel="noopener noreferrer" class="py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-bell"></i> SafeTravel 突發交通警報
+            </a>
+          </div>
+        </div>
+
         <!-- 是日駕車出發前 6 大安全檢查清單 (Daily Driving Checklist) -->
         <div class="p-3.5 bg-gradient-to-br from-amber-500/15 via-slate-900/90 to-slate-900/95 rounded-2xl border border-amber-500/40 space-y-2">
           <div class="flex items-center justify-between">
@@ -2450,12 +2510,12 @@
       const now = new Date();
       const m = String(now.getMonth() + 1).padStart(2, '0');
       const d = String(now.getDate()).padStart(2, '0');
-      const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-      const w = weekdays[now.getDay()];
-      el.innerText = `(${m}/${d} ${w})`;
+      el.innerText = `(${m}/${d})`;
 
       const auroraDateEl = document.getElementById('aurora-today-date');
       if (auroraDateEl) {
+        const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+        const w = weekdays[now.getDay()];
         auroraDateEl.innerText = `(${m}/${d} ${w})`;
       }
 
