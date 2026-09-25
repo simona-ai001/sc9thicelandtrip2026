@@ -2262,9 +2262,9 @@
       { name: "Reykjavik Roasters", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "咖啡廳", note: "冰島最知名精品手沖咖啡", mapLink: "https://maps.google.com/?q=Reykjavik+Roasters" },
       { name: "Bæjarins Beztu Pylsur", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "熱狗堡", note: "柯林頓推薦，羊肉熱狗加洋葱特製醬", mapLink: "https://maps.google.com/?q=Baejarins+Beztu+Pylsur" },
       { name: "Valdís", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "雪糕店", note: "手工冰淇淋，海鹽焦糖味超熱門", mapLink: "https://maps.google.com/?q=Valdis+Reykjavik" },
-      { name: "Suður-Vík", loc: "Vík 鎮", days: ["Day 4", "Day 5"], type: "景觀餐廳", note: "Vík 山頂小鎮餐廳，推薦披薩與燉羊肉", mapLink: "https://maps.google.com/?q=Sudur+Vik" },
-      { name: "Pakkhús Restaurant", loc: "Höfn 赫本", days: ["Day 7", "Day 8"], type: "海鮮餐廳", note: "必食冰島鮮甜小龍蝦 Langoustine 與烤魚", mapLink: "https://maps.google.com/?q=Pakkhus+Restaurant" },
-      { name: "Smiðjan Brugghús", loc: "Vík 鎮", days: ["Day 4", "Day 5"], type: "精釀啤酒堡", note: "精釀啤酒與爆汁美式漢堡", mapLink: "https://maps.google.com/?q=Smidjan+Brugghus" }
+      { name: "Suður-Vík", loc: "Vík 鎮", days: ["Day 5"], type: "景觀餐廳", note: "Vík 山頂小鎮餐廳，推薦披薩與燉羊肉", mapLink: "https://maps.google.com/?q=Sudur+Vik" },
+      { name: "Pakkhús Restaurant", loc: "Höfn 赫本", days: ["Day 7"], type: "海鮮餐廳", note: "必食冰島鮮甜小龍蝦 Langoustine 與烤魚", mapLink: "https://maps.google.com/?q=Pakkhus+Restaurant" },
+      { name: "Smiðjan Brugghús", loc: "Vík 鎮", days: ["Day 5"], type: "精釀啤酒堡", note: "精釀啤酒與爆汁美式漢堡", mapLink: "https://maps.google.com/?q=Smidjan+Brugghus" }
     ];
 
     const DEFAULT_PACKING = [
@@ -2384,7 +2384,18 @@
           const data = JSON.parse(raw);
           if (Array.isArray(data.itineraryData) && data.itineraryData.length > 0) itineraryData = data.itineraryData;
           if (Array.isArray(data.vouchersData) && data.vouchersData.length > 0) vouchersData = data.vouchersData;
-          if (Array.isArray(data.restaurantsData) && data.restaurantsData.length > 0) restaurantsData = data.restaurantsData;
+          if (Array.isArray(data.restaurantsData) && data.restaurantsData.length > 0) {
+            restaurantsData = data.restaurantsData;
+            // 修正本機儲存之歷史遺留錯誤配對
+            restaurantsData.forEach(r => {
+              if (r.name === 'Pakkhús Restaurant' && r.days && r.days.includes('Day 8')) {
+                r.days = ['Day 7'];
+              }
+              if ((r.name === 'Suður-Vík' || r.name === 'Smiðjan Brugghús') && r.days && r.days.includes('Day 4')) {
+                r.days = ['Day 5'];
+              }
+            });
+          }
           if (Array.isArray(data.packingData) && data.packingData.length > 0) packingData = data.packingData;
           if (Array.isArray(data.notesData) && data.notesData.length > 0) {
             notesData = data.notesData;
@@ -2455,7 +2466,17 @@
       isRemoteUpdating = true;
       if (Array.isArray(data.itineraryData) && data.itineraryData.length > 0) itineraryData = data.itineraryData;
       if (Array.isArray(data.vouchersData) && data.vouchersData.length > 0) vouchersData = data.vouchersData;
-      if (Array.isArray(data.restaurantsData) && data.restaurantsData.length > 0) restaurantsData = data.restaurantsData;
+      if (Array.isArray(data.restaurantsData) && data.restaurantsData.length > 0) {
+        restaurantsData = data.restaurantsData;
+        restaurantsData.forEach(r => {
+          if (r.name === 'Pakkhús Restaurant' && r.days && r.days.includes('Day 8')) {
+            r.days = ['Day 7'];
+          }
+          if ((r.name === 'Suður-Vík' || r.name === 'Smiðjan Brugghús') && r.days && r.days.includes('Day 4')) {
+            r.days = ['Day 5'];
+          }
+        });
+      }
       if (Array.isArray(data.packingData) && data.packingData.length > 0) packingData = data.packingData;
       if (Array.isArray(data.notesData) && data.notesData.length > 0) {
         notesData = data.notesData;
@@ -3549,19 +3570,51 @@
       pushToCloud(true);
     }
 
+    /* 依據 14 天每日 30km 行程 Hub 與真實地理範圍精準配對 */
     function autoMatchAllRestaurants30km() {
+      const DAY_HUBS_30KM = [
+        { day: 'Day 1', keys: ['reykjavik', '雷克', 'keflavik', '凱夫拉維克', 'harpa', 'hallgrimskirkja', 'braud', 'brauð', 'roasters', 'pylsur', 'valdis', 'valdís'] },
+        { day: 'Day 2', keys: ['thingvellir', '辛格韋德利', 'geysir', '間歇泉', 'bruarfoss', 'brúarfoss', 'fludir', 'flúðir', 'secret lagoon', '秘密溫泉', 'laugarvatn', 'reykholt', 'biskupstungur'] },
+        { day: 'Day 3', keys: ['gullfoss', '黃金瀑布', 'langjokull', 'langjökull', '雪地摩托', 'hella', '海拉'] },
+        { day: 'Day 4', keys: ['seljalandsfoss', '塞里雅蘭', 'gljufrabui', 'gljúfrabúi', '水簾洞', 'skogafoss', 'skógafoss', 'skógar', '斯科加', 'kviholmi', 'kvíhólmi', 'solheimajokull', 'sólheimajökull'] },
+        { day: 'Day 5', keys: ['vík', 'vik', '維克', 'reynisfjara', '黑沙灘', 'plane wreck', '飛機殘骸', 'dyrholaey', 'dyrhólaey', 'smidjan', 'smiðjan', 'sudur-vik', 'suður-vík'] },
+        { day: 'Day 6', keys: ['jokulsarlon', 'jökulsárlón', '冰河湖', 'diamond beach', '鑽石黑沙灘', '鑽石沙灘', 'fjallsarlon', 'fjallsárlón', 'smyrlabjorg', 'smyrlabjörg'] },
+        { day: 'Day 7', keys: ['skaftafell', '斯卡夫塔', 'vatnajokull', 'vatnajökull', '藍冰洞', '冰川健行', 'svinafell', 'svínafell', 'hofn', 'höfn', '赫本', 'pakkhus', 'pakkhús'] },
+        { day: 'Day 8', keys: ['vestrahorn', '蝙蝠山', 'stokksnes', '天空之鏡', 'fjadrargljufur', 'fjaðrárgljúfur', '羽毛峽谷', 'kirkjubaejarklaustur', 'kirkjubæjarklaustur', '教堂鎮', 'bru guesthouse', 'brú guesthouse'] },
+        { day: 'Day 9', keys: ['vestmannaeyjar', '西人島', 'heimaey', 'landeyjahofn', 'landeyjahöfn', 'eldheimar'] },
+        { day: 'Day 10', keys: ['kerid', 'kerið', '火口湖', 'hveragerdi', 'hveragerði', '溫泉鎮', '騎馬', 'selfoss', '塞爾福斯', 'bella apartments'] },
+        { day: 'Day 11', keys: ['snaefellsnes', 'snæfellsnes', '斯奈山', 'budakirkja', 'búðakirkja', '黑教堂', 'arnarstapi', '阿爾納斯塔皮', 'hellnar', 'kirkjufell', '教會山', '草帽山', 'grundarfjordur', 'grundarfjörður', 'olafsvik', 'ólafsvík', 'stykkisholmur'] },
+        { day: 'Day 12', keys: ['reykjavik', '雷克', 'laugavegur', 'old harbor', '舊港口', 'elding', '賞鯨', 'harpa', 'braud', 'brauð', 'roasters', 'pylsur', 'valdis', 'valdís'] },
+        { day: 'Day 13', keys: ['blue lagoon', '藍湖', 'grindavik', 'grindavík', 'fagradalsfjall', '泥火山', 'keflavik', 'keflavík', 'konvin'] },
+        { day: 'Day 14', keys: ['kef', 'airport', '機場', 'lotus', '還車'] }
+      ];
+
       restaurantsData.forEach(r => {
-        const loc = (r.loc + " " + r.name).toLowerCase();
-        let matched = [];
-        if (loc.includes('reykjavik') || loc.includes('雷克')) matched.push('Day 1', 'Day 12');
-        if (loc.includes('geysir') || loc.includes('thingvellir') || loc.includes('gold')) matched.push('Day 2', 'Day 3');
-        if (loc.includes('vík') || loc.includes('vik') || loc.includes('維克')) matched.push('Day 4', 'Day 5');
-        if (loc.includes('höfn') || loc.includes('hofn') || loc.includes('赫本')) matched.push('Day 7', 'Day 8');
-        if (matched.length > 0) r.days = Array.from(new Set(matched));
+        const text = (r.loc + " " + r.name + " " + (r.note || '')).toLowerCase();
+        let matchedDays = [];
+
+        DAY_HUBS_30KM.forEach(hub => {
+          const isHit = hub.keys.some(k => text.includes(k.toLowerCase()));
+          if (isHit) {
+            matchedDays.push(hub.day);
+          }
+        });
+
+        // 針對特定著名餐廳進行專屬業務邏輯精準校正
+        if (text.includes('pakkhús') || text.includes('pakkhus')) {
+          matchedDays = ['Day 7']; // 第7天專程在赫本晚餐，第8天中午已在170公里外的羽毛峽谷
+        } else if (text.includes('suður-vík') || text.includes('sudur-vik') || text.includes('smiðjan') || text.includes('smidjan')) {
+          matchedDays = ['Day 5']; // 第5天全段於維克鎮活動
+        }
+
+        if (matchedDays.length > 0) {
+          r.days = Array.from(new Set(matchedDays));
+        }
       });
+
       renderRestaurants();
       pushToCloud(true);
-      showToast("已依 30km 半徑重新分配餐廳歸屬！", "fa-check");
+      showToast("已根據 30km 行程半徑完成精準配對！", "fa-check");
     }
 
     function renderPackingList() {
