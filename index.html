@@ -35,59 +35,89 @@
     .hidden { display: none !important; }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 4px; }
-    .glass { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    .glass { background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
     .glass-card { background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
     .cartoon-map-bg { background: linear-gradient(135deg, rgba(14, 165, 233, 0.18) 0%, rgba(16, 185, 129, 0.18) 100%); }
-    .pt-safe { padding-top: max(env(safe-area-inset-top, 0px), 12px); }
-    .pb-safe { padding-bottom: max(env(safe-area-inset-bottom, 0px), 6px); }
+    
+    /* Native Mobile Safe Area Insets */
+    .pt-safe { 
+      padding-top: max(env(safe-area-inset-top, 0px), 12px); 
+    }
+    .pb-safe { 
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px); 
+    }
+
+    /* PWA Standalone Mode adjustments for iOS & Android */
+    @media all and (display-mode: standalone) {
+      .pt-safe {
+        padding-top: max(env(safe-area-inset-top, 44px), 48px) !important;
+      }
+      .pb-safe {
+        padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px) !important;
+      }
+      #btn-pwa-guide {
+        display: none !important;
+      }
+    }
+
+    .is-pwa .pt-safe {
+      padding-top: max(env(safe-area-inset-top, 44px), 48px) !important;
+    }
+    .is-pwa .pb-safe {
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px) !important;
+    }
+    .is-pwa #btn-pwa-guide {
+      display: none !important;
+    }
   </style>
 </head>
 <body class="h-full flex flex-col font-sans antialiased select-none bg-slate-950 text-slate-100 overflow-hidden">
 
   <!-- Header -->
-  <header class="glass pt-safe px-3 sm:px-4 py-2.5 border-b border-slate-800 flex items-center justify-between shrink-0 z-30">
-    <div class="flex items-center space-x-2.5">
-      <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-ice-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-ice-500/20 text-xl select-none">
+  <header class="glass pt-safe px-3 sm:px-4 py-2 border-b border-slate-800/90 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center space-x-2 min-w-0 flex-1 mr-1">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-ice-600 to-indigo-600 flex items-center justify-center shadow-md text-base select-none shrink-0">
         🇮🇸
       </div>
-      <div>
-        <h1 class="font-bold text-sm sm:text-base tracking-tight text-white flex items-center gap-1">
+      <div class="min-w-0 flex-1">
+        <h1 class="font-bold text-xs sm:text-sm tracking-tight text-white whitespace-nowrap truncate">
           SC 9th Anniversary Trip
         </h1>
-        <p class="text-[10px] sm:text-xs text-slate-400 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-aurora-400 animate-pulse"></span>
-          2026/10/05 - 10/20 • 14天冰島遊
+        <p class="text-[9px] sm:text-[10px] text-slate-400 whitespace-nowrap truncate flex items-center gap-1 mt-0.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-aurora-400 animate-pulse shrink-0"></span>
+          <span>10/05-10/20 • 14天冰島遊</span>
         </p>
       </div>
     </div>
 
     <!-- Header Actions: Font Scale, Cloud Sync status & PWA button -->
-    <div class="flex items-center space-x-1.5">
+    <div class="flex items-center space-x-1 shrink-0">
       <!-- Font size scaler -->
       <div class="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl px-1 py-0.5 text-xs text-slate-300">
         <button onclick="adjustFontSize(-1)" class="px-1.5 py-0.5 hover:text-white font-bold" title="字體縮小">A-</button>
-        <span id="font-scale-indicator" class="text-[10px] px-1 text-ice-400 font-mono">100%</span>
+        <span id="font-scale-indicator" class="text-[10px] px-0.5 text-ice-400 font-mono hidden sm:inline">100%</span>
         <button onclick="adjustFontSize(1)" class="px-1.5 py-0.5 hover:text-white font-bold" title="字體放大">A+</button>
       </div>
 
-      <!-- Cloud Sync Button with Live Indicator -->
-      <button onclick="openSyncModal()" id="btn-sync-status" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs flex items-center gap-1.5 transition">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="sync-status-text" class="text-[11px] font-semibold">同步中</span>
+      <!-- Cloud Sync Button with Live Indicator (Compact & Sleek) -->
+      <button onclick="openSyncModal()" id="btn-sync-status" class="px-2 py-1 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs flex items-center gap-1 transition" title="雲端同步狀態">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <i class="fa-solid fa-cloud text-[11px]"></i>
+        <span id="sync-status-text" class="text-[10px] font-semibold hidden md:inline">同步中</span>
       </button>
 
       <!-- PWA Install Guide -->
-      <button onclick="showPwaModal()" class="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white text-xs">
+      <button onclick="showPwaModal()" id="btn-pwa-guide" class="p-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white text-xs" title="加到主畫面">
         <i class="fa-solid fa-mobile-screen"></i>
       </button>
     </div>
   </header>
 
   <!-- Main View Container -->
-  <main id="app-content" class="flex-1 overflow-y-auto relative" style="padding-bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px));">
-    
+  <main id="app-content" class="flex-1 overflow-y-auto relative pb-20">
+
     <!-- View 1: 預約憑證 (Vouchers) -->
-    <section id="view-vouchers" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+    <section id="view-vouchers" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
       <div class="flex justify-between items-center">
         <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-ticket text-ice-400"></i> 預約憑證 & 附件管理
@@ -96,14 +126,11 @@
           <i class="fa-solid fa-plus"></i> 新增憑證
         </button>
       </div>
-      <div id="vouchers-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <!-- Rendered by JS -->
-      </div>
+      <div id="vouchers-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
     </section>
 
     <!-- View 2: 地圖 (Map) -->
-    <section id="view-map" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
-      <!-- Ching's Shared Google Maps Banner -->
+    <section id="view-map" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
       <div class="glass-card p-4 rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-slate-900/90 to-slate-900/95 space-y-3 shadow-xl">
         <div class="flex items-center space-x-3">
           <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xl border border-amber-500/40">
@@ -122,7 +149,6 @@
         </a>
       </div>
 
-      <!-- Upload Custom Hand-Drawn Map Photos -->
       <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
         <div class="flex justify-between items-center">
           <h3 class="font-bold text-xs text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -133,97 +159,86 @@
             <input type="file" accept="image/*" class="hidden" onchange="handleHandDrawnMapUpload(event)">
           </label>
         </div>
-        <div id="hand-drawn-maps-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          <!-- Rendered by JS -->
-        </div>
+        <div id="hand-drawn-maps-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
       </div>
 
-      <!-- Daily Route Navigation -->
       <div class="glass-card p-4 rounded-3xl border border-slate-800 space-y-3">
         <h3 class="font-bold text-xs text-slate-300 uppercase tracking-wider flex items-center justify-between">
           <span><i class="fa-solid fa-route text-ice-400 me-1.5"></i> 每日行程導航路線</span>
           <span class="text-[10px] text-slate-400">依行程景點智慧串聯</span>
         </h3>
-        <div id="google-route-links" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <!-- Rendered by JS -->
-        </div>
+        <div id="google-route-links" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
       </div>
     </section>
 
     <!-- View 3: 自駕 (Drive) -->
-    <section id="view-drive" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+    <section id="view-drive" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
       <div class="glass-card p-4 rounded-3xl border border-sky-500/30 bg-gradient-to-br from-sky-950/40 via-slate-900/90 to-slate-900/95 space-y-3">
         <h2 class="text-base font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-car text-sky-400"></i> 冰島自駕指南 & 實況路況
         </h2>
         <p class="text-xs text-slate-300 leading-relaxed">
-          冰島全境靠右行駛。掌握迴旋處路權、全天候開燈、防風握門等重要規則，確保 14 天環島安全順暢。
+          冰島靠右行駛。掌握圓環路權、防風開門、單線橋禮讓與全天候開燈等法規，保障 14 天自駕平安。
         </p>
       </div>
 
       <!-- Drive Subtabs -->
       <div class="grid grid-cols-4 gap-1.5">
-        <button onclick="switchDriveSubtab('rules')" id="dtab-rules" class="p-2 rounded-xl bg-sky-600 text-white text-xs font-bold text-center">
-          自駕法規
-        </button>
-        <button onclick="switchDriveSubtab('gas')" id="dtab-gas" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">
-          加油須知
-        </button>
-        <button onclick="switchDriveSubtab('wc')" id="dtab-wc" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">
-          公廁指南
-        </button>
-        <button onclick="switchDriveSubtab('road')" id="dtab-road" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">
-          路況實況
-        </button>
+        <button onclick="switchDriveSubtab('rules')" id="dtab-rules" class="p-2 rounded-xl bg-sky-600 text-white text-xs font-bold text-center">自駕法規</button>
+        <button onclick="switchDriveSubtab('gas')" id="dtab-gas" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">加油須知</button>
+        <button onclick="switchDriveSubtab('wc')" id="dtab-wc" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">公廁指南</button>
+        <button onclick="switchDriveSubtab('road')" id="dtab-road" class="p-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold text-center">路況實況</button>
       </div>
 
-      <!-- Subtab 1: Rules -->
       <div id="dpanel-rules" class="glass-card p-4 rounded-2xl space-y-3 text-xs leading-relaxed text-slate-300">
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
             <i class="fa-solid fa-circle-exclamation"></i> 迴旋處 (Roundabout) 內圈絕對先行！
           </h4>
-          <p>冰島雙線迴旋處規定：<strong>內圈車輛擁有絕對優先權</strong>。若外圈車輛欲直行，必須在內圈車輛欲切出時讓行減速。</p>
+          <p>雙線迴旋處規定：<strong>內圈車輛擁有絕對優先切出權</strong>。外圈車輛欲繼續直行，必須減速禮讓內圈出彎車輛。</p>
         </div>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-sky-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-wind"></i> 開車門雙手死握抗強風
+            <i class="fa-solid fa-bridge"></i> 單線橋樑 (Single-Lane Bridge) 路權
           </h4>
-          <p>冰島陣風風力極強，租車保險不保被風吹折之車門。上下車請雙手拉緊車門，並儘量順風停車。</p>
+          <p>距離橋頭較近、先抵達的一方優先通行。進橋前務必減速確認對向有無來車；遇長橋請利用中間避車彎 (Passing place, 標誌 M) 讓行。</p>
+        </div>
+        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
+          <h4 class="font-bold text-rose-300 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-wind"></i> 開車門雙手抓緊防折斷
+          </h4>
+          <p>冰島陣風風力極強，租車保險不理賠被強風吹折之車門。停車請盡量順風停泊，開門時必須雙手握緊門把。</p>
         </div>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-emerald-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-lightbulb"></i> 24 小時全天候開近光大燈
+            <i class="fa-solid fa-gauge-high"></i> 公路法定速限與野生動物
           </h4>
-          <p>不分白晝或晴陰天，冰島法例強制全程開啟近光車頭燈。</p>
+          <p>市區速限 50 km/h；柏油公路 90 km/h；碎石砂石路 80 km/h。若路肩遇見綿羊，切記綿羊受驚會往回跑橫越馬路，請務必減速。</p>
         </div>
       </div>
 
-      <!-- Subtab 2: Gas -->
       <div id="dpanel-gas" class="hidden glass-card p-4 rounded-2xl space-y-3 text-xs text-slate-300">
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-amber-300 text-xs">⛽️ 自助加油與 4 位數 PIN 碼</h4>
-          <p>冰島全境為無人自助加油機。使用信用卡時，<strong>必須輸入預設 4 位數 PIN 碼</strong>（出發前向發卡銀行開通）。</p>
-          <p class="text-rose-400 font-semibold">⚠️ 切勿在油機點選「Fill Up (加滿)」！可能被預扣 20,000~30,000 ISK 押金，建議依油量手動點選 5,000 或 10,000 ISK。</p>
+          <p>冰島均為無人自助加油機。刷卡時<strong>必須輸入預設 4 位數晶片 PIN 碼</strong>（出發前請向香港發卡銀行索取）。</p>
+          <p class="text-rose-400 font-semibold">⚠️ 切勿在油機點選「Fill Up (加滿)」！系統可能預扣 25,000~30,000 ISK 押金，建議依油量手動點選 5,000 或 10,000 ISK。</p>
         </div>
         <a href="https://maps.google.com/?q=Gas+Station+Iceland" target="_blank" class="block text-center py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition">
-          <i class="fa-solid fa-gas-pump me-1"></i> Google Maps 一鍵搜尋沿途加油站
+          <i class="fa-solid fa-gas-pump me-1"></i> Google Maps 搜尋沿途加油站
         </a>
       </div>
 
-      <!-- Subtab 3: WC -->
       <div id="dpanel-wc" class="hidden glass-card p-4 rounded-2xl space-y-3 text-xs text-slate-300">
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
           <h4 class="font-bold text-sky-300 text-xs">🚻 公廁位置與付款方式</h4>
-          <p>1. <strong>加油站附設商店 (N1, Olís)</strong>：大多提供免費洗手間，補油時可順道使用。</p>
-          <p>2. <strong>重點國家公園與瀑布</strong>：公廁入口設有感應式刷卡機，直接拍 Apple Pay / 信用卡即可進入 (約 200~400 ISK)。</p>
+          <p>1. <strong>加油站附設商店 (N1, Olís, Orkan)</strong>：大多提供免費或憑消費使用洗手間。</p>
+          <p>2. <strong>各景區與瀑布公廁</strong>：大多設有感應刷卡機，直接拍 Apple Pay / 信用卡即可進入 (約 200~400 ISK)。</p>
         </div>
         <a href="https://maps.google.com/?q=Public+Toilet+Iceland" target="_blank" class="block text-center py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition">
           <i class="fa-solid fa-restroom me-1"></i> Google Maps 搜尋周邊公廁
         </a>
       </div>
 
-      <!-- Subtab 4: Road -->
       <div id="dpanel-road" class="hidden glass-card p-4 rounded-2xl space-y-3 text-xs text-slate-300">
         <div class="grid grid-cols-2 gap-2 text-center text-xs">
           <div class="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold">🟢 通行良好 (Easily Passable)</div>
@@ -243,20 +258,15 @@
     </section>
 
     <!-- View 4: 行程 (Itinerary) - Central Tab -->
-    <section id="view-itinerary" class="p-3 sm:p-4 max-w-4xl mx-auto space-y-3">
+    <section id="view-itinerary" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-3" style="display: block;">
       <!-- Days Selector Horizontal Carousel -->
-      <div class="flex space-x-2 overflow-x-auto pb-1 scrollbar-none snap-x" id="day-selector-container">
-        <!-- Rendered by JS -->
-      </div>
-
+      <div class="flex space-x-2 overflow-x-auto pb-1 scrollbar-none snap-x" id="day-selector-container"></div>
       <!-- Selected Day Details Container -->
-      <div id="day-detail-card" class="space-y-3">
-        <!-- Rendered by JS -->
-      </div>
+      <div id="day-detail-card" class="space-y-3"></div>
     </section>
 
     <!-- View 5: 美食 (Restaurants) -->
-    <section id="view-restaurants" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+    <section id="view-restaurants" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
       <div class="flex justify-between items-center">
         <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-utensils text-rose-400"></i> 心水餐廳 & 美食導覽
@@ -272,17 +282,12 @@
       </div>
 
       <!-- Day Filter Pills -->
-      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none" id="resto-day-filter">
-        <!-- Rendered by JS -->
-      </div>
-
-      <div id="restaurants-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <!-- Rendered by JS -->
-      </div>
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none" id="resto-day-filter"></div>
+      <div id="restaurants-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
     </section>
 
     <!-- View 6: 工具 (Toolbox) -->
-    <section id="view-toolbox" class="hidden p-3 sm:p-4 max-w-4xl mx-auto space-y-4">
+    <section id="view-toolbox" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 space-y-4" style="display: none;">
       <!-- World Clocks -->
       <div class="glass-card p-3 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/40 via-slate-900/90 to-slate-900/95 space-y-2">
         <h3 class="font-bold text-xs text-indigo-300 uppercase tracking-wider flex items-center justify-between">
@@ -362,16 +367,13 @@
         <div id="trans-output-box" class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs space-y-1.5 min-h-[60px]">
           <p class="text-[10px] text-slate-500">翻譯結果：</p>
           <div id="trans-output-text" class="text-sm font-semibold text-ice-300 leading-relaxed">請輸入文字或按麥克風開始</div>
-          <div id="trans-phonetic-text" class="text-[11px] text-amber-400 font-mono hidden"></div>
         </div>
       </div>
 
       <!-- Tool Panel: Phrases -->
       <div id="tool-panel-phrases" class="hidden glass-card p-4 rounded-2xl space-y-3">
         <h3 class="font-bold text-white text-xs"><i class="fa-solid fa-book text-amber-400 me-1"></i> 精選常用冰島語速查手冊</h3>
-        <div id="phrases-container" class="space-y-2 max-h-80 overflow-y-auto pr-1">
-          <!-- Rendered by JS -->
-        </div>
+        <div id="phrases-container" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
       </div>
 
       <!-- Tool Panel: Culture -->
@@ -379,15 +381,23 @@
         <h3 class="font-bold text-white text-xs"><i class="fa-solid fa-landmark text-emerald-400 me-1"></i> 冰島當地文化與禮儀</h3>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
           <p class="font-bold text-amber-300">♨️ 溫泉潔淨禮儀（全裸沐浴）</p>
-          <p>進入任何冰島溫泉（如藍湖、秘密溫泉）前，<strong>必須在更衣室全裸徹底沐浴洗頭</strong>，再穿上泳衣進入泳池，這是冰島最重視的公共衛生傳統。</p>
+          <p>進入任何冰島溫泉前，<strong>必須在更衣室全裸徹底沐浴洗頭</strong>，再穿上泳衣進入池中，這是冰島最重視的公共衛生傳統。</p>
         </div>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
-          <p class="font-bold text-sky-300">💧 水喉冷水是頂級泉水</p>
-          <p>冰島冷水來自冰川融水過濾，水喉打開即可生飲，水質世界第一。但<strong>熱水來自地熱帶有天然硫磺味</strong>，請勿飲用熱水。</p>
+          <p class="font-bold text-sky-300">💧 水喉冷水是頂級天然泉水</p>
+          <p>冰島冷水來自冰川融水過濾，水龍頭打開即可直接生飲。但<strong>熱水來自地熱且帶天然硫磺味，請勿飲用熱水</strong>。</p>
         </div>
         <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
           <p class="font-bold text-emerald-300">🌱 苔原（Moss）極度脆弱</p>
-          <p>冰島厚厚綠苔需數百年才能形成，<strong>嚴禁踩踏或在其上行走</strong>，車輛越野壓毀苔原將面臨巨額罰款。</p>
+          <p>厚綠苔原需數百年才能形成，<strong>嚴禁踩踏或在其上行走</strong>，車輛越野壓毀苔原將面臨巨額罰款。</p>
+        </div>
+        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
+          <p class="font-bold text-indigo-300">👟 入屋脫鞋傳統</p>
+          <p>進入冰島當地民宿或住宅時，進門玄關處請自覺脫下戶外靴，換穿拖鞋或穿襪子入內。</p>
+        </div>
+        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
+          <p class="font-bold text-rose-300">🙅‍♂️ 冰島無需給小費 (No Tipping)</p>
+          <p>所有餐廳與計程車費用均已包含服務費及增值稅，給予一句真誠的「Takk fyrir」便是最好的禮貌。</p>
         </div>
       </div>
 
@@ -413,7 +423,7 @@
       <div id="tool-panel-aurora" class="hidden glass-card p-4 rounded-2xl space-y-3 text-xs text-slate-300">
         <h3 class="font-bold text-white text-xs"><i class="fa-solid fa-wand-magic-sparkles text-aurora-400 me-1"></i> 極光獵觀指南</h3>
         <p>1. <strong>Kp 指數 ≥ 3</strong> 代表極光活動強烈，肉眼即可清晰見到綠色與紫光。</p>
-        <p>2. <strong>雲層圖 (Cloud Cover)</strong>：Vedur 天文台地圖上，白色代表無雲晴朗，綠色代表雲層覆蓋。</p>
+        <p>2. <strong>雲層圖 (Cloud Cover)</strong>：白色代表無雲晴朗，綠色代表雲層覆蓋。</p>
         <a href="https://en.vedur.is/weather/forecasts/aurora/" target="_blank" class="block text-center py-2 rounded-xl bg-aurora-600 text-white font-bold text-xs">
           開啟 Vedur 官方極光雲層圖
         </a>
@@ -425,14 +435,12 @@
           <h3 class="font-bold text-white"><i class="fa-solid fa-clipboard-check text-amber-400 me-1"></i> 行李與必備裝備清單</h3>
           <span id="packing-progress" class="text-slate-400 text-[11px]">0/0 完成</span>
         </div>
-        <div id="packing-items-container" class="space-y-2 max-h-72 overflow-y-auto pr-1">
-          <!-- Rendered by JS -->
-        </div>
+        <div id="packing-items-container" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
       </div>
     </section>
 
     <!-- View 7: AI 助手 (AI) -->
-    <section id="view-ai" class="hidden p-3 sm:p-4 max-w-4xl mx-auto h-[calc(100vh-140px)] flex flex-col space-y-2">
+    <section id="view-ai" class="tab-view max-w-4xl mx-auto p-3 sm:p-4 h-[calc(100vh-140px)] flex flex-col space-y-2" style="display: none;">
       <div class="glass-card p-3 rounded-2xl flex items-center justify-between shrink-0">
         <div class="flex items-center space-x-2">
           <div class="w-8 h-8 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-sm">
@@ -453,7 +461,7 @@
         <div class="flex items-start space-x-2">
           <div class="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0 text-[10px]">AI</div>
           <div class="bg-slate-800 p-2.5 rounded-2xl rounded-tl-none max-w-[85%] text-slate-200 leading-relaxed">
-            Hæ! 我是你們的冰島旅遊 AI 助理 🇮🇸。已為你們載入專屬金鑰，隨時可以詢問行程安排、冰川裝備、熱狗店推薦或緊急路況！
+            Hæ! 我是你們的冰島旅遊 AI 助理 🇮🇸。隨時可以詢問行程安排、冰川裝備、熱狗店推薦或緊急路況！
           </div>
         </div>
       </div>
@@ -471,43 +479,43 @@
 
   <!-- Bottom Navigation Bar -->
   <nav class="fixed bottom-0 left-0 right-0 glass border-t border-slate-800/90 z-40 pb-safe">
-    <div class="max-w-md mx-auto grid grid-cols-7 h-12 items-center px-1">
-      <button onclick="switchTab('vouchers')" id="nav-vouchers" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-1">
+    <div class="max-w-md mx-auto grid grid-cols-7 pt-1 pb-0.5 items-center px-1">
+      <button onclick="switchTab('vouchers')" id="nav-vouchers" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-0.5">
         <i class="fa-solid fa-ticket text-xs"></i>
-        <span class="text-[9px] mt-0.5">憑證</span>
+        <span class="text-[9px] mt-0.5 leading-none">憑證</span>
       </button>
 
-      <button onclick="switchTab('map')" id="nav-map" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-1">
+      <button onclick="switchTab('map')" id="nav-map" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-0.5">
         <i class="fa-solid fa-map-location-dot text-xs"></i>
-        <span class="text-[9px] mt-0.5">地圖</span>
+        <span class="text-[9px] mt-0.5 leading-none">地圖</span>
       </button>
 
-      <button onclick="switchTab('drive')" id="nav-drive" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-1">
+      <button onclick="switchTab('drive')" id="nav-drive" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-0.5">
         <i class="fa-solid fa-car text-xs"></i>
-        <span class="text-[9px] mt-0.5">自駕</span>
+        <span class="text-[9px] mt-0.5 leading-none">自駕</span>
       </button>
 
       <!-- Central Elevated Itinerary Button -->
-      <button onclick="switchTab('itinerary')" id="nav-itinerary" class="relative -top-0.5 flex flex-col items-center justify-center transition">
-        <div id="nav-itinerary-box" class="w-8 h-8 rounded-xl bg-ice-500/20 border border-ice-400/50 text-ice-300 flex items-center justify-center shadow-md">
-          <i class="fa-solid fa-calendar-days text-sm"></i>
+      <button onclick="switchTab('itinerary')" id="nav-itinerary" class="relative -top-0.5 flex flex-col items-center justify-center transition py-0.5">
+        <div id="nav-itinerary-box" class="w-7 h-7 rounded-xl bg-ice-500/20 border border-ice-400/50 text-ice-300 flex items-center justify-center shadow-md">
+          <i class="fa-solid fa-calendar-days text-xs"></i>
         </div>
-        <span class="text-[9px] mt-0.5 font-bold text-ice-400">行程</span>
+        <span class="text-[9px] mt-0.5 font-bold text-ice-400 leading-none">行程</span>
       </button>
 
-      <button onclick="switchTab('restaurants')" id="nav-restaurants" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-1">
+      <button onclick="switchTab('restaurants')" id="nav-restaurants" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-0.5">
         <i class="fa-solid fa-utensils text-xs"></i>
-        <span class="text-[9px] mt-0.5">美食</span>
+        <span class="text-[9px] mt-0.5 leading-none">美食</span>
       </button>
 
-      <button onclick="switchTab('toolbox')" id="nav-toolbox" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-1">
+      <button onclick="switchTab('toolbox')" id="nav-toolbox" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-0.5">
         <i class="fa-solid fa-toolbox text-xs"></i>
-        <span class="text-[9px] mt-0.5">工具</span>
+        <span class="text-[9px] mt-0.5 leading-none">工具</span>
       </button>
 
-      <button onclick="switchTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-1">
+      <button onclick="switchTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition py-0.5">
         <i class="fa-solid fa-robot text-xs"></i>
-        <span class="text-[9px] mt-0.5">AI 助手</span>
+        <span class="text-[9px] mt-0.5 leading-none">AI 助手</span>
       </button>
     </div>
   </nav>
@@ -1174,6 +1182,11 @@
     }
 
     function initApp() {
+      // Check PWA mode
+      if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+        document.documentElement.classList.add('is-pwa');
+      }
+
       loadFromLocalFallback();
       currentSelectedDay = calculateInitialDayIndex();
       renderAllViews();
@@ -1215,7 +1228,9 @@
         if (!viewEl || !navEl) return;
 
         if (t === tab) {
+          viewEl.style.setProperty('display', t === 'ai' ? 'flex' : 'block', 'important');
           viewEl.classList.remove('hidden');
+
           if (t === 'itinerary') {
             const box = document.getElementById('nav-itinerary-box');
             if (box) box.className = "w-8 h-8 rounded-xl bg-ice-500/20 border border-ice-400/50 text-ice-300 flex items-center justify-center shadow-md";
@@ -1223,7 +1238,9 @@
             navEl.className = "flex flex-col items-center justify-center text-ice-400 font-bold transition py-1";
           }
         } else {
+          viewEl.style.setProperty('display', 'none', 'important');
           viewEl.classList.add('hidden');
+
           if (t === 'itinerary') {
             const box = document.getElementById('nav-itinerary-box');
             if (box) box.className = "w-8 h-8 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-400 flex items-center justify-center";
@@ -1232,6 +1249,11 @@
           }
         }
       });
+
+      // Lazy render tab content
+      if (tab === 'vouchers') renderVouchers();
+      if (tab === 'restaurants') renderRestaurants();
+      if (tab === 'map') { renderGoogleRouteLinks(); renderHandDrawnMaps(); }
     }
 
     function renderDaySelector() {
@@ -1278,9 +1300,7 @@
                 </button>
               </h2>
             </div>
-            <a href="https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw" target="_blank" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold flex items-center gap-1 shrink-0 shadow">
-              <i class="fa-solid fa-map-location-dot"></i> Ching 地圖
-            </a>
+            <!-- 地圖連結專屬於「地圖」分頁，此處僅保留精簡的主題編輯，避免造成各頁面視覺重疊 -->
           </div>
 
           <!-- Hotel Card -->
