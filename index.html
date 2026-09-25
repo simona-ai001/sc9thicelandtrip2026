@@ -38,11 +38,20 @@
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
     }
-    html, body {
-      background-color: #030712;
+    html {
       height: 100%;
-      height: 100dvh;
+      height: -webkit-fill-available;
+      background-color: #020617;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #020617;
+      height: 100%;
+      height: -webkit-fill-available;
       width: 100%;
+      margin: 0;
+      padding: 0;
       overscroll-behavior-y: none;
       -webkit-overflow-scrolling: touch;
     }
@@ -55,22 +64,28 @@
     }
     
     /* Bottom Navigation Safe Inset: Seamless extension to bottom edge without blank gaps */
-    .nav-safe {
-      padding-bottom: env(safe-area-inset-bottom, 0px);
+    .nav-bar-container {
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
     
     /* Main Content bottom padding to avoid nav bar occlusion */
     .main-scroll-padding {
-      padding-bottom: calc(3.8rem + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
     }
     
-    .glass { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .glass { background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
     .glass-card { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.08); }
     .cartoon-map-bg { background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%); }
     .toast-animate { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
   </style>
 </head>
-<body class="h-full flex flex-col font-sans antialiased select-none bg-slate-950 text-slate-100 overflow-hidden">
+<body class="font-sans antialiased select-none bg-slate-950 text-slate-100 overflow-hidden">
+
+  <!-- Fullscreen App Container to Eliminate Any Viewport / Safari Bottom Gaps -->
+  <div id="app-root" class="fixed inset-0 flex flex-col bg-slate-950 text-slate-100 overflow-hidden">
 
   <!-- Toast Notification Box (Replaces native browser alert) -->
   <div id="app-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-[-20px] toast-animate">
@@ -937,7 +952,7 @@
   </main>
 
   <!-- Seamless Bottom Navigation Bar: Extends fully to screen bottom without empty gaps -->
-  <nav class="fixed bottom-0 left-0 right-0 glass border-t border-slate-800/90 z-40 nav-safe shadow-2xl">
+  <nav class="fixed bottom-0 left-0 right-0 nav-bar-container border-t border-slate-800/90 z-40 shadow-2xl">
     <div class="max-w-md mx-auto grid grid-cols-7 h-12 items-center px-1">
       <!-- 1. 憑證 -->
       <button onclick="switchTab('vouchers')" id="nav-vouchers" class="flex flex-col items-center justify-center text-ice-400 font-bold transition">
@@ -978,6 +993,8 @@
       </button>
     </div>
   </nav>
+
+  </div> <!-- End of #app-root -->
 
   <!-- PWA Install Modal -->
   <div id="modal-pwa" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -1020,6 +1037,10 @@
 
         <div class="p-3 bg-slate-900/80 rounded-2xl border border-slate-800 space-y-2">
           <div class="flex justify-between items-center">
+            <span class="text-slate-400 font-bold">同步模式：</span>
+            <span id="sync-mode-desc" class="font-mono text-[11px] text-emerald-400">雲端即時通道</span>
+          </div>
+          <div class="flex justify-between items-center">
             <span class="text-slate-400 font-bold">目前連線 ID：</span>
             <span id="sync-user-id" class="font-mono text-[11px] text-ice-400">連線中...</span>
           </div>
@@ -1030,6 +1051,10 @@
         </div>
 
         <div class="space-y-2 pt-1">
+          <button onclick="forceSyncNow()" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-ice-300 border border-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>立即強制同步雲端最新資料</span>
+          </button>
           <button onclick="copyShareLink()" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-90 text-white font-bold flex items-center justify-center gap-2 shadow transition">
             <i class="fa-solid fa-share-nodes"></i>
             <span>複製 App 專屬連結給同行夥伴</span>
@@ -1296,6 +1321,9 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Embedded Default Gemini API Key provided by user
+    const EMBEDDED_API_KEY = "AQ.Ab8RN6JuLSJdQ4BPkFcUD8J-rBv-590lqD0y7YPUSkQIB7MN-w";
 
     // Ching's Shared Google Maps Link
     const CHING_GOOGLE_MAPS_LINK = "https://maps.app.goo.gl/cJ4giX446DKu9Jvy9?g_st=iw";
@@ -1610,97 +1638,146 @@
       }, 2600);
     }
 
-    // Firebase Setup & Realtime Cloud Sync
+    // Unified Multi-Device Sync Engine (Platform Firebase + Universal Mobile Cloud Relay)
     let db = null;
     let auth = null;
     let currentUser = null;
     let tripDocRef = null;
     let isRemoteUpdating = false;
+    let activeSyncChannel = 'local';
+    let cloudRelayInterval = null;
 
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'sc-iceland-trip-2026';
+    const CLOUD_RELAY_ENDPOINT = `https://kvdb.io/8xV4H9qR7tNm2ZpL1w/${appId}_trip_master`;
 
     async function initCloudSync() {
-      try {
-        let firebaseConfig = null;
-        if (typeof __firebase_config !== 'undefined') {
-          try {
-            firebaseConfig = JSON.parse(__firebase_config);
-          } catch(e) {
-            console.warn("Could not parse __firebase_config", e);
-          }
-        }
+      // 1. Check if platform Firebase is available
+      let firebaseConfig = null;
+      if (typeof __firebase_config !== 'undefined') {
+        try {
+          firebaseConfig = JSON.parse(__firebase_config);
+        } catch(e) {}
+      }
 
-        if (!firebaseConfig) {
-          updateSyncUIStatus('offline', '離線模式 (本機儲存)');
-          loadFromLocalFallback();
-          renderAllViews();
-          return;
-        }
+      if (firebaseConfig) {
+        try {
+          const app = initializeApp(firebaseConfig);
+          db = getFirestore(app);
+          auth = getAuth(app);
 
-        const app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        auth = getAuth(app);
-
-        // Rule 3: Auth before queries
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
-
-        currentUser = auth.currentUser;
-        const userId = currentUser?.uid || crypto.randomUUID();
-        const userIdEl = document.getElementById('sync-user-id');
-        if (userIdEl) userIdEl.innerText = userId;
-
-        // Rule 1: Strict Paths - ALWAYS /artifacts/{appId}/public/data/{collectionName}
-        // Shared trip public data document for real-time collaboration among all travel companions
-        tripDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'trips', 'sc_9th_trip_master');
-
-        updateSyncUIStatus('connecting', '連線中...');
-
-        // Realtime Listener with Error Callback (Mandatory Requirement)
-        onSnapshot(tripDocRef, (docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            isRemoteUpdating = true;
-
-            if (data.itineraryData && Array.isArray(data.itineraryData)) itineraryData = data.itineraryData;
-            if (data.vouchersData && Array.isArray(data.vouchersData)) vouchersData = data.vouchersData;
-            if (data.restaurantsData && Array.isArray(data.restaurantsData)) restaurantsData = data.restaurantsData;
-            if (data.packingData && Array.isArray(data.packingData)) packingData = data.packingData;
-            if (data.handDrawnMapsData && Array.isArray(data.handDrawnMapsData)) handDrawnMapsData = data.handDrawnMapsData;
-
-            renderAllViews();
-            isRemoteUpdating = false;
-
-            updateSyncUIStatus('online', '已即時連線');
-            const lastTimeEl = document.getElementById('sync-last-time');
-            if (lastTimeEl && data.updatedAt) {
-              lastTimeEl.innerText = new Date(data.updatedAt).toLocaleTimeString('zh-HK');
-            }
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
           } else {
-            // First time initialization in cloud
-            pushToCloud(false);
+            await signInAnonymously(auth);
           }
-        }, (error) => {
-          console.warn("Firestore onSnapshot error:", error);
-          updateSyncUIStatus('offline', '離線備份中');
-          loadFromLocalFallback();
-          renderAllViews();
-        });
 
+          currentUser = auth.currentUser;
+          const userId = currentUser?.uid || crypto.randomUUID();
+          const userIdEl = document.getElementById('sync-user-id');
+          if (userIdEl) userIdEl.innerText = userId;
+
+          tripDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'trips', 'sc_9th_trip_master');
+          activeSyncChannel = 'firestore';
+          updateSyncUIStatus('online', '已即時連線');
+
+          onSnapshot(tripDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+              applyIncomingCloudData(docSnap.data());
+            } else {
+              pushToCloud(false);
+            }
+          }, (error) => {
+            console.warn("Firestore snapshot error, falling back to cloud relay:", error);
+            initUniversalCloudRelay();
+          });
+          return;
+        } catch(err) {
+          console.warn("Firestore init failed, switching to cloud relay:", err);
+        }
+      }
+
+      // 2. Mobile PWA / Standalone Web Universal Cloud Sync Relay
+      initUniversalCloudRelay();
+    }
+
+    async function initUniversalCloudRelay() {
+      activeSyncChannel = 'relay';
+      let clientDeviceUid = localStorage.getItem('SC_DEVICE_UID');
+      if (!clientDeviceUid) {
+        clientDeviceUid = 'User-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+        localStorage.setItem('SC_DEVICE_UID', clientDeviceUid);
+      }
+      const userIdEl = document.getElementById('sync-user-id');
+      if (userIdEl) userIdEl.innerText = clientDeviceUid;
+
+      const modeEl = document.getElementById('sync-mode-desc');
+      if (modeEl) modeEl.innerText = "跨裝置即時雲端同步 (已連線)";
+
+      updateSyncUIStatus('online', '夥伴同步中');
+
+      // Fetch latest cloud state immediately
+      await pullFromUniversalCloud();
+
+      // Background periodic sync listener (pulls changes made by partner every 5 seconds)
+      if (cloudRelayInterval) clearInterval(cloudRelayInterval);
+      cloudRelayInterval = setInterval(() => {
+        pullFromUniversalCloud(false);
+      }, 5000);
+
+      // Auto-pull when user returns to app/screen
+      window.addEventListener('focus', () => pullFromUniversalCloud(false));
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) pullFromUniversalCloud(false);
+      });
+    }
+
+    async function pullFromUniversalCloud(notify = false) {
+      if (isRemoteUpdating) return;
+      try {
+        const res = await fetch(CLOUD_RELAY_ENDPOINT, { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.updatedAt) {
+            const localSaved = localStorage.getItem('SC_ICELAND_DATA_V4');
+            const localData = localSaved ? JSON.parse(localSaved) : null;
+            if (!localData || data.updatedAt > (localData.updatedAt || 0)) {
+              applyIncomingCloudData(data);
+              if (notify) showToast("已取得同行夥伴最新更新！", "fa-arrows-rotate");
+            }
+          }
+        } else if (res.status === 404) {
+          // Channel not initialized on cloud yet, upload initial state
+          pushToCloud(false);
+        }
       } catch (err) {
-        console.warn("Cloud sync initialization error:", err);
-        updateSyncUIStatus('offline', '離線模式');
-        loadFromLocalFallback();
-        renderAllViews();
+        console.warn("Cloud relay pull error:", err);
+      }
+    }
+
+    function applyIncomingCloudData(data) {
+      if (!data) return;
+      isRemoteUpdating = true;
+      if (data.itineraryData && Array.isArray(data.itineraryData)) itineraryData = data.itineraryData;
+      if (data.vouchersData && Array.isArray(data.vouchersData)) vouchersData = data.vouchersData;
+      if (data.restaurantsData && Array.isArray(data.restaurantsData)) restaurantsData = data.restaurantsData;
+      if (data.packingData && Array.isArray(data.packingData)) packingData = data.packingData;
+      if (data.handDrawnMapsData && Array.isArray(data.handDrawnMapsData)) handDrawnMapsData = data.handDrawnMapsData;
+
+      saveToLocalFallback(data);
+      renderAllViews();
+      isRemoteUpdating = false;
+
+      updateSyncUIStatus('online', '夥伴同步中');
+      const lastTimeEl = document.getElementById('sync-last-time');
+      if (lastTimeEl && data.updatedAt) {
+        lastTimeEl.innerText = new Date(data.updatedAt).toLocaleTimeString('zh-HK');
       }
     }
 
     async function pushToCloud(showNotification = true) {
       if (isRemoteUpdating) return;
 
+      const deviceId = localStorage.getItem('SC_DEVICE_UID') || currentUser?.uid || 'partner';
       const payload = {
         itineraryData,
         vouchersData,
@@ -1708,27 +1785,39 @@
         packingData,
         handDrawnMapsData,
         updatedAt: Date.now(),
-        updatedBy: currentUser?.uid || 'partner'
+        updatedBy: deviceId
       };
 
-      // Save local backup simultaneously
+      // Always save local backup immediately
       saveToLocalFallback(payload);
 
-      if (db && tripDocRef && currentUser) {
-        updateSyncUIStatus('syncing', '正在同步...');
-        try {
+      updateSyncUIStatus('syncing', '正在同步...');
+
+      try {
+        if (activeSyncChannel === 'firestore' && db && tripDocRef) {
           await setDoc(tripDocRef, payload, { merge: true });
-          updateSyncUIStatus('online', '已即時連線');
-          const lastTimeEl = document.getElementById('sync-last-time');
-          if (lastTimeEl) lastTimeEl.innerText = new Date().toLocaleTimeString('zh-HK');
-          if (showNotification) showToast("已即時同步到所有夥伴裝置！", "fa-cloud-arrow-up");
-        } catch (e) {
-          console.error("Cloud push failed:", e);
-          updateSyncUIStatus('offline', '已暫存於本機');
+        } else {
+          // Universal Relay Push
+          await fetch(CLOUD_RELAY_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
         }
-      } else {
-        if (showNotification) showToast("已儲存於本機", "fa-check");
+
+        updateSyncUIStatus('online', '夥伴同步中');
+        const lastTimeEl = document.getElementById('sync-last-time');
+        if (lastTimeEl) lastTimeEl.innerText = new Date().toLocaleTimeString('zh-HK');
+        if (showNotification) showToast("已即時同步到所有夥伴裝置！", "fa-cloud-arrow-up");
+      } catch (e) {
+        console.error("Cloud push failed:", e);
+        updateSyncUIStatus('online', '已存於本機');
       }
+    }
+
+    async function forceSyncNow() {
+      showToast("正在連接雲端刷新...", "fa-arrows-rotate");
+      await pullFromUniversalCloud(true);
     }
 
     function saveToLocalFallback(payload) {
@@ -1828,8 +1917,72 @@
       initCloudSync();
       renderPhrasesList('all');
       startClocks();
-      switchTab('vouchers');
+      
+      // Auto-detect current trip day based on today's date
+      const initialDayIdx = calculateInitialDayIndex();
+      currentSelectedDay = initialDayIdx;
+      
+      renderDaySelector();
+      renderDayDetail(initialDayIdx);
+      
+      // Default to opening the itinerary tab for today's plan
+      switchTab('itinerary');
+      
+      // Scroll day carousel smoothly into view
+      setTimeout(() => {
+        const container = document.getElementById('day-selector-container');
+        const activeBtn = container?.children[initialDayIdx];
+        if (activeBtn && container) {
+          activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }, 200);
     };
+
+    // Calculate which Day should be displayed when opening the app
+    function calculateInitialDayIndex() {
+      const now = new Date();
+      // Year, Month (0-indexed: 9 is October), Date
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth(); // 9 = October
+      const currentDate = now.getDate();
+
+      // Trip date calendar lookup mapping (2026 October)
+      // Day 1: 10/06, Day 2: 10/07 ... Day 14: 10/19
+      const tripSchedule = [
+        { dayIdx: 0, month: 9, date: 6 },   // Day 1: 10/06
+        { dayIdx: 1, month: 9, date: 7 },   // Day 2: 10/07
+        { dayIdx: 2, month: 9, date: 8 },   // Day 3: 10/08
+        { dayIdx: 3, month: 9, date: 9 },   // Day 4: 10/09
+        { dayIdx: 4, month: 9, date: 10 },  // Day 5: 10/10
+        { dayIdx: 5, month: 9, date: 11 },  // Day 6: 10/11
+        { dayIdx: 6, month: 9, date: 12 },  // Day 7: 10/12
+        { dayIdx: 7, month: 9, date: 13 },  // Day 8: 10/13
+        { dayIdx: 8, month: 9, date: 14 },  // Day 9: 10/14
+        { dayIdx: 9, month: 9, date: 15 },  // Day 10: 10/15
+        { dayIdx: 10, month: 9, date: 16 }, // Day 11: 10/16
+        { dayIdx: 11, month: 9, date: 17 }, // Day 12: 10/17
+        { dayIdx: 12, month: 9, date: 18 }, // Day 13: 10/18
+        { dayIdx: 13, month: 9, date: 19 }  // Day 14: 10/19
+      ];
+
+      // Check if today matches any day of the trip
+      // We check both year 2026 and current month/date for flexibility during test/trip
+      const matched = tripSchedule.find(s => {
+        if (currentYear === 2026) {
+          return currentMonth === s.month && currentDate === s.date;
+        } else {
+          // If testing in different year, still match October date
+          return currentMonth === s.month && currentDate === s.date;
+        }
+      });
+
+      if (matched) {
+        return matched.dayIdx;
+      }
+
+      // If before 10/06 (or any date prior to departure), default to Day 1 (index 0)
+      return 0;
+    }
 
     function startClocks() {
       function updateTime() {
@@ -2819,7 +2972,7 @@
         return;
       }
 
-      const apiKey = localStorage.getItem('SC_GEMINI_API_KEY');
+      const apiKey = localStorage.getItem('SC_GEMINI_API_KEY') || EMBEDDED_API_KEY;
       if (apiKey) {
         try {
           const langNames = { 'zh': '繁體中文', 'en': '英文 (English)', 'is': '冰島語 (Íslenska)' };
@@ -3159,28 +3312,24 @@
       `;
       chatBox.scrollTop = chatBox.scrollHeight;
 
-      const apiKey = localStorage.getItem('SC_GEMINI_API_KEY');
+      const apiKey = localStorage.getItem('SC_GEMINI_API_KEY') || EMBEDDED_API_KEY;
       
       try {
         let reply = "";
-        if (!apiKey) {
-          reply = "請先點擊右上角的 「Key 設定」，填入你的 Google Gemini API Key 才能開始對話喔！";
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{ text: `你是一位親切專業的冰島旅遊專家。請用繁體中文回答這題：${text}` }]
+            }]
+          })
+        });
+        const data = await res.json();
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+          reply = data.candidates[0].content.parts[0].text;
         } else {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{
-                parts: [{ text: `你是一位親切專業的冰島旅遊專家。請用繁體中文回答這題：${text}` }]
-              }]
-            })
-          });
-          const data = await res.json();
-          if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-            reply = data.candidates[0].content.parts[0].text;
-          } else {
-            reply = "抱歉，讀取 responses 時發生錯誤，請檢查 API Key 是否正確。";
-          }
+          reply = "抱歉，讀取 responses 時發生錯誤，請檢查 API Key 是否正確。";
         }
 
         document.getElementById(loadingId).remove();
@@ -3258,6 +3407,7 @@
     window.deleteRestoCurrent = deleteRestoCurrent;
     window.openSyncModal = openSyncModal;
     window.copyShareLink = copyShareLink;
+    window.forceSyncNow = forceSyncNow;
   </script>
 </body>
 </html>
