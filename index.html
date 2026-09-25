@@ -40,6 +40,7 @@
     }
     html {
       height: 100%;
+      height: -webkit-fill-available;
       background-color: #020617;
       margin: 0;
       padding: 0;
@@ -47,6 +48,7 @@
     body {
       background-color: #020617;
       height: 100%;
+      height: -webkit-fill-available;
       width: 100%;
       margin: 0;
       padding: 0;
@@ -58,12 +60,12 @@
     
     /* Top Header Safe Inset: Accommodate Dynamic Island, Notch, Status Bar Time & Battery */
     .header-safe {
-      padding-top: max(env(safe-area-inset-top, 0px), 12px);
+      padding-top: max(env(safe-area-inset-top, 0px), 14px);
     }
     
-    /* Bottom Navigation Safe Inset: Compact native style, eliminates excessive blank space under icons */
+    /* Bottom Navigation Safe Inset: Seamless extension to bottom edge without blank gaps */
     .nav-bar-container {
-      padding-bottom: max(env(safe-area-inset-bottom, 0px), 4px);
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
       background: rgba(15, 23, 42, 0.96);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -71,7 +73,7 @@
     
     /* Main Content bottom padding to avoid nav bar occlusion */
     .main-scroll-padding {
-      padding-bottom: calc(3.4rem + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
     }
     
     .glass { background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
@@ -949,45 +951,45 @@
     </section>
   </main>
 
-  <!-- Seamless Bottom Navigation Bar: Compact native tab bar without excessive blank space -->
+  <!-- Seamless Bottom Navigation Bar: Extends fully to screen bottom without empty gaps -->
   <nav class="fixed bottom-0 left-0 right-0 nav-bar-container border-t border-slate-800/90 z-40 shadow-2xl">
-    <div class="max-w-md mx-auto grid grid-cols-7 pt-1.5 pb-0.5 items-end px-1">
+    <div class="max-w-md mx-auto grid grid-cols-7 h-12 items-center px-1">
       <!-- 1. 憑證 -->
-      <button onclick="switchTab('vouchers')" id="nav-vouchers" class="flex flex-col items-center justify-center py-0.5 text-ice-400 font-bold transition">
+      <button onclick="switchTab('vouchers')" id="nav-vouchers" class="flex flex-col items-center justify-center text-ice-400 font-bold transition">
         <i class="fa-solid fa-ticket text-sm"></i>
-        <span class="text-[9px] mt-0.5 font-medium leading-none">憑證</span>
+        <span class="text-[9px] mt-0.5 font-medium">憑證</span>
       </button>
       <!-- 2. 地圖 -->
-      <button onclick="switchTab('map')" id="nav-map" class="flex flex-col items-center justify-center py-0.5 text-slate-400 hover:text-slate-200 transition">
+      <button onclick="switchTab('map')" id="nav-map" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
         <i class="fa-solid fa-map-location-dot text-sm"></i>
-        <span class="text-[9px] mt-0.5 font-medium leading-none">地圖</span>
+        <span class="text-[9px] mt-0.5 font-medium">地圖</span>
       </button>
       <!-- 3. 自駕 -->
-      <button onclick="switchTab('drive')" id="nav-drive" class="flex flex-col items-center justify-center py-0.5 text-slate-400 hover:text-slate-200 transition">
+      <button onclick="switchTab('drive')" id="nav-drive" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
         <i class="fa-solid fa-car text-sm"></i>
-        <span class="text-[9px] mt-0.5 font-medium leading-none">自駕</span>
+        <span class="text-[9px] mt-0.5 font-medium">自駕</span>
       </button>
       <!-- 4. 行程 (低調精緻微浮圓角鈕，微凸出但不過於浮誇) -->
       <button onclick="switchTab('itinerary')" id="nav-itinerary" class="relative -top-1.5 flex flex-col items-center justify-center transition group">
         <div id="nav-itinerary-icon-wrap" class="w-8 h-8 rounded-xl bg-slate-800/90 border border-slate-700/80 shadow-md flex items-center justify-center text-slate-300 transition-all">
           <i class="fa-solid fa-calendar-check text-xs"></i>
         </div>
-        <span id="nav-itinerary-text" class="text-[9px] mt-0.5 font-medium text-slate-400 leading-none">行程</span>
+        <span id="nav-itinerary-text" class="text-[9px] mt-0.5 font-medium text-slate-400">行程</span>
       </button>
       <!-- 5. 美食 -->
-      <button onclick="switchTab('restaurants')" id="nav-restaurants" class="flex flex-col items-center justify-center py-0.5 text-slate-400 hover:text-slate-200 transition">
+      <button onclick="switchTab('restaurants')" id="nav-restaurants" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
         <i class="fa-solid fa-utensils text-sm"></i>
-        <span class="text-[9px] mt-0.5 font-medium leading-none">美食</span>
+        <span class="text-[9px] mt-0.5 font-medium">美食</span>
       </button>
       <!-- 6. 工具 -->
-      <button onclick="switchTab('toolbox')" id="nav-toolbox" class="flex flex-col items-center justify-center py-0.5 text-slate-400 hover:text-slate-200 transition">
+      <button onclick="switchTab('toolbox')" id="nav-toolbox" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
         <i class="fa-solid fa-toolbox text-sm"></i>
-        <span class="text-[9px] mt-0.5 font-medium leading-none">工具</span>
+        <span class="text-[9px] mt-0.5 font-medium">工具</span>
       </button>
       <!-- 7. AI 助手 -->
-      <button onclick="switchTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center py-0.5 text-slate-400 hover:text-slate-200 transition">
+      <button onclick="switchTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition">
         <i class="fa-solid fa-robot text-sm"></i>
-        <span class="text-[9px] mt-0.5 font-medium leading-none">AI 助手</span>
+        <span class="text-[9px] mt-0.5 font-medium">AI 助手</span>
       </button>
     </div>
   </nav>
