@@ -244,111 +244,657 @@
         <button onclick="switchDriveSubtab('road')" id="dtab-road" class="p-2 rounded-xl bg-slate-800 text-slate-300 font-bold text-center">路況實況</button>
       </div>
 
-      <div id="dpanel-rules" class="glass-card p-4 rounded-2xl space-y-3 text-xs leading-relaxed text-slate-300">
-        <div class="p-3 bg-rose-500/10 rounded-xl border border-rose-500/30 space-y-2">
-          <h4 class="font-bold text-rose-300 text-xs flex items-center gap-1.5">
+      <!-- SUBTAB 1: 自駕法規 & 香港司機必讀 -->
+      <div id="dpanel-rules" class="glass-card p-4 rounded-2xl space-y-3.5 text-xs leading-relaxed text-slate-300">
+        <!-- 香港司機專屬避坑須知 -->
+        <div class="p-3.5 bg-rose-500/10 rounded-2xl border border-rose-500/30 space-y-2.5">
+          <h4 class="font-bold text-rose-300 text-xs sm:text-sm flex items-center gap-1.5">
             <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> 香港司機出發前必讀（左右舵與行車方向重大差異）
           </h4>
-          <ul class="list-disc list-inside space-y-1.5 text-slate-200">
-            <li><strong>左舵靠右行駛：</strong> 香港為右舵靠左。在冰島起步或駛離油站時，請牢記「司機位永遠靠馬路中心，乘客靠路肩」。</li>
-            <li><strong>迴旋處（Roundabout）與香港完全相反：</strong> 香港是外圈有路權，但<strong>冰島法律規定內圈（Inner Lane）擁有絕對優先路權</strong>！外圈車必須完全減速禮讓。</li>
-            <li><strong>嚴禁紅燈右轉：</strong> 除非有專用綠色右轉箭頭燈，否則紅燈一律完全停死。</li>
-            <li><strong>禁止由右側超車：</strong> 任何超車動作必須由前車左側進行。</li>
+          <ul class="space-y-2 text-slate-200 text-[11px]">
+            <li class="flex items-start gap-1.5">
+              <span class="text-rose-400 font-bold shrink-0">1.</span>
+              <span><strong>左舵靠右行駛（右轉小彎、左轉大彎）：</strong> 香港為右舵靠左。冰島出油站、泊車起步或路口轉彎時，腦中默念「司機位永遠靠馬路中心線，副駕靠近路肩」，切勿下意識切入左側對頭車道！</span>
+            </li>
+            <li class="flex items-start gap-1.5">
+              <span class="text-rose-400 font-bold shrink-0">2.</span>
+              <span><strong>迴旋處（Roundabout）路權與香港完全相反：</strong> 香港是外圈車有權；但<strong>冰島法律硬性規定「內圈車（Inner Lane）擁有絕對最高路權」</strong>！若你在外圈，必須完全減速停讓內圈車切出，否則一旦碰撞外圈車負 100% 責任。</span>
+            </li>
+            <li class="flex items-start gap-1.5">
+              <span class="text-rose-400 font-bold shrink-0">3.</span>
+              <span><strong>24 小時強制開啟近光燈（Low Beam）：</strong> 無論白天、正午大太陽或起霧，<strong>法例規定全天候開燈</strong>！注意：只開日行燈（DRL，車尾無亮燈）屬違法，會被警車截停罰款。</span>
+            </li>
+            <li class="flex items-start gap-1.5">
+              <span class="text-rose-400 font-bold shrink-0">4.</span>
+              <span><strong>嚴禁紅燈右轉：</strong> 冰島絕無美加的紅燈右轉寬限，除非有專用綠色箭頭燈，否則紅燈一律完全停死。</span>
+            </li>
+            <li class="flex items-start gap-1.5">
+              <span class="text-rose-400 font-bold shrink-0">5.</span>
+              <span><strong>禁止由右側超車：</strong> 任何超車動作必須由前車左側進行，超車後應立即駛回右線。</span>
+            </li>
           </ul>
         </div>
 
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-amber-500/30 space-y-1.5">
-          <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-road-barrier text-amber-400"></i> 碎石路警告標誌「Malbik endar」
-          </h4>
-          <p>看見 <strong>「Malbik endar」</strong> 標誌代表柏油瀝青路結束進入碎石路，<strong>請提前減速至 50-60 km/h 以下</strong>，避免打滑及碎石飛濺擊碎擋風玻璃。</p>
+        <!-- 冰島全島限速與極端罰款 -->
+        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-amber-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-gauge-high text-amber-400"></i> 冰島限速標準與測速照相罰款警報
+            </h4>
+            <span class="text-[9px] text-amber-400/90 font-mono">超速罰款 50,000 ISK 起跳</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center text-[10px]">
+            <div class="p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-400 block text-[9px]">市區 / 小鎮城鎮</span>
+              <span class="text-white font-extrabold text-xs font-mono mt-0.5 block">50 km/h</span>
+              <span class="text-[8px] text-slate-500">學校周邊 30</span>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-400 block text-[9px]">碎石路段 (Gravel)</span>
+              <span class="text-amber-300 font-extrabold text-xs font-mono mt-0.5 block">80 km/h</span>
+              <span class="text-[8px] text-slate-400">建議減至 50-60</span>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-400 block text-[9px]">郊區柏油一號公路</span>
+              <span class="text-emerald-300 font-extrabold text-xs font-mono mt-0.5 block">90 km/h</span>
+              <span class="text-[8px] text-emerald-400">全島最高上限</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-400 leading-tight">
+            ⚠️ 冰島極少看見交警，但隧道內、進出城鎮前設有極為靈敏的測速相機。超速罰款動輒 50,000 至 120,000 ISK（約 3,000~7,000 HKD），租車公司更會加收每張約 4,000 ISK 的行政手續費，請務必開啟定速巡航！
+          </p>
         </div>
 
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-indigo-500/30 space-y-1.5">
-          <h4 class="font-bold text-indigo-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-hill-avalanche text-indigo-400"></i> 盲頂盲坡「Blindhæð」
+        <!-- 特殊標誌與特殊路段安全技巧 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-1.5">
+            <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-road-barrier text-amber-400"></i> 碎石路警告「Malbik endar」
+            </h4>
+            <p class="text-[10px] text-slate-300 leading-relaxed">
+              看見標誌代表瀝青柏油路即將結束進入顛簸碎石路。<strong>必須提早收油減速至 50 km/h 以下</strong>，避免打滑失控，並防止前車或對頭車飛濺碎石打穿擋風玻璃。
+            </p>
+          </div>
+
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-1.5">
+            <h4 class="font-bold text-indigo-300 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-hill-avalanche text-indigo-400"></i> 盲頂盲坡「Blindhæð」
+            </h4>
+            <p class="text-[10px] text-slate-300 leading-relaxed">
+              代表前方上坡頂端完全看不到對向來車。<strong>嚴禁在盲坡超車！必須貼緊右側車道慢速通過</strong>，提防對向車輛偏離中線。
+            </p>
+          </div>
+
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-1.5">
+            <h4 class="font-bold text-sky-300 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-bridge text-sky-400"></i> 單線木橋「Einbreið brú」
+            </h4>
+            <p class="text-[10px] text-slate-300 leading-relaxed">
+              橋面僅容納一輛車！<strong>哪一方車輛更靠近橋頭，該方擁有優先通行權</strong>。見對向有車接近，應提前在避讓區減速閃燈禮讓。
+            </p>
+          </div>
+
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-rose-500/30 space-y-1.5">
+            <h4 class="font-bold text-rose-300 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-wind text-rose-400"></i> 狂風握門（保險不賠第一大忌！）
+            </h4>
+            <p class="text-[10px] text-slate-300 leading-relaxed">
+              冰島強陣風常達颱風級別！<strong>開車門前務必雙手死握門把手</strong>。車門被狂風吹反、鉸鏈折斷在所有保險（即使全險）中<strong>一律不賠</strong>，維修費高達十幾萬克朗！
+            </p>
+          </div>
+        </div>
+
+        <!-- 刑事禁止：越野駕駛與野生動物注意 -->
+        <div class="p-3 bg-slate-900/90 rounded-2xl border border-emerald-500/30 space-y-1.5 text-[11px]">
+          <h4 class="font-bold text-emerald-300 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-seedling text-emerald-400"></i> 嚴格刑事重罪：越野行駛 (Off-Road Driving) & 羊隻路權
           </h4>
-          <p>見 <strong>「Blindhæð」</strong> 警告標示代表視野全盲斜坡頂端，<strong>嚴禁超車並緊靠右側車道減速通過</strong>。</p>
+          <p class="text-slate-300 text-[10px]">
+            • <strong>嚴禁開離標記道路（Off-road Driving）：</strong> 冰島脆弱的火山苔原長成需數百年，車輪壓過會留下數十年難以修復的痕跡。即使四驅車開入非正式車道皆屬違法，罰款高達 400,000 ISK 起甚至負刑事責任。<br>
+            • <strong>羊群橫過馬路擁有最高路權：</strong> 秋天是牧羊人趕羊季節（Réttir），小羊經常突然衝出路面。撞倒羊隻司機需賠償農夫並通報警察 112。
+          </p>
         </div>
       </div>
 
+      <!-- SUBTAB 2: 加油油價 & 油站品牌大全 -->
       <div id="dpanel-gas" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
+        <!-- 實時油價查詢橫幅 -->
         <div class="p-3 bg-gradient-to-r from-amber-500/20 via-slate-900/90 to-slate-900/95 rounded-2xl border border-amber-500/40 flex items-center justify-between">
           <div class="space-y-0.5">
-            <h4 class="font-bold text-white text-xs">冰島每日實時油價查詢 (GSMbensín)</h4>
-            <p class="text-[10px] text-slate-300">即時比較全島 N1、Olís、Orkan、Costco 等油站油價排行</p>
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <span>冰島每日實時油價查詢 (GSMbensín)</span>
+              <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono">實時更新</span>
+            </h4>
+            <p class="text-[10px] text-slate-300">即時比較全島 N1、Olís、Orkan、Costco、Atlantsolía 油價排行</p>
           </div>
           <a href="https://gsmbensin.is/" target="_blank" rel="noopener noreferrer" class="py-1.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-[11px] flex items-center gap-1 shadow transition shrink-0">
             <i class="fa-solid fa-chart-line"></i> 查實時油價
           </a>
         </div>
 
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-amber-500/30 space-y-2">
+        <!-- 加油防坑秘笈：油槍顏色與切勿點 Fill Up -->
+        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-amber-500/30 space-y-2.5">
           <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-gas-pump text-amber-400"></i> 自助加油避坑教學 & 4 位數 PIN 碼
+            <i class="fa-solid fa-gas-pump text-amber-400"></i> 自助加油必勝教學 & 防坑指南
           </h4>
-          <p>⚠️ <strong>千祈切勿點選「Fill Up (加滿)」！</strong>油機會預先凍結 25,000~35,000 ISK 押金，建議手動選擇 5,000 或 10,000 ISK。</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+            <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 space-y-1">
+              <span class="font-bold text-emerald-300 block text-xs">🟢 綠色油槍：95 無鉛汽油 (Bensín)</span>
+              <p class="text-slate-300">一般汽油車使用。本行程 Lotus 租用之 Jeep Renegade 4x4 若為汽油款請認準綠色槍。</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 space-y-1">
+              <span class="font-bold text-amber-400 block text-xs">⚫ 黑色油槍：柴油 (Dísil)</span>
+              <p class="text-slate-300">取車時請再三與車行確認燃油種類！若入錯油發動引擎，拖車換油箱費用高達 30,000+ HKD！</p>
+            </div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-[10px] space-y-1">
+            <span class="text-rose-300 font-bold block">⚠️ 警告：千祈切勿點選「Fill Up (加滿)」！</span>
+            <p class="text-slate-300">
+              冰島自助油機若選「Fill Up」，會預先扣押 <strong>25,000~35,000 ISK</strong> 押金信用額，部分發卡銀行需數星期才能解凍。建議手動點選 <strong>5,000 或 10,000 ISK</strong> 固定金額，若未加滿油機會按實收扣款。
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div id="dpanel-toll" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
-        <div class="p-3 bg-indigo-500/10 rounded-2xl border border-indigo-500/30 space-y-2">
+        <!-- 4位數 PIN 碼難題與 N1 預付卡妙法 -->
+        <div class="p-3 bg-slate-900/90 rounded-2xl border border-indigo-500/30 space-y-2 text-[11px]">
           <h4 class="font-bold text-indigo-300 text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-tunnel text-indigo-400"></i> 北部一號環島公路唯一收費隧道：Vaðlaheiðargöng
+            <i class="fa-solid fa-credit-card text-indigo-400"></i> 4 位數 PIN 碼困境？買 N1 預付油卡完美解決！
           </h4>
-          <p>無收費站、無閘門！全程自動相機掃描車牌。通過前後 24 小時內必須至 <strong>veggjald.is</strong> 繳費，逾期租車公司會加收高額手續費。</p>
-          <a href="https://www.veggjald.is/" target="_blank" rel="noopener noreferrer" class="inline-block py-2 px-3 rounded-xl bg-indigo-600 text-white font-bold text-xs mt-1">開啟 Veggjald.is 繳費</a>
+          <p class="text-[10px] text-slate-300 leading-relaxed">
+            冰島鄉郊 90% 為無人自助油站，插卡必須輸入 <strong>4 位數晶片 PIN 碼</strong>（非香港 6 位櫃員機密碼）。出發前請向發卡銀行索取「海外交易預設 4 位 PIN 碼」。<br>
+            💡 <strong>終極備用妙計：</strong> 可以在雷克雅維克市區或沿途有店員的 N1 / Olís 便利店，用 Apple Pay 直接購買 <strong>「N1 Prepaid Card (預付加油卡)」</strong>（有 5,000 / 10,000 ISK 面額），在任何偏遠無人加油機直接插卡扣款，完全免 PIN 碼！
+          </p>
         </div>
-      </div>
 
-      <div id="dpanel-parking" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
-        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-indigo-500/30 space-y-2.5">
-          <h4 class="font-bold text-white text-xs">雷克雅維克市區 P1~P4 泊車分區</h4>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[11px]">
-            <div class="p-2 rounded-xl bg-rose-500/15 border border-rose-500/40">🔴 P1 (紅區) 約 600 ISK/hr</div>
-            <div class="p-2 rounded-xl bg-blue-500/15 border border-blue-500/40">🔵 P2 (藍區) 約 220 ISK/hr</div>
-            <div class="p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40">🟢 P3 (綠區) 約 220 ISK/2hr</div>
-            <div class="p-2 rounded-xl bg-amber-500/15 border border-amber-500/40">🟠 P4 (橙區) 約 200 ISK/hr</div>
-          </div>
-          <p class="text-[10px] text-slate-400">景點停車（辛格韋德利、黑沙灘、冰河湖等）請於 24 小時內至 <a href="https://parka.is/" target="_blank" class="text-sky-400 underline">Parka.is</a> 輸入車牌繳費。</p>
-        </div>
-      </div>
-
-      <div id="dpanel-wc" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
-        <div class="p-3.5 bg-gradient-to-br from-emerald-950/40 via-slate-900/90 to-slate-900/95 rounded-2xl border border-emerald-500/40 space-y-2.5">
-          <h4 class="font-bold text-white text-xs">冰島必備「尋廁神器」Krapp & Toilet Place</h4>
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <a href="https://krapp.is/" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-transparent hover:bg-emerald-500/10 text-emerald-300 border border-emerald-500/40 font-bold text-[11px] flex items-center justify-center gap-1.5 transition">
-              <i class="fa-solid fa-download"></i> 下載 Krapp.is 冰島廁所app
-            </a>
-            <a href="https://toilet.place/country/Iceland#6.08/65.132/-17.848" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 font-bold text-[11px] flex items-center justify-center gap-1.5 border border-slate-700 transition">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> 開啟 Toilet Place 冰島地圖
-            </a>
-          </div>
-        </div>
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-emerald-500/30 space-y-1.5">
-          <h4 class="font-bold text-emerald-300 text-xs">🚰 冰島水喉水冷熱之別</h4>
-          <p>• <strong>水喉冷水：</strong> 直接來自千年冰川過濾，直接開水喉即可生飲。</p>
-          <p>• <strong>水喉熱水：</strong> 引自天然地熱溫泉，帶濃烈硫磺味，絕對不可飲用。</p>
-        </div>
-      </div>
-
-      <div id="dpanel-road" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
-          <h4 class="font-bold text-white text-xs">Road.is 即時路況顏色指示</h4>
-          <div class="grid grid-cols-2 gap-2 text-center text-xs">
-            <div class="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-bold">🟢 通行良好</div>
-            <div class="p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold">🟡 濕滑有雪</div>
-            <div class="p-2.5 rounded-xl bg-blue-500/15 border border-blue-500/40 text-blue-300 font-bold">🔵 結冰路段</div>
-            <div class="p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-300 font-bold">🔴 封閉禁行</div>
+        <!-- 冰島 5 大加油站品牌分佈與評比 -->
+        <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-2">
+          <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-store text-sky-400"></i> 冰島各大連鎖油站優勢分析
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+            <div class="p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="font-bold text-rose-300 block">🔴 N1 油站（全島霸主）</span>
+              <p class="text-slate-400 mt-0.5">據點最多、偏遠小鎮唯一代表。附設便利店有熱湯熱狗、公廁與免費洗車刷，油價略貴少許但荒野必備。</p>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="font-bold text-amber-300 block">🟡 Olís / Ób 油站（親切實惠）</span>
+              <p class="text-slate-400 mt-0.5">常有自駕優惠，門市提供免費熱咖啡，自助無人副牌 Ób 油價非常親民。</p>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="font-bold text-pink-300 block">🟣 Orkan（全自動省錢站）</span>
+              <p class="text-slate-400 mt-0.5">全自動無人加油機，常與連鎖超市合營，價格通常比 N1 便宜 5~10 ISK/L。</p>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="font-bold text-blue-300 block">🔵 Costco 油站（全島最平！）</span>
+              <p class="text-slate-400 mt-0.5">位於雷克雅維克市區，每公升便宜達 30-40 ISK！需出示會員卡，第一天出發及第 14 天還車前加滿首選。</p>
+            </div>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-2 pt-1">
-          <a href="https://www.road.is/" target="_blank" class="p-3 rounded-2xl bg-slate-900 border border-slate-700 hover:border-amber-400 text-center font-bold text-amber-300 text-xs transition">
-            <i class="fa-solid fa-camera me-1"></i> Road.is 即時路面鏡頭
+
+        <!-- 荒野半缸加油策略 & 免費洗車水喉 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+          <div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+            <span class="font-bold text-amber-300 block"><i class="fa-solid fa-gauge-simple-high me-1"></i>荒野「半缸油必加」黃金法則</span>
+            <p class="text-slate-400">南岸維克（Vík）到赫本（Höfn）距離超過 270 公里，途經大量無人荒原。只要油表掉到 50% 看到油站便要順道加滿，切勿賭油表！</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+            <span class="font-bold text-emerald-300 block"><i class="fa-solid fa-shower me-1"></i>油站免費自助洗車水喉</span>
+            <p class="text-slate-400">冰島絕大多數大油站（N1、Olís）外皆提供免費長柄海綿刷與高壓水喉。駛完泥濘或碎石路後可免費沖洗車身與玻璃泥沙！</p>
+          </div>
+        </div>
+
+        <!-- 油站快速導航外連 -->
+        <div class="grid grid-cols-2 gap-2 pt-0.5">
+          <a href="https://maps.google.com/?q=gas+station+iceland" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-[11px] flex items-center justify-center gap-1.5 border border-slate-700 transition">
+            <i class="fa-solid fa-location-dot"></i> Google Maps 搜尋周圍油站
           </a>
-          <a href="https://safetravel.is/" target="_blank" class="p-3 rounded-2xl bg-slate-900 border border-slate-700 hover:border-rose-400 text-center font-bold text-rose-300 text-xs transition">
-            <i class="fa-solid fa-shield-halved me-1"></i> SafeTravel 官方警報
+          <a href="https://www.n1.is/en/locations/" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-rose-300 font-bold text-[11px] flex items-center justify-center gap-1.5 border border-slate-700 transition">
+            <i class="fa-solid fa-map-pin"></i> N1 全冰島據點地圖
+          </a>
+        </div>
+      </div>
+
+      <!-- SUBTAB 3: 付費道路 & 通行繳費連結 -->
+      <div id="dpanel-toll" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
+        <!-- 概覽提示 -->
+        <div class="p-3 bg-slate-900/90 rounded-2xl border border-indigo-500/30 flex items-center justify-between">
+          <div class="space-y-0.5">
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-road text-indigo-400"></i>
+              <span>冰島付費道路與通行費用全覽 (Toll Roads & Access)</span>
+            </h4>
+            <p class="text-[10px] text-slate-400">冰島絕大多數國道免費，僅有 1 條收費隧道及特定私人維護路段收費</p>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold shrink-0">99% 環島公路免費</span>
+        </div>
+
+        <!-- 1. 北部一號環島唯一收費隧道：Vaðlaheiðargöng -->
+        <div class="p-3.5 bg-indigo-500/10 rounded-2xl border border-indigo-500/30 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-indigo-300 text-xs sm:text-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-tunnel text-indigo-400"></i> 1. 全國唯一收費隧道：Vaðlaheiðargöng（北部一號公路）
+            </h4>
+            <span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-mono font-bold">自動車牌拍照</span>
+          </div>
+          <p class="text-[11px] text-slate-200">
+            位於阿克雷里（Akureyri）與米湖（Mývatn）之間，全長 7.5 公里。<strong>隧道口完全沒有收費站、無閘門、無人工櫃檯！</strong>全程由高速自動相機辨識車牌。
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+            <div class="p-2.5 rounded-xl bg-slate-900/90 border border-indigo-500/30 space-y-1">
+              <span class="font-bold text-amber-300 block">💳 費用與繳費時限</span>
+              <p class="text-slate-300">單程約 <strong>1,850 ~ 2,000 ISK</strong>。必須在<strong>通過前 24 小時內</strong>或<strong>通過後 24 小時內</strong>至 veggjald.is 網上繳納。</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/40 space-y-1">
+              <span class="font-bold text-rose-300 block">⚠️ 逾期高額行政罰金</span>
+              <p class="text-slate-200">若超過 24 小時未繳，系統會將帳單連同 <strong>3,000 ~ 5,000 ISK</strong> 行政手續費寄給租車公司，從租車信用卡直接扣款！</p>
+            </div>
+          </div>
+          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-[10px] text-slate-400 space-y-1">
+            <span class="text-emerald-400 font-semibold">💡 免費繞行替代路線：Route 84 (Víkurskarð 山道)</span>
+            <p>若夏秋天氣晴朗無積雪，可沿舊 84 號山道繞過隧道，車程僅多約 10-15 分鐘，沿途可俯瞰峽灣景色；但秋末若有積雪或結冰，強烈建議走收費隧道以策安全。</p>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <a href="https://www.veggjald.is/" target="_blank" rel="noopener noreferrer" class="py-2 px-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow transition">
+              <i class="fa-solid fa-credit-card"></i> 前往 Veggjald.is 官方繳費
+            </a>
+            <a href="https://maps.google.com/?q=Vadlaheidargong+tunnel" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-300 font-bold text-xs border border-slate-700 transition">
+              <i class="fa-solid fa-location-dot"></i> 查看隧道 Google 地圖位置
+            </a>
+          </div>
+        </div>
+
+        <!-- 2. 私人土地通行費：Vestrahorn 蝙蝠山天空之鏡 (Stokksnes) -->
+        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-purple-500/30 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-purple-300 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-mountain text-purple-400"></i> 2. 私人農場道路通行費：Vestrahorn 蝙蝠山天空之鏡 (Stokksnes)
+            </h4>
+            <span class="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded font-mono font-bold">私人土地</span>
+          </div>
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            前往 Stokksnes 黑沙灘天空之鏡、維京村莊與雷達站的道路屬於私人農莊土地。<strong>所有車輛駛入必須在入口 Viking Café 購買門票通行證</strong>（約 1,000 ISK / 人）。付款後店員會提供或印出條碼票，於自動閘門前感應條碼即可開閘進出。
+          </p>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <a href="https://maps.google.com/?q=Viking+Cafe+Hofn" target="_blank" rel="noopener noreferrer" class="py-2 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-300 font-bold text-xs flex items-center gap-1.5 border border-purple-500/40 transition">
+              <i class="fa-solid fa-location-dot"></i> 導航至 Viking Café 購票處
+            </a>
+          </div>
+        </div>
+
+        <!-- 3. 私人土地景觀入場費：Kerið 火口湖 -->
+        <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-volcano text-amber-400"></i> 3. 私人景觀步道入場費：Kerið 火口湖
+            </h4>
+            <span class="text-[10px] text-slate-400">現場刷卡</span>
+          </div>
+          <p class="text-[10px] text-slate-300">
+            Kerið 火口湖由私人地主共同擁有，車輛可免費停放停車場，但每位進入步道的遊客需在入口售票木屋支付約 <strong>600 ISK</strong> 入場維護費（支援 Apple Pay / 信用卡感應）。
+          </p>
+        </div>
+
+        <!-- 4. 闢謠：Hvalfjörður 鯨魚峽灣海底隧道已完全免費！ -->
+        <div class="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/30 space-y-1 text-[11px]">
+          <h4 class="font-bold text-emerald-300 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-400"></i> 4. 重要澄清：Hvalfjörður 鯨魚峽灣海底隧道已完全免費！
+          </h4>
+          <p class="text-slate-300 text-[10px] leading-relaxed">
+            網上舊攻略常提及連接雷克雅維克與博爾加內斯（Borgarnes）的一號公路海底隧道需要收費。<strong>該隧道已於 2018 年 9 月由冰島政府全部回購，現時已永久完全免費通行</strong>，無須上網繳費，請放心通過。
+          </p>
+        </div>
+
+        <!-- 5. 高地 F-Roads 嚴格禁令警告 -->
+        <div class="p-3 bg-rose-500/10 rounded-2xl border border-rose-500/30 space-y-1.5 text-[10px] text-slate-200">
+          <h4 class="font-bold text-rose-300 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-ban text-rose-400"></i> 5. 10 月高地 F 路 (Mountain Roads) 全面封閉禁令
+          </h4>
+          <p>
+            凡道路編號帶「F」之山路（如 F208、F26 等）10 月進入秋季後已因積雪泥濘全面關閉。普通城市休旅車（包括一般 4x4 Jeep Renegade）<strong>嚴禁駛入 F 路或渡河</strong>。違規駛入保險一律失效，車輛底盤或涉水損壞須全額自負，拖車搜救費用高達數十萬克朗！
+          </p>
+        </div>
+      </div>
+
+      <!-- SUBTAB 4: 泊車資訊 & 車位搜尋 -->
+      <div id="dpanel-parking" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
+        <!-- 頂部：Parka 24 小時拍照扣費重要警報 -->
+        <div class="p-3.5 bg-rose-500/10 rounded-2xl border border-rose-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-rose-300 text-xs sm:text-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-camera text-rose-400"></i> 全島各大景點無閘門自動拍照！Parka.is 24小時限時繳費
+            </h4>
+            <span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-bold">離場 24h 內繳清</span>
+          </div>
+          <p class="text-[11px] text-slate-200">
+            冰島大多數國家公園與熱門名勝停車場均<strong>無閘門、無人工收費</strong>，全由入口高清相機自動辨識車牌。離場後必須在 <strong>24 小時內</strong> 於 <strong>Parka.is</strong> 輸入車牌與信用卡結算，逾期租車公司代繳將收取每筆約 <strong>4,000 ISK</strong> 高昂行政手續費！
+          </p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-center font-bold text-xs">
+            <a href="https://parka.is/" target="_blank" rel="noopener noreferrer" class="py-2 px-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white flex items-center justify-center gap-1.5 shadow transition">
+              <i class="fa-solid fa-square-parking"></i> Parka 官網繳費
+            </a>
+            <a href="https://easypark.is/" target="_blank" rel="noopener noreferrer" class="py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-mobile-screen"></i> EasyPark App
+            </a>
+            <a href="https://maps.google.com/?q=parking+in+Iceland" target="_blank" rel="noopener noreferrer" class="py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-magnifying-glass-location"></i> 搜尋周邊車位
+            </a>
+            <a href="https://bilastaedasjodur.is/" target="_blank" rel="noopener noreferrer" class="py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-city"></i> 雷市泊車空位地圖
+            </a>
+          </div>
+        </div>
+
+        <!-- 本行程 14 天主要景點泊車收費與免費清單 -->
+        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-list-check text-amber-400"></i> 行程 14 天主要景點泊車費與繳費方式速查
+            </h4>
+            <span class="text-[10px] text-slate-400">依行程每日景點核對</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px]">
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-200">辛格韋德利國家公園 (Þingvellir P1~P5)</span>
+              <span class="text-amber-300 font-mono font-bold">1,000 ISK / 全日 (Parka)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-200">塞里雅蘭瀑布 (Seljalandsfoss P1)</span>
+              <span class="text-amber-300 font-mono font-bold">1,000 ISK / 次 (Parka)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-200">Reynisfjara 黑沙灘停車場</span>
+              <span class="text-amber-300 font-mono font-bold">1,000 ISK / 次 (Parka)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-200">斯卡夫塔山遊客中心 (Skaftafell)</span>
+              <span class="text-amber-300 font-mono font-bold">1,000 ISK / 全日 (Parka)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-200">傑古沙龍冰河湖主要停車場 (Jökulsárlón)</span>
+              <span class="text-amber-300 font-mono font-bold">1,000 ISK / 次 (Parka)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-200">斯奈山教會山瀑布 (Kirkjufellsfoss)</span>
+              <span class="text-amber-300 font-mono font-bold">1,000 ISK / 次 (Parka)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/80 border border-slate-700">
+              <span class="text-slate-200">藍色秘境瀑布 (Brúarfoss 官方停車場)</span>
+              <span class="text-amber-300 font-mono font-bold">750 ISK / 次 (Parka)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <span class="text-emerald-300">斯科加彩虹瀑布 (Skógafoss)</span>
+              <span class="text-emerald-400 font-bold">完全免費 (FREE)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <span class="text-emerald-300">黃金瀑布 (Gullfoss 上下層停車場)</span>
+              <span class="text-emerald-400 font-bold">完全免費 (FREE)</span>
+            </div>
+            <div class="flex items-center justify-between p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <span class="text-emerald-300">布達黑教堂 (Búðakirkja)</span>
+              <span class="text-emerald-400 font-bold">完全免費 (FREE)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 雷克雅維克市區 P1~P4 泊車分區與避坑指南 -->
+        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-indigo-500/30 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-xs">雷克雅維克市區 P1~P4 泊車分區與收費時段</h4>
+            <span class="text-[9px] text-emerald-400 font-bold">平日 18:00 後及週日全日多數免費</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[10px]">
+            <div class="p-2 rounded-xl bg-rose-500/15 border border-rose-500/40">
+              <span class="font-bold text-rose-300 block">🔴 P1 (紅區)</span>
+              <span class="text-white font-mono block mt-0.5">約 600 ISK/hr</span>
+              <span class="text-[8px] text-slate-400">大街最中心旺區</span>
+            </div>
+            <div class="p-2 rounded-xl bg-blue-500/15 border border-blue-500/40">
+              <span class="font-bold text-blue-300 block">🔵 P2 (藍區)</span>
+              <span class="text-white font-mono block mt-0.5">約 220 ISK/hr</span>
+              <span class="text-[8px] text-slate-400">距彩虹街步程 3-5 分鐘</span>
+            </div>
+            <div class="p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40">
+              <span class="font-bold text-emerald-300 block">🟢 P3 (綠區)</span>
+              <span class="text-white font-mono block mt-0.5">約 220 ISK/2hr</span>
+              <span class="text-[8px] text-slate-400">住宅區周邊極划算</span>
+            </div>
+            <div class="p-2 rounded-xl bg-amber-500/15 border border-amber-500/40">
+              <span class="font-bold text-amber-300 block">🟠 P4 (橙區)</span>
+              <span class="text-white font-mono block mt-0.5">約 200 ISK/hr</span>
+              <span class="text-[8px] text-slate-400">僅限週一至週五收費</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-400 leading-tight">
+            💡 <strong>省錢推薦室內停車場（防風雪）：</strong> 市中心的 Harpa 音樂廳地下停車場、Traðarkot 室內停車塔、Vesturgata 停車塔收費親民，支援 Parka 自動扣費。<br>
+            ⚠️ <strong>嚴禁佔用電動車位（EV）或藍色傷殘車位：</strong> 非充電車輛佔用電動車位會被即時鎖車開具 20,000 ISK 罰單！
+          </p>
+        </div>
+      </div>
+
+      <!-- SUBTAB 5: 公廁指南 & 實用尋廁地圖 -->
+      <div id="dpanel-wc" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
+        <!-- 尋廁神器按鈕橫幅 -->
+        <div class="p-3.5 bg-gradient-to-br from-emerald-950/40 via-slate-900/90 to-slate-900/95 rounded-2xl border border-emerald-500/40 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-restroom text-emerald-400"></i>
+              <span>冰島必備「尋廁神器」Krapp & Toilet.place 實時定位</span>
+            </h4>
+            <span class="text-[9px] text-emerald-400 font-bold">● 全島 GPS 定位</span>
+          </div>
+          <p class="text-[10px] text-slate-300">
+            冰島鄉郊曠野相隔數十公里無任何設施。出發前請善用以下工具，即時以 GPS 定位尋找距離目前位置最近的公廁與加油站洗手間：
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 text-center font-bold text-xs">
+            <a href="https://maps.google.com/?q=public+toilets+in+Iceland" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center gap-1.5 shadow transition">
+              <i class="fa-solid fa-map-location-dot"></i> Google Maps 附近公廁
+            </a>
+            <a href="https://toilet.place/country/Iceland#6.08/65.132/-17.848" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Toilet.place 冰島地圖
+            </a>
+            <a href="https://krapp.is/" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-mobile-screen"></i> Krapp.is 廁所網頁版
+            </a>
+          </div>
+        </div>
+
+        <!-- 行程沿途 14 天保證可用洗手間熱點 -->
+        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-route text-sky-400"></i> 行程各分區可靠洗手間精準據點一覽
+            </h4>
+            <span class="text-[9px] text-slate-400">點擊地標直達導航</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+            <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 space-y-1">
+              <span class="font-bold text-amber-300 block">🏞️ 黃金圈區域 (Golden Circle)</span>
+              <p class="text-slate-300">
+                • <strong>Thingvellir 辛格韋德利：</strong> P1 觀景台遊客中心及 P2 均設有刷卡洗手間（約 200 ISK）。<br>
+                • <strong>Geysir 間歇泉中心：</strong> Geysir Center 餐廳內免費洗手間，環境寬敞乾淨。<br>
+                • <strong>Gullfoss 黃金瀑布：</strong> 瀑布服務中心一樓附設大型乾淨公廁。
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 space-y-1">
+              <span class="font-bold text-sky-300 block">🌊 南岸瀑布與黑沙灘 (South Coast)</span>
+              <p class="text-slate-300">
+                • <strong>塞里雅蘭瀑布 (Seljalandsfoss)：</strong> P1 停車場旁收費公廁（感應信用卡 200 ISK）。<br>
+                • <strong>斯科加瀑布 (Skógafoss)：</strong> 停車場旁設有刷卡公廁；Skógar 博物館餐廳亦有洗手間。<br>
+                • <strong>維克小鎮 (Vík)：</strong> Vík N1 油站便利店及 Krónan 超市商場內有乾淨洗手間。
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 space-y-1">
+              <span class="font-bold text-indigo-300 block">🧊 冰川健行與冰河湖 (Vatnajökull & Höfn)</span>
+              <p class="text-slate-300">
+                • <strong>Skaftafell 斯卡夫塔山：</strong> 國家公園遊客中心內設有大型免費公廁。<br>
+                • <strong>Jökulsárlón 傑古沙龍冰河湖：</strong> 主停車場遊船售票處旁附設洗手間（感應信用卡 200 ISK）。<br>
+                • <strong>赫本鎮 (Höfn)：</strong> 赫本港口及 Netto 超市旁設有公用設施。
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 space-y-1">
+              <span class="font-bold text-emerald-300 block">⛪️ 斯奈山半島 (Snæfellsnes)</span>
+              <p class="text-slate-300">
+                • <strong>教會山 (Kirkjufell)：</strong> 停車場設有流動洗手間（需刷卡）。<br>
+                • <strong>阿爾納斯塔皮 (Arnarstapi)：</strong> 港口小木屋餐廳及步道起點旁設有公廁。<br>
+                • <strong>格倫達菲厄澤 (Grundarfjörður)：</strong> 小鎮 Samkaup 超市及加油站。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 公廁收費與加油站禮貌常識 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-1">
+            <span class="font-bold text-amber-300 block"><i class="fa-solid fa-credit-card me-1"></i>公廁 100% 支援感應支付，不收現金</span>
+            <p class="text-slate-400">冰島所有景點收費洗手間（約 200-300 ISK）入口皆設有<strong>接觸式/感應式信用卡閘機</strong>，直接用 Apple Pay 或 Visa/Mastercard 拍卡開閘，完全無需硬幣。</p>
+          </div>
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-1">
+            <span class="font-bold text-sky-300 block"><i class="fa-solid fa-mug-hot me-1"></i>連鎖油站便利店借廁禮儀</span>
+            <p class="text-slate-400">N1 及 Olís 油站便利店洗手間通常免費提供給顧客。若特地借用，買杯咖啡、熱狗或小零食以表禮貌也是冰島自駕不成文好習慣。</p>
+          </div>
+        </div>
+
+        <!-- 荒野緊急應急與無痕山林禁忌 -->
+        <div class="p-3 bg-rose-500/10 rounded-2xl border border-rose-500/30 space-y-1.5 text-[10px] text-slate-200">
+          <h4 class="font-bold text-rose-300 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> 荒野無廁所應急守則（絕對禁止留下紙巾！）
+          </h4>
+          <p>
+            若在前後數十公里荒野被迫就地解決：<strong>絕對嚴禁將濕紙巾、衛生紙留在自然環境中！</strong>冰島低溫乾燥環境下一張紙巾需數十年才能分解。車上請自備密封夾鏈袋，將用紙封好帶回酒店或垃圾桶丟棄。<strong>絕對禁止在神聖脆弱的苔原上便溺！</strong>
+          </p>
+        </div>
+
+        <!-- 水喉水冷熱之重大分別 -->
+        <div class="p-3 bg-slate-900/90 rounded-xl border border-emerald-500/30 space-y-1.5">
+          <h4 class="font-bold text-emerald-300 text-xs flex items-center gap-1">
+            <span>🚰 冰島水喉水冷熱之重大分別（切勿飲用熱水！）</span>
+          </h4>
+          <p class="text-[10px] text-slate-300">
+            • <strong>水喉冷水（Kallt vatn）：</strong> 直接引自千年冰川玄武岩天然過濾，純淨清甜，開水喉直接用自己水瓶裝水生飲，完全無須花錢買樽裝水。<br>
+            • <strong>水喉熱水（Heitt vatn）：</strong> 來自天然地熱溫泉水，帶有極濃烈硫磺熟蛋味，<strong>絕對不可飲用或拿來煲水沖茶</strong>！
+          </p>
+        </div>
+      </div>
+
+      <!-- SUBTAB 6: 路況實況 & 官方氣象相機 & 是日駕車須知 -->
+      <div id="dpanel-road" class="hidden glass-card p-4 rounded-2xl space-y-3.5 text-xs text-slate-300 leading-relaxed">
+        <!-- 是日駕車出發前 6 大安全檢查清單 (Daily Driving Checklist) -->
+        <div class="p-3.5 bg-gradient-to-br from-amber-500/15 via-slate-900/90 to-slate-900/95 rounded-2xl border border-amber-500/40 space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-amber-300 text-xs sm:text-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-clipboard-check text-amber-400"></i> 是日駕車出發前 6 大安全檢查清單 (Daily Driving Checklist)
+            </h4>
+            <span class="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-bold">每日必刷</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+            <div class="flex items-start gap-1.5">
+              <span class="text-amber-400 font-bold shrink-0">1.</span>
+              <span><strong>刷 SafeTravel 警報：</strong> 查看是否有黃色/橙色風暴預警或火山氣體警報。</span>
+            </div>
+            <div class="flex items-start gap-1.5">
+              <span class="text-amber-400 font-bold shrink-0">2.</span>
+              <span><strong>刷 Road.is 即時路色：</strong> 確認今日途經路線全段皆為綠色（Passable），避開藍色積冰或紅色封閉路段。</span>
+            </div>
+            <div class="flex items-start gap-1.5">
+              <span class="text-amber-400 font-bold shrink-0">3.</span>
+              <span><strong>查風速與陣風 (Wind Gusts)：</strong> 陣風超過 15 m/s 須降速握穩方向盤；若超過 20 m/s 應暫停出發避險。</span>
+            </div>
+            <div class="flex items-start gap-1.5">
+              <span class="text-amber-400 font-bold shrink-0">4.</span>
+              <span><strong>爭取日光 18:00 前抵達：</strong> 10 月冰島日落早（18:20），荒野無路燈，盡量避免夜間駕車。</span>
+            </div>
+            <div class="flex items-start gap-1.5">
+              <span class="text-amber-400 font-bold shrink-0">5.</span>
+              <span><strong>強制開啟近光燈 (Low Beam)：</strong> 全天候開燈，起步前檢查車燈開關是否撥至常開位置。</span>
+            </div>
+            <div class="flex items-start gap-1.5">
+              <span class="text-amber-400 font-bold shrink-0">6.</span>
+              <span><strong>油量半缸即加：</strong> 南岸荒原加油站距離長達數十公里，油表降至 50% 遇油站立即順手加滿。</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Road.is 官方路況顏色代碼指南 -->
+        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-route text-sky-400"></i> Road.is 即時路況地圖顏色代碼判讀
+            </h4>
+            <span class="text-[9px] text-slate-400">冰島交通局官方代碼</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+            <div class="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-bold">
+              <span class="block">🟢 通行良好</span>
+              <span class="text-[9px] text-emerald-400/80 font-normal">Easily Passable</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold">
+              <span class="block">🟡 濕滑有雪</span>
+              <span class="text-[9px] text-amber-400/80 font-normal">Spots of Ice / Snow</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-blue-500/15 border border-blue-500/40 text-blue-300 font-bold">
+              <span class="block">🔵 結冰路段</span>
+              <span class="text-[9px] text-blue-400/80 font-normal">Slippery / Ice</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-300 font-bold">
+              <span class="block">🔴 封閉禁行</span>
+              <span class="text-[9px] text-rose-400/80 font-normal">Closed / Impassable</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-400">
+            特別留意：粉紅色或白色代表 <strong>極度風雪難行 (Difficult Driving / Snow)</strong>；黑色代表 <strong>路況未監測 (No Condition Reported)</strong>。
+          </p>
+        </div>
+
+        <!-- 陣風警報與晨昏黑冰實戰應對 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-sky-500/30 space-y-1.5">
+            <h4 class="font-bold text-sky-300 text-xs flex items-center gap-1">
+              <i class="fa-solid fa-wind text-sky-400"></i> 風速等級自駕危險閾值
+            </h4>
+            <p class="text-slate-300">
+              • <strong>&lt; 12 m/s：</strong> 正常行駛，稍感車身微晃。<br>
+              • <strong>15 ~ 18 m/s：</strong> 強烈側風，雙手必須緊握方向盤，降速至 60 km/h。<br>
+              • <strong>&gt; 20 m/s（風暴級）：</strong> 小型休旅車有吹翻危險！應立即駛入避風處暫停行駛。
+            </p>
+          </div>
+
+          <div class="p-3 bg-slate-900/90 rounded-2xl border border-amber-500/30 space-y-1.5">
+            <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1">
+              <i class="fa-solid fa-snowflake text-amber-400"></i> 晨昏黑冰 (Black Ice) 應對法
+            </h4>
+            <p class="text-slate-300">
+              10 月氣溫徘徊在 0°C ~ 4°C，路面水氣結成透明極薄暗冰，看似乾燥柏油路實則極其滑溜！過橋樑、陰涼山谷及急彎<strong>切忌大力急煞或猛打方向盤</strong>，順勢點煞滑過。
+            </p>
+          </div>
+        </div>
+
+        <!-- 冰島公路局官方熱線與緊急搜救 -->
+        <div class="p-3 bg-slate-900/90 rounded-2xl border border-rose-500/30 space-y-2 text-[10px]">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-rose-300 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-phone text-rose-400"></i> 冰島官方路況熱線 1777 & 國家搜救隊 112
+            </h4>
+            <span class="text-rose-300 font-mono font-bold">24H 緊急求助</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed">
+            • <strong>冰島公路局路況查詢專線：直撥 1777</strong>（海外手機撥 +354 522 1777），每日 06:30 ~ 22:00 提供英語真人即時路況解答。<br>
+            • <strong>突發危急事故救援：直撥 112</strong>。冰島搜救隊（ICE-SAR）志願者反應迅速。出發前可在 SafeTravel.is 登記 Travel Plan 行程計畫備案。
+          </p>
+        </div>
+
+        <!-- 實用路況與路面鏡頭外連按鈕 -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 text-center font-bold text-xs">
+          <a href="https://www.road.is/" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-amber-400 text-amber-300 flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-camera"></i> Road.is 即時路況相機
+          </a>
+          <a href="https://vegasja.vegagerdin.is/eng/" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-sky-400 text-sky-300 flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-map"></i> 冰島公路互動全景圖
+          </a>
+          <a href="https://safetravel.is/" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-rose-400 text-rose-300 flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-shield-halved"></i> SafeTravel 官方警報
           </a>
         </div>
       </div>
