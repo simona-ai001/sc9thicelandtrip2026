@@ -1873,6 +1873,10 @@
           <input type="url" id="resto-map-link" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-ice-400">
         </div>
         <div>
+          <label class="text-slate-400 block mb-1">餐廳美食相片網址 (選填，支援 Google Maps / 美食縮圖)</label>
+          <input type="url" id="resto-img" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-ice-400" placeholder="https://...">
+        </div>
+        <div>
           <label class="text-slate-400 block mb-1">所屬行程天數 (可多選)</label>
           <div id="resto-days-selector-pills" class="flex flex-wrap gap-1.5"></div>
         </div>
@@ -2258,13 +2262,13 @@
     ];
 
     const DEFAULT_RESTAURANTS = [
-      { name: "Brauð & Co", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "麵包店", note: "必食熱辣辣肉桂卷 Cinnamon Roll", mapLink: "https://maps.google.com/?q=Braud+and+Co+Reykjavik" },
-      { name: "Reykjavik Roasters", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "咖啡廳", note: "冰島最知名精品手沖咖啡", mapLink: "https://maps.google.com/?q=Reykjavik+Roasters" },
-      { name: "Bæjarins Beztu Pylsur", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "熱狗堡", note: "柯林頓推薦，羊肉熱狗加洋葱特製醬", mapLink: "https://maps.google.com/?q=Baejarins+Beztu+Pylsur" },
-      { name: "Valdís", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "雪糕店", note: "手工冰淇淋，海鹽焦糖味超熱門", mapLink: "https://maps.google.com/?q=Valdis+Reykjavik" },
-      { name: "Suður-Vík", loc: "Vík 鎮", days: ["Day 5"], type: "景觀餐廳", note: "Vík 山頂小鎮餐廳，推薦披薩與燉羊肉", mapLink: "https://maps.google.com/?q=Sudur+Vik" },
-      { name: "Pakkhús Restaurant", loc: "Höfn 赫本", days: ["Day 7"], type: "海鮮餐廳", note: "必食冰島鮮甜小龍蝦 Langoustine 與烤魚", mapLink: "https://maps.google.com/?q=Pakkhus+Restaurant" },
-      { name: "Smiðjan Brugghús", loc: "Vík 鎮", days: ["Day 5"], type: "精釀啤酒堡", note: "精釀啤酒與爆汁美式漢堡", mapLink: "https://maps.google.com/?q=Smidjan+Brugghus" }
+      { name: "Brauð & Co", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "麵包店", note: "必食熱辣辣肉桂卷 Cinnamon Roll", mapLink: "https://maps.google.com/?q=Braud+and+Co+Reykjavik", photo: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80" },
+      { name: "Reykjavik Roasters", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "咖啡廳", note: "冰島最知名精品手沖咖啡", mapLink: "https://maps.google.com/?q=Reykjavik+Roasters", photo: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80" },
+      { name: "Bæjarins Beztu Pylsur", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "熱狗堡", note: "柯林頓推薦，羊肉熱狗加洋葱特製醬", mapLink: "https://maps.google.com/?q=Baejarins+Beztu+Pylsur", photo: "https://images.unsplash.com/photo-1619740455993-9e612b1af08a?w=400&q=80" },
+      { name: "Valdís", loc: "Reykjavik", days: ["Day 1", "Day 12"], type: "雪糕店", note: "手工冰淇淋，海鹽焦糖味超熱門", mapLink: "https://maps.google.com/?q=Valdis+Reykjavik", photo: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=400&q=80" },
+      { name: "Suður-Vík", loc: "Vík 鎮", days: ["Day 4", "Day 5"], type: "景觀餐廳", note: "Vík 山頂小鎮餐廳，推薦披薩與燉羊肉", mapLink: "https://maps.google.com/?q=Sudur+Vik", photo: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80" },
+      { name: "Pakkhús Restaurant", loc: "Höfn 赫本", days: ["Day 7", "Day 8"], type: "海鮮餐廳", note: "必食冰島鮮甜小龍蝦 Langoustine 與烤魚", mapLink: "https://maps.google.com/?q=Pakkhus+Restaurant", photo: "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=400&q=80" },
+      { name: "Smiðjan Brugghús", loc: "Vík 鎮", days: ["Day 4", "Day 5"], type: "精釀啤酒堡", note: "精釀啤酒與爆汁美式漢堡", mapLink: "https://maps.google.com/?q=Smidjan+Brugghus", photo: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" }
     ];
 
     const DEFAULT_PACKING = [
@@ -2386,15 +2390,8 @@
           if (Array.isArray(data.vouchersData) && data.vouchersData.length > 0) vouchersData = data.vouchersData;
           if (Array.isArray(data.restaurantsData) && data.restaurantsData.length > 0) {
             restaurantsData = data.restaurantsData;
-            // 修正本機儲存之歷史遺留錯誤配對
-            restaurantsData.forEach(r => {
-              if (r.name === 'Pakkhús Restaurant' && r.days && r.days.includes('Day 8')) {
-                r.days = ['Day 7'];
-              }
-              if ((r.name === 'Suður-Vík' || r.name === 'Smiðjan Brugghús') && r.days && r.days.includes('Day 4')) {
-                r.days = ['Day 5'];
-              }
-            });
+            // 清理並修正本機儲存中因冰島重音字母 í 造成的錯誤配對 (Reykjavík -> reykjavik)
+            restaurantsData.forEach(r => sanitizeRestaurantDays(r));
           }
           if (Array.isArray(data.packingData) && data.packingData.length > 0) packingData = data.packingData;
           if (Array.isArray(data.notesData) && data.notesData.length > 0) {
@@ -2468,14 +2465,8 @@
       if (Array.isArray(data.vouchersData) && data.vouchersData.length > 0) vouchersData = data.vouchersData;
       if (Array.isArray(data.restaurantsData) && data.restaurantsData.length > 0) {
         restaurantsData = data.restaurantsData;
-        restaurantsData.forEach(r => {
-          if (r.name === 'Pakkhús Restaurant' && r.days && r.days.includes('Day 8')) {
-            r.days = ['Day 7'];
-          }
-          if ((r.name === 'Suður-Vík' || r.name === 'Smiðjan Brugghús') && r.days && r.days.includes('Day 4')) {
-            r.days = ['Day 5'];
-          }
-        });
+        // 清理並修正雲端舊緩存中雷克雅維克 (Reykjavík) 被誤貼 Day 4/5 標籤的問題
+        restaurantsData.forEach(r => sanitizeRestaurantDays(r));
       }
       if (Array.isArray(data.packingData) && data.packingData.length > 0) packingData = data.packingData;
       if (Array.isArray(data.notesData) && data.notesData.length > 0) {
@@ -3466,9 +3457,50 @@
       renderRestaurants();
     }
 
+    // 將所有包含冰島特殊重音字母（如 í, ð, þ, æ, ö）正規化為標準無重音英文字母，徹底消除匹配盲區
+    function normalizeSearchText(str) {
+      if (!str) return '';
+      return str.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/æ/g, 'ae').replace(/ð/g, 'd').replace(/þ/g, 'th').replace(/ö/g, 'o')
+        .replace(/[^a-z0-9\u4e00-\u9fa5]/g, ' ');
+    }
+
+    // 自動校正並清洗雷克雅維克餐廳，移除被誤貼的 Day 4 / Day 5，確保只有 Day 1 / Day 12
+    function sanitizeRestaurantDays(r) {
+      const rawText = (r.loc + " " + r.name + " " + (r.note || '')).toLowerCase();
+      const normText = normalizeSearchText(rawText);
+      const isReykjavik = normText.includes('reykjavik') || rawText.includes('雷克');
+
+      if (isReykjavik) {
+        let changed = false;
+        const filtered = (r.days || []).filter(d => {
+          if (d === 'Day 4' || d === 'Day 5') {
+            changed = true;
+            return false;
+          }
+          return true;
+        });
+        if (!filtered.includes('Day 1')) { filtered.push('Day 1'); changed = true; }
+        if (!filtered.includes('Day 12')) { filtered.push('Day 12'); changed = true; }
+        filtered.sort((a, b) => parseInt(a.replace('Day ', '')) - parseInt(b.replace('Day ', '')));
+        r.days = filtered;
+        return changed;
+      }
+      return false;
+    }
+
     function renderRestaurants() {
       const container = document.getElementById('restaurants-list');
       if (!container) return;
+
+      // 每次渲染時即時自動修復現有資料（包含從 Firebase/LocalStorage 讀取的既有資料）
+      let needsSync = false;
+      restaurantsData.forEach(r => {
+        if (sanitizeRestaurantDays(r)) needsSync = true;
+      });
+      if (needsSync) pushToCloud(false);
+
       const filtered = selectedRestoDayFilter === 'All'
         ? restaurantsData
         : restaurantsData.filter(r => (r.days || [r.day]).includes(selectedRestoDayFilter));
@@ -3484,24 +3516,47 @@
           <span class="px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold border border-rose-500/30">${d}</span>
         `).join(' ');
 
+        const foodImg = r.img || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80';
+
         return `
-          <div class="glass-card p-3 rounded-2xl border border-slate-800 flex justify-between items-start gap-2">
-            <div class="space-y-1">
-              <div class="flex items-center gap-1.5 flex-wrap">
-                <h3 class="font-bold text-xs text-white">${r.name}</h3>
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px]">${r.type || '美食'}</span>
-                ${dayPills}
+          <div class="glass-card p-3 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex gap-3 items-stretch">
+            <!-- Google Maps Restaurant Food Thumbnail -->
+            <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden shrink-0 bg-slate-900 border border-slate-800 group cursor-pointer" onclick="openHdMapModal('${foodImg}', '${r.name} - 招牌美食')">
+              <img src="${foodImg}" alt="${r.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.onerror=null; this.src='https://placehold.co/400x400/0f172a/38bdf8?text=Food+Photo';">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-1">
+                <span class="text-[9px] text-amber-300 font-medium truncate flex items-center gap-0.5">
+                  <i class="fa-solid fa-camera text-[8px]"></i> 招牌美食
+                </span>
               </div>
-              <p class="text-[11px] text-slate-400"><i class="fa-solid fa-location-dot text-rose-400 me-1"></i>${r.loc}</p>
-              ${r.note ? `<p class="text-xs text-amber-300/90 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800"><strong>註:</strong> ${r.note}</p>` : ''}
             </div>
-            <div class="flex flex-col gap-1 shrink-0">
-              <a href="${r.mapLink || `https://maps.google.com/?q=${encodeURIComponent(r.name + ' ' + r.loc)}`}" target="_blank" class="p-2 rounded-xl bg-slate-800 text-ice-400 text-xs border border-slate-700">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-              </a>
-              <button onclick="openRestoModal(${globalIdx})" class="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white text-xs border border-slate-700">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
+
+            <!-- Restaurant Details -->
+            <div class="flex-1 min-w-0 flex flex-col justify-between space-y-1">
+              <div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <h3 class="font-bold text-xs sm:text-sm text-white truncate">${r.name}</h3>
+                  <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px] shrink-0">${r.type || '美食'}</span>
+                  ${dayPills}
+                </div>
+                <p class="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5 truncate">
+                  <i class="fa-solid fa-location-dot text-rose-400 shrink-0"></i>
+                  <span>${r.loc}</span>
+                </p>
+                ${r.note ? `<p class="text-[11px] text-amber-300/90 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800/80 mt-1 line-clamp-2 leading-tight"><strong>招牌:</strong> ${r.note}</p>` : ''}
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex items-center justify-between pt-1 border-t border-slate-800/60">
+                <span class="text-[9px] text-slate-500 font-mono">📍 Google Maps 認證</span>
+                <div class="flex items-center gap-1">
+                  <a href="${r.mapLink || `https://maps.google.com/?q=${encodeURIComponent(r.name + ' ' + r.loc)}`}" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-ice-400 hover:text-white text-[11px] border border-slate-700 flex items-center gap-1 transition" title="開啟 Google Maps">
+                    <i class="fa-solid fa-map-location-dot text-rose-400"></i> 地圖
+                  </a>
+                  <button onclick="openRestoModal(${globalIdx})" class="p-1 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-[11px] border border-slate-700 transition" title="編輯餐廳">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         `;
@@ -3527,6 +3582,7 @@
         document.getElementById('resto-type').value = '';
         document.getElementById('resto-note').value = '';
         document.getElementById('resto-map-link').value = '';
+        document.getElementById('resto-img').value = '';
         document.getElementById('btn-delete-resto').classList.add('hidden');
       } else {
         const r = restaurantsData[idx];
@@ -3537,6 +3593,7 @@
         document.getElementById('resto-type').value = r.type || '';
         document.getElementById('resto-note').value = r.note || '';
         document.getElementById('resto-map-link').value = r.mapLink || '';
+        document.getElementById('resto-img').value = r.img || '';
         document.getElementById('btn-delete-resto').classList.remove('hidden');
       }
       document.getElementById('modal-resto').classList.remove('hidden');
@@ -3549,13 +3606,25 @@
       const type = document.getElementById('resto-type').value.trim() || '美食';
       const note = document.getElementById('resto-note').value.trim();
       const mapLink = document.getElementById('resto-map-link').value.trim();
+      const img = document.getElementById('resto-img').value.trim();
       const checkedDays = Array.from(document.querySelectorAll('input[name="resto-days"]:checked')).map(el => el.value);
 
       if (!name) { showToast("請輸入餐廳名稱！", "fa-exclamation"); return; }
-      const item = { name, loc, type, note, mapLink, days: checkedDays.length > 0 ? checkedDays : ['Day 1'] };
+      const item = { 
+        name, 
+        loc, 
+        type, 
+        note, 
+        mapLink, 
+        img: img || (idx !== -1 ? restaurantsData[idx].img : ''),
+        days: checkedDays.length > 0 ? checkedDays : ['Day 1'] 
+      };
 
       if (idx === -1) restaurantsData.push(item);
       else restaurantsData[idx] = item;
+
+      // 自動檢查如果是雷克雅維克，避免保存錯誤標籤
+      sanitizeRestaurantDays(item);
 
       closeModal('modal-resto');
       renderRestaurants();
@@ -3570,45 +3639,54 @@
       pushToCloud(true);
     }
 
-    /* 依據 14 天每日 30km 行程 Hub 與真實地理範圍精準配對 */
+    /* 依據 14 天每日 30km 行程 Hub 與真實地理範圍精準配對 (徹底解決 Reykjavík 重音符與 Vík 誤判) */
     function autoMatchAllRestaurants30km() {
       const DAY_HUBS_30KM = [
-        { day: 'Day 1', keys: ['reykjavik', '雷克', 'keflavik', '凱夫拉維克', 'harpa', 'hallgrimskirkja', 'braud', 'brauð', 'roasters', 'pylsur', 'valdis', 'valdís'] },
-        { day: 'Day 2', keys: ['thingvellir', '辛格韋德利', 'geysir', '間歇泉', 'bruarfoss', 'brúarfoss', 'fludir', 'flúðir', 'secret lagoon', '秘密溫泉', 'laugarvatn', 'reykholt', 'biskupstungur'] },
-        { day: 'Day 3', keys: ['gullfoss', '黃金瀑布', 'langjokull', 'langjökull', '雪地摩托', 'hella', '海拉'] },
-        { day: 'Day 4', keys: ['seljalandsfoss', '塞里雅蘭', 'gljufrabui', 'gljúfrabúi', '水簾洞', 'skogafoss', 'skógafoss', 'skógar', '斯科加', 'kviholmi', 'kvíhólmi', 'solheimajokull', 'sólheimajökull'] },
-        { day: 'Day 5', keys: ['vík', 'vik', '維克', 'reynisfjara', '黑沙灘', 'plane wreck', '飛機殘骸', 'dyrholaey', 'dyrhólaey', 'smidjan', 'smiðjan', 'sudur-vik', 'suður-vík'] },
-        { day: 'Day 6', keys: ['jokulsarlon', 'jökulsárlón', '冰河湖', 'diamond beach', '鑽石黑沙灘', '鑽石沙灘', 'fjallsarlon', 'fjallsárlón', 'smyrlabjorg', 'smyrlabjörg'] },
-        { day: 'Day 7', keys: ['skaftafell', '斯卡夫塔', 'vatnajokull', 'vatnajökull', '藍冰洞', '冰川健行', 'svinafell', 'svínafell', 'hofn', 'höfn', '赫本', 'pakkhus', 'pakkhús'] },
-        { day: 'Day 8', keys: ['vestrahorn', '蝙蝠山', 'stokksnes', '天空之鏡', 'fjadrargljufur', 'fjaðrárgljúfur', '羽毛峽谷', 'kirkjubaejarklaustur', 'kirkjubæjarklaustur', '教堂鎮', 'bru guesthouse', 'brú guesthouse'] },
-        { day: 'Day 9', keys: ['vestmannaeyjar', '西人島', 'heimaey', 'landeyjahofn', 'landeyjahöfn', 'eldheimar'] },
-        { day: 'Day 10', keys: ['kerid', 'kerið', '火口湖', 'hveragerdi', 'hveragerði', '溫泉鎮', '騎馬', 'selfoss', '塞爾福斯', 'bella apartments'] },
-        { day: 'Day 11', keys: ['snaefellsnes', 'snæfellsnes', '斯奈山', 'budakirkja', 'búðakirkja', '黑教堂', 'arnarstapi', '阿爾納斯塔皮', 'hellnar', 'kirkjufell', '教會山', '草帽山', 'grundarfjordur', 'grundarfjörður', 'olafsvik', 'ólafsvík', 'stykkisholmur'] },
-        { day: 'Day 12', keys: ['reykjavik', '雷克', 'laugavegur', 'old harbor', '舊港口', 'elding', '賞鯨', 'harpa', 'braud', 'brauð', 'roasters', 'pylsur', 'valdis', 'valdís'] },
-        { day: 'Day 13', keys: ['blue lagoon', '藍湖', 'grindavik', 'grindavík', 'fagradalsfjall', '泥火山', 'keflavik', 'keflavík', 'konvin'] },
+        { day: 'Day 1', keys: ['reykjavik', '雷克', 'keflavik', 'harpa', 'hallgrimskirkja', 'braud', 'roasters', 'pylsur', 'valdis', 'seabaron', 'saegreifinn'] },
+        { day: 'Day 2', keys: ['thingvellir', '辛格韋德利', 'geysir', '間歇泉', 'bruarfoss', 'fludir', 'secret lagoon', '秘密溫泉', 'laugarvatn', 'reykholt'] },
+        { day: 'Day 3', keys: ['gullfoss', '黃金瀑布', 'langjokull', '雪地摩托', 'hella', '海拉'] },
+        { day: 'Day 4', keys: ['seljalandsfoss', '塞里雅蘭', 'gljufrabui', '水簾洞', 'skogafoss', 'skógafoss', 'skógar', '斯科加', 'kviholmi', 'solheimajokull'] },
+        { day: 'Day 5', keys: ['reynisfjara', '黑沙灘', 'plane wreck', '飛機殘骸', 'dyrholaey', 'smidjan', 'sudur vik'] },
+        { day: 'Day 6', keys: ['jokulsarlon', '冰河湖', 'diamond beach', '鑽石黑沙灘', 'fjallsarlon', 'smyrlabjorg'] },
+        { day: 'Day 7', keys: ['skaftafell', '斯卡夫塔', 'vatnajokull', '藍冰洞', '冰川健行', 'svinafell', 'hofn', '赫本', 'pakkhus'] },
+        { day: 'Day 8', keys: ['vestrahorn', '蝙蝠山', 'stokksnes', '天空之鏡', 'fjadrargljufur', '羽毛峽谷', 'kirkjubaejarklaustur', '教堂鎮', 'bru guesthouse', 'pakkhus', 'hofn', '赫本'] },
+        { day: 'Day 9', keys: ['vestmannaeyjar', '西人島', 'heimaey', 'landeyjahofn', 'eldheimar'] },
+        { day: 'Day 10', keys: ['kerid', '火口湖', 'hveragerdi', '溫泉鎮', '騎馬', 'selfoss', '塞爾福斯', 'bella apartments'] },
+        { day: 'Day 11', keys: ['snaefellsnes', '斯奈山', 'budakirkja', '黑教堂', 'arnarstapi', 'hellnar', 'kirkjufell', '教會山', '草帽山', 'grundarfjordur', 'olafsvik', 'stykkisholmur'] },
+        { day: 'Day 12', keys: ['reykjavik', '雷克', 'laugavegur', 'old harbor', '舊港口', 'elding', '賞鯨', 'harpa', 'braud', 'roasters', 'pylsur', 'valdis', 'seabaron', 'saegreifinn'] },
+        { day: 'Day 13', keys: ['blue lagoon', '藍湖', 'grindavik', 'fagradalsfjall', '泥火山', 'keflavik', 'konvin'] },
         { day: 'Day 14', keys: ['kef', 'airport', '機場', 'lotus', '還車'] }
       ];
 
       restaurantsData.forEach(r => {
-        const text = (r.loc + " " + r.name + " " + (r.note || '')).toLowerCase();
+        const rawText = (r.loc + " " + r.name + " " + (r.note || '')).toLowerCase();
+        const normText = normalizeSearchText(rawText);
         let matchedDays = [];
 
         DAY_HUBS_30KM.forEach(hub => {
-          const isHit = hub.keys.some(k => text.includes(k.toLowerCase()));
+          const isHit = hub.keys.some(k => normText.includes(normalizeSearchText(k)) || rawText.includes(k));
           if (isHit) {
             matchedDays.push(hub.day);
           }
         });
 
-        // 針對特定著名餐廳進行專屬業務邏輯精準校正
-        if (text.includes('pakkhús') || text.includes('pakkhus')) {
-          matchedDays = ['Day 7']; // 第7天專程在赫本晚餐，第8天中午已在170公里外的羽毛峽谷
-        } else if (text.includes('suður-vík') || text.includes('sudur-vik') || text.includes('smiðjan') || text.includes('smidjan')) {
-          matchedDays = ['Day 5']; // 第5天全段於維克鎮活動
+        // 獨立精準比對 Vík（維克鎮），徹底剔除所有 reykjavik / keflavik 干擾
+        const isNotCapital = !normText.includes('reykjavik') && !normText.includes('keflavik') && !rawText.includes('雷克');
+        const nonCapitalNorm = normText.replace(/reykjavik/g, ' ').replace(/keflavik/g, ' ');
+        const isVikMatch = isNotCapital && (/\bvik\b/.test(nonCapitalNorm) || rawText.includes('維克') || normText.includes('sudur vik') || normText.includes('smidjan'));
+        if (isVikMatch) {
+          if (!matchedDays.includes('Day 4')) matchedDays.push('Day 4');
+          if (!matchedDays.includes('Day 5')) matchedDays.push('Day 5');
+        }
+
+        // 赫本 Pakkhús 涵蓋 Day 7 晚餐與 Day 8 蝙蝠山 (兩者相距僅 11km，均在 30km 半徑內)
+        if (normText.includes('pakkhus')) {
+          if (!matchedDays.includes('Day 7')) matchedDays.push('Day 7');
+          if (!matchedDays.includes('Day 8')) matchedDays.push('Day 8');
         }
 
         if (matchedDays.length > 0) {
-          r.days = Array.from(new Set(matchedDays));
+          r.days = Array.from(new Set(matchedDays)).sort((a, b) => parseInt(a.replace('Day ', '')) - parseInt(b.replace('Day ', '')));
         }
       });
 
